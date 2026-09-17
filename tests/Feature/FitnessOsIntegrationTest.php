@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Inertia\Inertia;
 
 uses(RefreshDatabase::class);
 
@@ -22,15 +23,24 @@ test('public pages load and private pages require the right role', function () {
     $this->actingAs($client)->get('/dashboard')->assertForbidden();
     $this->actingAs($client)->get('/portal')->assertRedirect('/app');
     $this->actingAs($coach)->get('/portal')->assertRedirect('/dashboard');
+});
+
+test('Inertia portal visits reload the fitness app for each role', function () {
+    $coach = User::factory()->create();
+    $client = User::factory()->create(['role' => 'client', 'coach_id' => $coach->id]);
+
+    $this->get('/register')->assertOk();
+    $this->withHeaders([
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => Inertia::getVersion(),
+    ]);
 
     $this->actingAs($coach)
-        ->withHeader('X-Inertia', 'true')
         ->get('/portal')
         ->assertStatus(409)
         ->assertHeader('X-Inertia-Location', '/dashboard');
 
     $this->actingAs($client)
-        ->withHeader('X-Inertia', 'true')
         ->get('/portal')
         ->assertStatus(409)
         ->assertHeader('X-Inertia-Location', '/app');
