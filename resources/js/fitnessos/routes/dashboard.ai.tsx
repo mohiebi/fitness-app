@@ -23,23 +23,23 @@ function AI() {
     <div>
       <PageHeader title="AI Assistant" description="Your coaching co-pilot. Build plans, replies and content in seconds." />
 
-      <Card className="relative overflow-hidden border-primary/30 bg-hero-gradient p-8 shadow-glow">
+      <Card className="relative overflow-hidden border-primary/30 bg-card p-8">
         <div className="mb-4 flex items-center gap-2"><Sparkles className="h-5 w-5 text-primary" /><span className="text-sm font-medium">Ask FitnessOS AI</span></div>
         <Textarea rows={4} placeholder="e.g. Build a 12-week strength program for a 45-year-old beginner with a bad shoulder…" className="border-border/60 bg-background/60 text-base backdrop-blur" />
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <Badge variant="outline" className="border-primary/30 bg-primary/10">GPT-Coach v2</Badge>
           <Badge variant="outline">Personalized to your voice</Badge>
-          <Button className="ml-auto rounded-full bg-brand-gradient text-primary-foreground"><Wand2 className="mr-2 h-4 w-4" />Generate <ArrowUp className="ml-2 h-4 w-4" /></Button>
+          <Button className="ml-auto"><Wand2 className="mr-2 h-4 w-4" />Generate <ArrowUp className="ml-2 h-4 w-4" /></Button>
         </div>
       </Card>
 
       <div className="mt-8">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Suggested prompts</h3>
+        <h3 className="mb-4 text-sm font-semibold text-muted-foreground">Suggested prompts</h3>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {aiPrompts.map(p => {
             const Icon = iconMap[p.icon] || Sparkles;
             return (
-              <Card key={p.title} className="group cursor-pointer border-border/60 bg-card p-5 shadow-card-premium transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
+              <Card key={p.title} className="group cursor-pointer border-border/60 bg-card p-5 shadow-card-premium transition hover:border-primary/40">
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="h-5 w-5" /></div>
                 <h4 className="mt-4 font-semibold">{p.title}</h4>
                 <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
@@ -50,10 +50,10 @@ function AI() {
       </div>
 
       <div className="mt-8">
-        <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recent conversations</h3>
+        <h3 className="mb-4 text-sm font-semibold text-muted-foreground">Recent conversations</h3>
         <Card className="border-border/60 bg-card p-2 shadow-card-premium">
           {recent.map(r => (
-            <div key={r.title} className="flex cursor-pointer items-center justify-between rounded-xl p-4 hover:bg-accent/10">
+            <div key={r.title} className="flex cursor-pointer items-center justify-between rounded-xl p-4 hover:bg-secondary">
               <div><div className="text-sm font-medium">{r.title}</div><div className="text-xs text-muted-foreground">{r.when}</div></div>
               <Button size="sm" variant="ghost">Open</Button>
             </div>

@@ -21,7 +21,7 @@ function Nutrition() {
           { l: "Fat", v: "62g", t: "/ 80g", p: 77 },
         ].map(m => (
           <Card key={m.l} className="border-border/60 bg-card p-5 shadow-card-premium">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">{m.l}</div>
+            <div className="text-sm font-medium text-muted-foreground">{m.l}</div>
             <div className="mt-2 flex items-baseline gap-1"><span className="text-2xl font-semibold">{m.v}</span><span className="text-xs text-muted-foreground">{m.t}</span></div>
             <Progress value={m.p} className="mt-3 h-1.5" />
           </Card>

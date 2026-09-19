@@ -12,7 +12,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-gradient">404</h1>
+        <h1 className="font-display text-7xl font-bold text-primary">404</h1>
         <h2 className="mt-4 text-xl font-semibold">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
@@ -49,7 +49,7 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-full border border-border bg-background px-5 py-2 text-sm font-medium transition-colors hover:bg-accent/10"
+            className="inline-flex items-center justify-center rounded-full border border-border bg-background px-5 py-2 text-sm font-medium transition-colors hover:bg-secondary"
           >
             Go home
           </a>

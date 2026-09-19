@@ -9,7 +9,12 @@ import { Button } from '@fitnessos/components/ui/button';
 import { Textarea } from '@fitnessos/components/ui/textarea';
 import { getJson, patchJson } from '@fitnessos/lib/api';
 
-export const Route = createFileRoute('/dashboard/checkins')({ component: Checkins });
+export const Route = createFileRoute('/dashboard/checkins')({
+    component: Checkins,
+    validateSearch: (search: Record<string, unknown>): { checkin?: number } => ({
+        checkin: Number(search.checkin) || undefined,
+    }),
+});
 
 type Checkin = {
     id: number; client_id: number; client_name: string; weight_kg: string | null;
@@ -19,7 +24,8 @@ type Checkin = {
 };
 
 function Checkins() {
-    const [active, setActive] = useState<number | null>(null);
+    const { checkin } = Route.useSearch();
+    const [active, setActive] = useState<number | null>(checkin ?? null);
     const [feedback, setFeedback] = useState('');
     const [saving, setSaving] = useState(false);
     const [result, setResult] = useState<string | null>(null);
@@ -53,7 +59,7 @@ function Checkins() {
             <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
                 <Card className="h-fit border-border/60 bg-card p-3 shadow-card-premium">
                     {checkins.map((entry) => (
-                        <button key={entry.id} onClick={() => { setActive(entry.id); setResult(null); }} className={`mb-1 flex w-full items-center gap-3 rounded-xl p-3 text-left ${selected?.id === entry.id ? 'bg-primary/15' : 'hover:bg-accent/10'}`}>
+                        <button key={entry.id} onClick={() => { setActive(entry.id); setResult(null); }} className={`mb-1 flex w-full items-center gap-3 rounded-xl p-3 text-left ${selected?.id === entry.id ? 'bg-primary/15' : 'hover:bg-secondary'}`}>
                             <ClipboardCheck className="h-4 w-4 text-primary" />
                             <span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{entry.client_name}</span><span className="text-xs text-muted-foreground">{new Date(entry.created_at).toLocaleDateString()}</span></span>
                             {entry.status === 'Pending' && <span className="h-2 w-2 rounded-full bg-primary" />}
@@ -80,7 +86,7 @@ function Checkins() {
                             <h3 className="mb-3 font-semibold">Coach feedback</h3>
                             <Textarea rows={5} placeholder="Write feedback for this check-in…" value={feedback} onChange={(event) => setFeedback(event.target.value)} />
                             {result && <p role="status" className="mt-3 text-sm text-primary">{result}</p>}
-                            <Button disabled={saving || !feedback.trim()} onClick={sendFeedback} className="mt-4 rounded-full bg-brand-gradient text-primary-foreground">{saving ? 'Sending…' : 'Send feedback'}</Button>
+                            <Button disabled={saving || !feedback.trim()} onClick={sendFeedback} className="mt-4">{saving ? 'Sending…' : 'Send feedback'}</Button>
                         </Card>
                     </div>
                 ) : <div className="grid min-h-64 place-items-center text-sm text-muted-foreground">Select a check-in to review.</div>}
@@ -90,5 +96,5 @@ function Checkins() {
 }
 
 function Metric({ icon: Icon, label, value }: { icon: typeof Weight; label: string; value: string }) {
-    return <Card className="border-border/60 bg-card p-5 shadow-card-premium"><Icon className="h-5 w-5 text-primary" /><div className="mt-3 text-xs uppercase text-muted-foreground">{label}</div><div className="mt-1 text-xl font-semibold">{value}</div></Card>;
+    return <Card className="border-border/60 bg-card p-5 shadow-card-premium"><Icon className="h-5 w-5 text-primary" /><div className="mt-3 text-sm font-medium text-muted-foreground">{label}</div><div className="mt-1 text-xl font-semibold">{value}</div></Card>;
 }

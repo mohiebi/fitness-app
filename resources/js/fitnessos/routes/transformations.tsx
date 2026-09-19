@@ -22,10 +22,10 @@ function Transformations() {
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
-      <section className="bg-hero-gradient">
+      <section className="border-b border-border bg-card/40">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="text-xs uppercase tracking-widest text-primary">Transformations</div>
-          <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Proof over <span className="italic text-gradient" style={{ fontFamily: "var(--font-display)" }}>promises.</span></h1>
+          <div className="text-sm font-semibold text-primary">Transformations</div>
+          <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Proof over promises.</h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">500+ transformations. 94% completion rate. Zero photoshop.</p>
         </div>
       </section>
@@ -33,12 +33,12 @@ function Transformations() {
       <section className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-8 flex flex-wrap gap-2">
           {filters.map(x => (
-            <Button key={x} size="sm" variant={f === x ? "default" : "outline"} className="rounded-full" onClick={() => setF(x)}>{x}</Button>
+            <Button key={x} size="sm" variant={f === x ? "default" : "outline"} onClick={() => setF(x)}>{x}</Button>
           ))}
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map(t => (
-            <Card key={t.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all hover:-translate-y-1 hover:shadow-glow">
+            <Card key={t.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all">
               <div className="grid grid-cols-2 gap-0.5">
                 <div className="relative">
                   <img src={t.before} className="aspect-[3/4] w-full object-cover" alt="before" />

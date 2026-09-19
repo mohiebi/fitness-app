@@ -20,8 +20,8 @@ function Profile() {
                     <div><h2 className="text-xl font-semibold">{name}</h2><p className="text-sm text-muted-foreground">{email}</p></div>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
-                    <Button asChild className="rounded-full bg-brand-gradient text-primary-foreground"><a href="/settings/profile">Edit profile</a></Button>
-                    <Button asChild variant="outline" className="rounded-full"><a href="/settings/security">Security</a></Button>
+                    <Button asChild><a href="/settings/profile">Edit profile</a></Button>
+                    <Button asChild variant="outline"><a href="/settings/security">Security</a></Button>
                 </div>
             </Card>
         </div>

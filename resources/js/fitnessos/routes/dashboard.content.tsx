@@ -20,14 +20,14 @@ function ContentStudio() {
   return (
     <div>
       <PageHeader title="Content studio" description="Plan, generate and schedule your content across platforms."
-        actions={<><Button variant="outline" className="rounded-full"><Sparkles className="mr-2 h-4 w-4" />Generate with AI</Button><Button className="rounded-full bg-brand-gradient text-primary-foreground">New post</Button></>} />
+        actions={<><Button variant="outline"><Sparkles className="mr-2 h-4 w-4" />Generate with AI</Button><Button>New post</Button></>} />
 
       <div className="mb-6 grid gap-4 md:grid-cols-4">
         {[
           { l: "Scheduled", v: "12" }, { l: "Drafts", v: "5" }, { l: "Published (30d)", v: "24" }, { l: "Reach (30d)", v: "182k" },
         ].map(s => (
           <Card key={s.l} className="border-border/60 bg-card p-5 shadow-card-premium">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">{s.l}</div>
+            <div className="text-sm font-medium text-muted-foreground">{s.l}</div>
             <div className="mt-2 text-2xl font-semibold">{s.v}</div>
           </Card>
         ))}
@@ -37,13 +37,13 @@ function ContentStudio() {
         {posts.map(p => {
           const Icon = icons[p.platform];
           return (
-            <Card key={p.title} className="overflow-hidden border-border/60 bg-card shadow-card-premium transition hover:-translate-y-1 hover:shadow-glow">
+            <Card key={p.title} className="overflow-hidden border-border/60 bg-card shadow-card-premium transition">
               <div className="aspect-square overflow-hidden"><img src={p.img} className="h-full w-full object-cover" alt={p.title} /></div>
               <div className="p-4">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground"><Icon className="h-3.5 w-3.5" /><span>{p.platform} · {p.type}</span></div>
                 <h4 className="mt-2 line-clamp-2 text-sm font-medium">{p.title}</h4>
                 <div className="mt-3 flex items-center justify-between">
-                  <Badge className={p.status === "Published" ? "bg-primary/15 text-primary" : p.status === "Scheduled" ? "bg-accent/15 text-accent" : "bg-muted text-muted-foreground"}>{p.status}</Badge>
+                  <Badge className={p.status === "Published" ? "bg-primary/15 text-primary" : p.status === "Scheduled" ? "bg-chart-2/15 text-chart-2" : "bg-muted text-muted-foreground"}>{p.status}</Badge>
                   <span className="text-xs text-muted-foreground">{p.date}</span>
                 </div>
               </div>
@@ -52,7 +52,7 @@ function ContentStudio() {
         })}
       </div>
 
-      <Card className="mt-6 border-primary/30 bg-hero-gradient p-8 shadow-glow">
+      <Card className="mt-6 border-primary/30 bg-card p-8">
         <div className="flex items-center gap-3">
           <Sparkles className="h-5 w-5 text-primary" />
           <h3 className="font-semibold">AI content generator</h3>

@@ -21,11 +21,11 @@ function CalendarPage() {
   return (
     <div>
       <PageHeader title="Calendar" description="November 2026"
-        actions={<Button className="rounded-full bg-brand-gradient text-primary-foreground">New event</Button>} />
+        actions={<Button>New event</Button>} />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <Card className="border-border/60 bg-card p-6 shadow-card-premium">
-          <div className="mb-3 grid grid-cols-7 text-center text-xs uppercase tracking-wider text-muted-foreground">
+          <div className="mb-3 grid grid-cols-7 text-center text-sm font-medium text-muted-foreground">
             {["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => <div key={d}>{d}</div>)}
           </div>
           <div className="grid grid-cols-7 gap-1">

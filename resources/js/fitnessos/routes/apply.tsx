@@ -70,7 +70,7 @@ function Apply() {
     <div className="min-h-screen bg-background">
       <PublicNav />
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <div className="text-xs uppercase tracking-widest text-primary flex items-center gap-2">
+        <div className="text-sm font-semibold text-primary flex items-center gap-2">
           <Sparkles className="h-3 w-3" /> Coaching application
         </div>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">Let's build your plan.</h1>
@@ -160,7 +160,7 @@ function Apply() {
           <div className="mt-8 flex items-center justify-between">
             <Button variant="ghost" disabled={step === 0} onClick={() => setStep(step - 1)}><ArrowLeft className="mr-2 h-4 w-4" /> Back</Button>
             {step < steps.length - 1 ? (
-              <Button className="rounded-full bg-brand-gradient text-primary-foreground" onClick={() => {
+              <Button onClick={() => {
                 if (step === 0 && (!form.name.trim() || !form.email.trim())) {
                   setError('Please enter your name and email.');
                   return;
@@ -169,7 +169,7 @@ function Apply() {
                 setStep(step + 1);
               }}>Next <ArrowRight className="ml-2 h-4 w-4" /></Button>
             ) : (
-              <Button className="rounded-full bg-brand-gradient text-primary-foreground" disabled={busy} onClick={submit}>{busy ? 'Submitting…' : 'Submit application'}</Button>
+              <Button disabled={busy} onClick={submit}>{busy ? 'Submitting…' : 'Submit application'}</Button>
             )}
           </div>
         </Card>

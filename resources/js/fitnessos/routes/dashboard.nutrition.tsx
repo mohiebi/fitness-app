@@ -15,7 +15,7 @@ function Nutrition() {
     <div>
       <PageHeader title="Nutrition builder"
         description="Sarah Chen — Fat loss · 2,700 kcal target"
-        actions={<><Button variant="outline" className="rounded-full"><ShoppingCart className="mr-2 h-4 w-4" />Shopping list</Button><Button className="rounded-full bg-brand-gradient text-primary-foreground">Save plan</Button></>} />
+        actions={<><Button variant="outline"><ShoppingCart className="mr-2 h-4 w-4" />Shopping list</Button><Button>Save plan</Button></>} />
 
       <div className="grid gap-4 md:grid-cols-4">
         {[
@@ -25,7 +25,7 @@ function Nutrition() {
           { l: "Fat", v: `${total.f}g`, sub: "/ 80g", pct: (total.f / 80) * 100, color: "var(--color-chart-4)" },
         ].map(m => (
           <Card key={m.l} className="border-border/60 bg-card p-5 shadow-card-premium">
-            <div className="text-xs uppercase tracking-wider text-muted-foreground">{m.l}</div>
+            <div className="text-sm font-medium text-muted-foreground">{m.l}</div>
             <div className="mt-2 flex items-baseline gap-1"><span className="text-2xl font-semibold">{m.v}</span><span className="text-xs text-muted-foreground">{m.sub}</span></div>
             <Progress value={m.pct} className="mt-3 h-1.5" />
           </Card>

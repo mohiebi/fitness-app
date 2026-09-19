@@ -1,37 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import {
-  Activity,
   ArrowRight,
   Check,
-  Flame,
+  ClipboardCheck,
+  Dumbbell,
+  Home as HomeIcon,
+  LineChart,
+  MessageSquare,
   Moon,
-  Play,
-  Sparkles,
+  Plus,
   Star,
   Target,
-  Timer,
-  Trophy,
   Users,
   Utensils,
-  Zap,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@fitnessos/components/ui/avatar";
 import { Button } from "@fitnessos/components/ui/button";
+import { Card } from "@fitnessos/components/ui/card";
 import { Footer, PublicNav } from "@fitnessos/components/public-nav";
 import { coach, faqs, pricing, process, services, testimonials, transformations } from "@fitnessos/lib/mock-data";
 
 export const Route = createFileRoute("/")({ component: Home });
-
-const ticker = ["move fast", "lift smart", "coach louder", "fuel wins", "track momentum", "fitnessos"];
-
-const stats = [
-  { value: "500+", label: "transformations", icon: Trophy },
-  { value: "94%", label: "weekly completion", icon: Activity },
-  { value: "4.9", label: "coach rating", icon: Star },
-  { value: "12w", label: "average sprint", icon: Timer },
-];
 
 const serviceIcons = {
   target: Target,
@@ -41,367 +31,234 @@ const serviceIcons = {
 };
 
 function Home() {
+  const heroQuote = transformations[1];
+
   return (
-    <div className="min-h-screen overflow-hidden bg-background">
+    <div className="min-h-screen bg-background">
       <PublicNav />
 
       <main>
-        <section className="relative overflow-hidden bg-hero-gradient pt-10">
-          <div className="noise-overlay" />
-          <div className="absolute inset-x-0 top-28 h-40 rotate-[-7deg] speed-lines opacity-40 animate-track-sweep" />
-          <div className="pointer-events-none absolute -right-24 top-36 h-96 w-96 rounded-full border border-primary/20" />
-          <div className="pointer-events-none absolute -right-8 top-52 h-72 w-72 rounded-full border border-aqua/30" />
-
-          <div className="mx-auto grid max-w-7xl gap-10 px-6 pb-20 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-28 lg:pt-20">
-            <div className="relative z-10">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45 }}
-                className="sport-pill inline-flex items-center gap-2 px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-foreground"
-              >
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-primary" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
-                </span>
-                Live coach sprint · 2,417 athletes moving
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
-                className="mt-7 max-w-4xl font-display text-6xl font-extrabold uppercase leading-[0.92] md:text-8xl lg:text-9xl"
-              >
-                Coach with <span className="text-gradient">game-day</span> energy.
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.16 }}
-                className="mt-7 max-w-2xl text-lg font-medium leading-8 text-muted-foreground md:text-xl"
-              >
-                FitnessOS turns training plans, nutrition, check-ins, payments and client momentum into one fast, rounded, sport-first coaching cockpit.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.26 }}
-                className="mt-9 flex flex-wrap items-center gap-3"
-              >
-                <Button asChild size="lg" className="h-14 px-7 text-sm uppercase tracking-wider">
-                  <Link to="/apply">
-                    Start coaching sprint <ArrowRight className="ml-1 h-4 w-4" strokeWidth={3} />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="h-14 px-7 text-sm uppercase tracking-wider">
-                  <Link to="/dashboard">
-                    <Play className="h-4 w-4" strokeWidth={3} /> Tour platform
-                  </Link>
-                </Button>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.38 }}
-                className="mt-10 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4"
-              >
-                {stats.map((item) => (
-                  <div key={item.label} className="sport-card p-4 transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.03]">
-                    <item.icon className="h-4 w-4 text-primary" strokeWidth={2.7} />
-                    <div className="mt-3 font-display text-3xl font-extrabold tabular-nums">{item.value}</div>
-                    <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{item.label}</div>
-                  </div>
-                ))}
-              </motion.div>
+        <section className="mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:pt-16">
+          <div>
+            <div className="flex items-center gap-2.5 text-[15px] font-semibold text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-primary" />
+              1:1 online coaching with {coach.name}
             </div>
+            <h1 className="mt-6 max-w-[660px] font-display text-5xl font-bold leading-none tracking-tight sm:text-6xl lg:text-[76px]">
+              Train with a plan that changes when you do.
+            </h1>
+            <p className="mt-6 max-w-[540px] text-lg leading-relaxed text-muted-foreground md:text-[19px]">
+              Custom training and nutrition in one app. Every week you check in, {coach.name.split(" ")[0]} reads it, and your plan is adjusted to how the week actually went.
+            </p>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Button asChild size="lg" className="h-[54px] px-7">
+                <Link to="/apply">Apply for coaching <ArrowRight strokeWidth={2.6} /></Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-[54px] px-6">
+                <Link to="/transformations">See client results</Link>
+              </Button>
+            </div>
+            <p className="mt-3.5 text-sm text-subtle-foreground">Applications reviewed within 24 hours.</p>
+            {heroQuote && (
+              <figure className="mt-10 flex max-w-[540px] items-center gap-3.5 border-t border-border pt-6">
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-secondary text-sm font-bold">
+                  {heroQuote.name.split(" ").map((part) => part[0]).join("")}
+                </div>
+                <figcaption>
+                  <blockquote className="text-base font-semibold">“{heroQuote.quote}”</blockquote>
+                  <div className="mt-0.5 text-[13px] text-subtle-foreground">{heroQuote.name} · {heroQuote.goal.toLowerCase()} · {heroQuote.weeks} weeks</div>
+                </figcaption>
+              </figure>
+            )}
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.75, ease: [0.2, 0.8, 0.2, 1] }}
-              className="relative min-h-[560px] lg:min-h-[660px]"
-            >
-              <div className="absolute inset-6 rounded-full border border-primary/25 bg-primary/5" />
-              <div className="absolute inset-16 rounded-full border border-aqua/30" />
-              <div className="absolute inset-28 rounded-full border border-accent/30" />
-              <div className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-energy-gradient p-1 shadow-glow">
-                <div className="grid h-full w-full place-items-center rounded-full bg-background/86 text-center backdrop-blur-xl">
-                  <div>
-                    <DumbbellMark />
-                    <div className="mt-4 font-display text-5xl font-extrabold tabular-nums text-primary">78%</div>
-                    <div className="text-xs font-extrabold uppercase tracking-widest text-muted-foreground">weekly goal</div>
-                  </div>
+          <div className="relative flex justify-center lg:justify-end lg:pr-6">
+            <PhonePreview />
+            <Card className="absolute bottom-3 left-0 hidden w-[280px] p-4 shadow-[0_24px_48px_-20px_rgb(0_0_0/0.7)] lg:block">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-8 w-8 place-items-center rounded-full bg-secondary text-xs font-bold">
+                  {coach.name.split(" ").map((part) => part[0]).join("")}
+                </div>
+                <div>
+                  <div className="text-sm font-bold">Week 9 feedback</div>
+                  <div className="text-xs text-subtle-foreground">from {coach.name.split(" ")[0]}, your coach</div>
                 </div>
               </div>
-
-              <HeroBubble className="left-0 top-20" icon={Flame} label="Calories" value="1,840" tone="primary" />
-              <HeroBubble className="right-2 top-6" icon={Sparkles} label="AI plan" value="Ready" tone="aqua" />
-              <HeroBubble className="bottom-24 left-8" icon={Trophy} label="Streak" value="47 days" tone="sun" />
-              <HeroBubble className="bottom-8 right-0" icon={Zap} label="Workout" value="55 min" tone="blaze" />
-
-              <div className="absolute left-1/2 top-10 h-8 w-8 -translate-x-1/2 rounded-full bg-primary shadow-glow" />
-              <div className="absolute bottom-36 right-24 h-5 w-5 rounded-full bg-aqua shadow-glow" />
-              <div className="absolute bottom-48 left-24 h-6 w-6 rounded-full bg-blaze shadow-brutal-blaze" />
-            </motion.div>
-          </div>
-
-          <div className="overflow-hidden border-y border-border/70 bg-card/50 py-4 backdrop-blur-xl">
-            <div className="flex whitespace-nowrap animate-marquee font-display text-2xl font-extrabold uppercase text-foreground md:text-4xl">
-              {Array.from({ length: 3 }).flatMap((_, round) =>
-                ticker.map((item) => (
-                  <span key={`${round}-${item}`} className="mx-6 inline-flex items-center gap-5">
-                    {item} <span className="h-3 w-3 rounded-full bg-primary" />
-                  </span>
-                )),
-              )}
-            </div>
+              <p className="mt-3 text-sm leading-normal text-muted-foreground">
+                Weight is down 0.6 kg. Sleep dipped under 6 hours twice, so we're moving Friday's session to Saturday morning.
+              </p>
+              <div className="mt-3 flex gap-2 font-mono text-xs">
+                <span className="rounded-full bg-secondary px-2.5 py-1">−0.6 kg</span>
+                <span className="rounded-full bg-secondary px-2.5 py-1">3/5 sessions</span>
+              </div>
+            </Card>
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 py-24">
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative mx-auto max-w-md lg:mx-0"
-            >
-              <div className="absolute -inset-5 rounded-full bg-energy-gradient opacity-70 blur-2xl" />
-              <img src={coach.avatar} className="relative aspect-square w-full rounded-full border border-border object-cover shadow-glow" alt={`${coach.name} coaching portrait`} />
-              <div className="sport-pill absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-2 px-5 py-3 text-xs font-extrabold uppercase tracking-wider">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary" /> Head coach
-              </div>
-            </motion.div>
+        <section aria-label="How coaching works" className="mx-auto max-w-7xl px-6 pb-24">
+          <ol className="grid gap-8 border-t border-border pt-7 sm:grid-cols-2 lg:grid-cols-4">
+            {process.map((step) => (
+              <li key={step.n}>
+                <span className="font-mono text-[13px] text-primary">{step.n}</span>
+                <h2 className="mt-2 text-[22px] font-semibold">{step.title}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{step.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <Kicker>Meet your coach</Kicker>
-              <h2 className="mt-4 max-w-3xl font-display text-4xl font-extrabold uppercase leading-tight md:text-6xl">
-                Less rigid dashboard. More athletic momentum.
-              </h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">{coach.bio}</p>
-              <div className="mt-7 flex flex-wrap gap-3">
+        <section className="border-y border-border bg-card/40">
+          <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-[320px_1fr] md:items-center">
+            <img src={coach.avatar} className="aspect-square w-full max-w-[320px] rounded-2xl object-cover" alt={`Portrait of ${coach.name}`} />
+            <div>
+              <SectionHeader eyebrow="Your coach" title={coach.name} />
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">{coach.bio}</p>
+              <ul className="mt-6 flex flex-wrap gap-2">
                 {["NASM CPT", "PN Level 1", "Former D1 athlete", "10+ years"].map((credential) => (
-                  <span key={credential} className="sport-pill px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+                  <li key={credential} className="rounded-full border border-input px-3.5 py-1.5 text-[13px] font-semibold text-muted-foreground">
                     {credential}
-                  </span>
+                  </li>
                 ))}
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="relative overflow-hidden bg-card/35 py-24">
-          <div className="absolute inset-x-0 top-10 h-32 speed-lines opacity-30" />
-          <div className="mx-auto max-w-7xl px-6">
-            <SectionHeader kicker="Protocol" title="Four rounded rounds. One fast rhythm." />
-            <div className="mt-12 grid gap-5 md:grid-cols-4">
-              {process.map((step, index) => (
-                <motion.div
-                  key={step.n}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="sport-card relative overflow-hidden p-6"
-                >
-                  <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10" />
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-brand-gradient font-display text-lg font-extrabold text-primary-foreground shadow-glow">
-                    {step.n}
-                  </div>
-                  <h3 className="mt-5 font-display text-2xl font-extrabold uppercase">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{step.desc}</p>
-                </motion.div>
-              ))}
+              </ul>
             </div>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-6 py-24">
-          <SectionHeader kicker="Arsenal" title="Tools that feel alive, not corporate." />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {services.map((service, index) => {
+          <SectionHeader eyebrow="Coaching" title="What's included" />
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => {
               const Icon = serviceIcons[service.icon as keyof typeof serviceIcons] ?? Target;
               return (
-                <motion.div
-                  key={service.title}
-                  initial={{ opacity: 0, y: 22 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: index * 0.06 }}
-                  whileHover={{ y: -8, scale: 1.025 }}
-                  className="sport-card group p-6"
-                >
-                  <div className="grid h-14 w-14 place-items-center rounded-full bg-primary/12 text-primary transition-all group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground">
-                    <Icon className="h-7 w-7" strokeWidth={2.7} />
+                <Card key={service.title} className="p-6">
+                  <div className="grid h-11 w-11 place-items-center rounded-full bg-secondary">
+                    <Icon className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="mt-6 font-display text-xl font-extrabold uppercase">{service.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{service.desc}</p>
-                </motion.div>
+                  <h3 className="mt-5 text-xl font-semibold">{service.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{service.desc}</p>
+                </Card>
               );
             })}
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-6 py-24">
+        <section className="mx-auto max-w-7xl px-6 pb-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
-            <SectionHeader kicker="Results" title="Real athletes. Real lift-off." />
-            <Button asChild variant="ghost" className="hidden font-extrabold uppercase tracking-wider md:inline-flex">
-              <Link to="/transformations">View all <ArrowRight className="ml-1 h-4 w-4" strokeWidth={3} /></Link>
-            </Button>
+            <SectionHeader eyebrow="Results" title="Client results" />
+            <Link to="/transformations" className="inline-flex items-center gap-1.5 text-[15px] font-bold text-primary hover:underline">
+              View all <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {transformations.slice(0, 3).map((result, index) => (
-              <motion.div
-                key={result.id}
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                whileHover={{ y: -8, scale: 1.015 }}
-                className="sport-card group overflow-hidden"
-              >
-                <div className="relative grid grid-cols-2 gap-2 p-3">
-                  <img src={result.before} alt={`${result.name} before transformation`} className="aspect-[3/4] rounded-[1.5rem] object-cover opacity-75 transition-all group-hover:opacity-100" loading="lazy" />
-                  <img src={result.after} alt={`${result.name} after transformation`} className="aspect-[3/4] rounded-[1.5rem] object-cover" loading="lazy" />
-                  <span className="sport-pill absolute left-5 top-5 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider">before</span>
-                  <span className="absolute right-5 top-5 rounded-full bg-brand-gradient px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-primary-foreground shadow-glow">after</span>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {transformations.slice(0, 3).map((result) => (
+              <Card key={result.id} className="overflow-hidden">
+                <div className="grid grid-cols-2 gap-1.5 p-2">
+                  <figure className="relative">
+                    <img src={result.before} alt={`${result.name} before`} className="aspect-[3/4] w-full rounded-md object-cover" loading="lazy" />
+                    <figcaption className="absolute left-2 top-2 rounded-full bg-background/85 px-2.5 py-1 text-xs font-semibold">Before</figcaption>
+                  </figure>
+                  <figure className="relative">
+                    <img src={result.after} alt={`${result.name} after`} className="aspect-[3/4] w-full rounded-md object-cover" loading="lazy" />
+                    <figcaption className="absolute left-2 top-2 rounded-full bg-primary px-2.5 py-1 text-xs font-bold text-primary-foreground">After</figcaption>
+                  </figure>
                 </div>
-                <div className="p-6 pt-3">
+                <div className="px-5 pb-6 pt-3">
                   <div className="flex items-center justify-between gap-3">
-                    <div className="font-display text-xl font-extrabold uppercase">{result.name}</div>
-                    <span className="rounded-full bg-primary/12 px-3 py-1 text-xs font-extrabold text-primary">{result.lost}</span>
+                    <h3 className="text-lg font-semibold">{result.name}</h3>
+                    <span className="font-mono text-sm text-primary">{result.lost}</span>
                   </div>
-                  <div className="mt-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{result.weeks} weeks · {result.goal}</div>
-                  <p className="mt-4 text-sm leading-6 text-muted-foreground">“{result.quote}”</p>
+                  <div className="mt-1 text-[13px] text-subtle-foreground">{result.goal} · {result.weeks} weeks</div>
+                  <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">“{result.quote}”</p>
                 </div>
-              </motion.div>
+              </Card>
             ))}
           </div>
         </section>
 
-        <section className="bg-card/35 py-24">
-          <div className="mx-auto max-w-7xl px-6">
-            <SectionHeader kicker="Athletes speak" title="Clients feel the energy." />
-            <div className="mt-12 grid gap-5 md:grid-cols-3">
-              {testimonials.map((quote, index) => (
-                <motion.div
-                  key={quote.name}
-                  initial={{ opacity: 0, y: 22 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: index * 0.08 }}
-                  className="sport-card p-6"
-                >
-                  <div className="flex gap-1 text-primary">
-                    {[1, 2, 3, 4, 5].map((star) => <Star key={star} className="h-4 w-4 fill-primary" />)}
+        <section className="border-y border-border bg-card/40">
+          <div className="mx-auto max-w-7xl px-6 py-24">
+            <SectionHeader eyebrow="Testimonials" title="What clients say" />
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              {testimonials.map((quote) => (
+                <figure key={quote.name} className="rounded-lg border border-border bg-background p-6">
+                  <div className="flex gap-0.5 text-primary" aria-label="5 out of 5 stars">
+                    {[1, 2, 3, 4, 5].map((star) => <Star key={star} className="h-4 w-4 fill-primary" aria-hidden="true" />)}
                   </div>
-                  <p className="mt-5 text-sm leading-7">“{quote.quote}”</p>
-                  <div className="mt-6 flex items-center gap-3">
-                    <Avatar className="h-11 w-11 border border-border">
-                      <AvatarImage src={quote.avatar} />
-                      <AvatarFallback>U</AvatarFallback>
+                  <blockquote className="mt-4 text-[15px] leading-relaxed">“{quote.quote}”</blockquote>
+                  <figcaption className="mt-6 flex items-center gap-3">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={quote.avatar} alt="" />
+                      <AvatarFallback>{quote.name[0]}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-display text-sm font-extrabold uppercase">{quote.name}</div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{quote.role}</div>
+                      <div className="text-sm font-semibold">{quote.name}</div>
+                      <div className="text-[13px] text-subtle-foreground">{quote.role}</div>
                     </div>
-                  </div>
-                </motion.div>
+                  </figcaption>
+                </figure>
               ))}
             </div>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-6 py-24">
-          <SectionHeader kicker="Pricing" title="Pick your training lane." />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {pricing.map((plan, index) => (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 26 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                whileHover={{ y: -8 }}
-                className={`sport-card relative overflow-hidden p-8 ${plan.featured ? "border-primary/70 shadow-glow" : ""}`}
-              >
+          <SectionHeader eyebrow="Pricing" title="Plans" />
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {pricing.map((plan) => (
+              <Card key={plan.name} className={plan.featured ? "relative border-primary p-8" : "relative p-8"}>
                 {plan.featured && (
-                  <span className="absolute right-5 top-5 rounded-full bg-brand-gradient px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-primary-foreground shadow-glow">
-                    Most popular
-                  </span>
+                  <span className="absolute right-6 top-6 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">Most popular</span>
                 )}
-                <h3 className="font-display text-2xl font-extrabold uppercase">{plan.name}</h3>
-                <p className="mt-2 max-w-xs text-sm leading-6 text-muted-foreground">{plan.desc}</p>
-                <div className="mt-7 flex items-end gap-1">
-                  <span className="font-display text-6xl font-extrabold tabular-nums">${plan.price}</span>
-                  <span className="mb-2 text-xs font-extrabold uppercase tracking-wider text-muted-foreground">{plan.period}</span>
+                <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                <p className="mt-2 max-w-xs text-[15px] text-muted-foreground">{plan.desc}</p>
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="font-display text-5xl font-bold tabular-nums">${plan.price}</span>
+                  <span className="text-sm text-subtle-foreground">{plan.period}</span>
                 </div>
-                <Button asChild className="mt-7 h-12 w-full uppercase tracking-wider" variant={plan.featured ? "default" : "outline"}>
-                  <Link to="/apply">{plan.cta} <ArrowRight className="ml-1 h-4 w-4" strokeWidth={3} /></Link>
+                <Button asChild className="mt-6 h-11 w-full" variant={plan.featured ? "default" : "outline"}>
+                  <Link to="/apply">{plan.cta}</Link>
                 </Button>
-                <ul className="mt-7 space-y-3 text-sm">
+                <ul className="mt-7 space-y-3 text-[15px]">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={3} />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2.6} />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </Card>
             ))}
           </div>
         </section>
 
-        <section className="mx-auto max-w-4xl px-6 py-24">
-          <SectionHeader kicker="FAQ" title="Quick answers." center />
-          <div className="mt-10 space-y-3">
+        <section className="mx-auto max-w-3xl px-6 pb-24">
+          <SectionHeader eyebrow="FAQ" title="Questions" />
+          <div className="mt-8 divide-y divide-border border-y border-border">
             {faqs.map((faq) => (
-              <details key={faq.q} className="sport-card group p-5 open:border-primary/50">
-                <summary className="cursor-pointer list-none font-display text-lg font-extrabold uppercase marker:hidden">
-                  <span className="inline-flex w-full items-center justify-between gap-4">
-                    {faq.q}
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/12 text-primary transition group-open:rotate-45">+</span>
-                  </span>
+              <details key={faq.q} className="group py-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold marker:hidden">
+                  {faq.q}
+                  <Plus className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-open:rotate-45" />
                 </summary>
-                <p className="mt-4 text-sm leading-7 text-muted-foreground">{faq.a}</p>
+                <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{faq.a}</p>
               </details>
             ))}
           </div>
         </section>
 
-        <section className="relative overflow-hidden py-24">
-          <div className="absolute inset-x-0 top-1/2 h-48 -translate-y-1/2 speed-lines opacity-30" />
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="relative overflow-hidden rounded-[3rem] bg-energy-gradient p-1 shadow-glow">
-              <div className="relative overflow-hidden rounded-[2.8rem] bg-background/82 px-6 py-16 text-center backdrop-blur-xl md:px-16 md:py-20">
-                <div className="absolute -left-20 -top-20 h-56 w-56 rounded-full bg-primary/20 blur-2xl" />
-                <div className="absolute -bottom-24 right-8 h-72 w-72 rounded-full bg-aqua/20 blur-2xl" />
-                <h2 className="relative mx-auto max-w-4xl font-display text-4xl font-extrabold uppercase leading-tight md:text-7xl">
-                  Ready to make coaching feel like a win streak?
-                </h2>
-                <p className="relative mx-auto mt-5 max-w-2xl text-sm font-bold uppercase tracking-wider text-muted-foreground">
-                  Applications reviewed within 24 hours · Limited coaching lanes open
-                </p>
-                <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-                  <Button asChild size="lg" className="h-14 px-8 uppercase tracking-wider">
-                    <Link to="/apply">Apply now <ArrowRight className="ml-1 h-4 w-4" strokeWidth={3} /></Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="h-14 px-8 uppercase tracking-wider">
-                    <Link to="/contact">Talk to us</Link>
-                  </Button>
-                </div>
-              </div>
+        <section className="mx-auto max-w-7xl px-6 pb-24">
+          <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center md:px-16">
+            <h2 className="mx-auto max-w-2xl text-4xl font-bold tracking-tight md:text-5xl">Ready to start?</h2>
+            <p className="mx-auto mt-4 max-w-xl text-[17px] text-muted-foreground">
+              Applications are reviewed within 24 hours, and coaching spots are limited.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button asChild size="lg" className="h-[54px] px-7">
+                <Link to="/apply">Apply for coaching <ArrowRight strokeWidth={2.6} /></Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-[54px] px-6">
+                <Link to="/contact">Ask a question</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -412,52 +269,75 @@ function Home() {
   );
 }
 
-function HeroBubble({ className, icon: Icon, label, value, tone }: { className: string; icon: typeof Flame; label: string; value: string; tone: "primary" | "aqua" | "sun" | "blaze" }) {
-  const toneClass = {
-    primary: "text-primary bg-primary/12",
-    aqua: "text-aqua bg-aqua/12",
-    sun: "text-sun bg-sun/12",
-    blaze: "text-blaze bg-blaze/12",
-  }[tone];
-
+function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div className={`sport-card absolute min-w-44 p-4 ${className}`}>
-      <div className="flex items-center gap-3">
-        <div className={`grid h-11 w-11 place-items-center rounded-full ${toneClass}`}>
-          <Icon className="h-5 w-5" strokeWidth={2.8} />
+    <div>
+      <div className="flex items-center gap-2.5 text-[15px] font-semibold text-muted-foreground">
+        <span className="h-2 w-2 rounded-full bg-primary" />
+        {eyebrow}
+      </div>
+      <h2 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight md:text-5xl">{title}</h2>
+    </div>
+  );
+}
+
+const previewTabs = [
+  { icon: HomeIcon, label: "Today" },
+  { icon: Dumbbell, label: "Workout" },
+  { icon: Utensils, label: "Nutrition" },
+  { icon: LineChart, label: "Progress" },
+  { icon: MessageSquare, label: "Coach" },
+];
+
+// A static illustration of the client app's Today screen for the hero.
+function PhonePreview() {
+  return (
+    <div role="img" aria-label="The FitnessOS client app, showing a due check-in, a message from the coach and weekly progress" className="w-[300px] shrink-0 rounded-[40px] border border-input bg-secondary p-2">
+      <div aria-hidden="true" className="flex h-[620px] flex-col overflow-hidden rounded-[32px] bg-background">
+        <div className="flex flex-1 flex-col gap-3 px-4 pt-6">
+          <div>
+            <div className="font-mono text-[10px] uppercase text-subtle-foreground">Thu 17 Sep</div>
+            <div className="mt-1 font-display text-[22px] font-bold tracking-tight">Good morning, Sarah</div>
+          </div>
+          <PreviewCard label="Weekly check-in">
+            <div className="font-display text-lg font-bold leading-tight">Your check-in is due</div>
+            <div className="mt-1 text-[11px] text-muted-foreground">Takes about 3 minutes.</div>
+            <div className="mt-3 flex h-10 items-center justify-center gap-2 rounded-full bg-primary text-[13px] font-bold text-primary-foreground">
+              <ClipboardCheck className="h-4 w-4" /> Start check-in
+            </div>
+          </PreviewCard>
+          <PreviewCard label="From your coach">
+            <p className="text-[12px] leading-normal">Great depth on Tuesday's squats. If the first set feels easy today, add 2.5 kg.</p>
+          </PreviewCard>
+          <PreviewCard label="Progress">
+            <div className="grid grid-cols-3 gap-2">
+              {[["Weight", "71.8", "kg"], ["Sleep", "7.5", "h"], ["Energy", "8", "/10"]].map(([label, value, unit]) => (
+                <div key={label}>
+                  <div className="text-[10px] font-semibold text-subtle-foreground">{label}</div>
+                  <div><span className="font-display text-xl font-bold">{value}</span><span className="ml-0.5 text-[10px] text-muted-foreground">{unit}</span></div>
+                </div>
+              ))}
+            </div>
+          </PreviewCard>
         </div>
-        <div>
-          <div className="text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground">{label}</div>
-          <div className="font-display text-xl font-extrabold uppercase">{value}</div>
+        <div className="grid grid-cols-5 border-t border-sidebar-border bg-sidebar px-1 pb-4 pt-2">
+          {previewTabs.map(({ icon: Icon, label }, index) => (
+            <div key={label} className={index === 0 ? "flex flex-col items-center gap-1 text-[9px] font-bold text-foreground" : "flex flex-col items-center gap-1 text-[9px] font-semibold text-subtle-foreground"}>
+              <Icon className={index === 0 ? "h-[18px] w-[18px] text-primary" : "h-[18px] w-[18px]"} />
+              {label}
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-function DumbbellMark() {
+function PreviewCard({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-brand-gradient text-primary-foreground shadow-glow">
-      <Zap className="h-7 w-7" strokeWidth={3} />
-    </div>
-  );
-}
-
-function Kicker({ children }: { children: ReactNode }) {
-  return (
-    <div className="sport-pill inline-flex items-center gap-2 px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-primary">
-      <span className="h-2 w-2 rounded-full bg-primary" />{children}
-    </div>
-  );
-}
-
-function SectionHeader({ kicker, title, center }: { kicker: string; title: string; center?: boolean }) {
-  return (
-    <div className={center ? "text-center" : ""}>
-      <div className={`sport-pill inline-flex items-center gap-2 px-4 py-2 text-[11px] font-extrabold uppercase tracking-wider text-primary ${center ? "justify-center" : ""}`}>
-        <span className="h-2 w-2 rounded-full bg-primary" />{kicker}
-      </div>
-      <h2 className="mt-5 max-w-3xl font-display text-4xl font-extrabold uppercase leading-tight md:text-6xl">{title}</h2>
+    <div className="rounded-xl border border-border bg-card p-3.5">
+      <div className="mb-2 text-[11px] font-semibold text-muted-foreground">{label}</div>
+      {children}
     </div>
   );
 }

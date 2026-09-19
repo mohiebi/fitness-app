@@ -14,13 +14,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@fitnessos/com
 import { Label } from "@fitnessos/components/ui/label";
 import { getJson, postJson } from "@fitnessos/lib/api";
 
-export const Route = createFileRoute("/dashboard/clients/")({ component: ClientsList });
+export const Route = createFileRoute("/dashboard/clients/")({
+  component: ClientsList,
+  validateSearch: (search: Record<string, unknown>): { add?: boolean } => ({
+    add: search.add === true || search.add === "true" || undefined,
+  }),
+});
 
 type Client = { id: string; name: string; email: string; avatar: string | null; goal: string; status: string; package: string; progress: number; lastCheckin: string; notes: string };
 
 function ClientsList() {
   const [q, setQ] = useState("");
-  const [open, setOpen] = useState(false);
+  const { add } = Route.useSearch();
+  const [open, setOpen] = useState(Boolean(add));
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [saving, setSaving] = useState(false);
@@ -52,7 +58,7 @@ function ClientsList() {
       <PageHeader
         title="Clients"
         description={`${clients.length} clients in your account.`}
-        actions={<Button className="rounded-full bg-brand-gradient text-primary-foreground" onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Add client</Button>}
+        actions={<Button onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Add client</Button>}
       />
 
       <Dialog open={open} onOpenChange={setOpen}>

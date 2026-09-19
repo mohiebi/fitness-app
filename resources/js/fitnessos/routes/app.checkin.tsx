@@ -80,8 +80,8 @@ function Checkin() {
           <Textarea rows={3} placeholder="Optional — energy, workouts, meals, life…" value={form.adjustments} onChange={e => setForm({ ...form, adjustments: e.target.value })} />
           {result && <p role="status" className="mt-4 text-sm text-primary">{result}</p>}
           <div className="mt-4 flex gap-2">
-            <Button variant="outline" className="rounded-full" onClick={() => { localStorage.setItem('fitnessos-checkin-draft', JSON.stringify(form)); setResult('Draft saved on this device.'); }}>Save draft</Button>
-            <Button disabled={busy} className="ml-auto rounded-full bg-brand-gradient text-primary-foreground" onClick={submit}>{busy ? 'Submitting…' : 'Submit check-in'}</Button>
+            <Button variant="outline" onClick={() => { localStorage.setItem('fitnessos-checkin-draft', JSON.stringify(form)); setResult('Draft saved on this device.'); }}>Save draft</Button>
+            <Button disabled={busy} className="ml-auto" onClick={submit}>{busy ? 'Submitting…' : 'Submit check-in'}</Button>
           </div>
         </Card>
       </div>

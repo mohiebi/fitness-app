@@ -17,13 +17,13 @@ function Workouts() {
     <div>
       <PageHeader title="Workout builder"
         description={`Program: Sarah Chen — Fat Loss · Week ${workoutWeek.week} of 16`}
-        actions={<><Button variant="outline" className="rounded-full"><Copy className="mr-2 h-4 w-4" />Duplicate week</Button><Button className="rounded-full bg-brand-gradient text-primary-foreground">Save program</Button></>} />
+        actions={<><Button variant="outline"><Copy className="mr-2 h-4 w-4" />Duplicate week</Button><Button>Save program</Button></>} />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div>
           <div className="mb-4 flex flex-wrap gap-2">
             {workoutWeek.days.map((d, i) => (
-              <Button key={d.name} size="sm" variant={i === dayIdx ? "default" : "outline"} className="rounded-full" onClick={() => setDayIdx(i)}>{d.name.split(" — ")[0]}</Button>
+              <Button key={d.name} size="sm" variant={i === dayIdx ? "default" : "outline"} onClick={() => setDayIdx(i)}>{d.name.split(" — ")[0]}</Button>
             ))}
           </div>
 
@@ -64,7 +64,7 @@ function Workouts() {
           </div>
           <div className="mt-3 space-y-1">
             {exercises.map(ex => (
-              <div key={ex.name} className="flex cursor-pointer items-center justify-between rounded-lg p-2 text-sm hover:bg-accent/10">
+              <div key={ex.name} className="flex cursor-pointer items-center justify-between rounded-lg p-2 text-sm hover:bg-secondary">
                 <div>
                   <div className="font-medium">{ex.name}</div>
                   <div className="text-xs text-muted-foreground">{ex.muscle} · {ex.equipment}</div>
@@ -82,7 +82,7 @@ function Workouts() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg bg-secondary/50 p-2">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
+      <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-0.5 text-sm font-medium">{value}</div>
     </div>
   );

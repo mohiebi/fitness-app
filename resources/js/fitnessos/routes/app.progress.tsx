@@ -34,5 +34,5 @@ function Progress() {
 }
 
 function Summary({ label, value }: { label: string; value: string }) {
-    return <Card className="border-border/60 bg-card p-6 shadow-card-premium"><div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div><div className="mt-2 text-3xl font-semibold text-gradient">{value}</div></Card>;
+    return <Card className="border-border/60 bg-card p-6 shadow-card-premium"><div className="text-sm font-medium text-muted-foreground">{label}</div><div className="mt-2 font-display text-3xl font-bold tabular-nums">{value}</div></Card>;
 }

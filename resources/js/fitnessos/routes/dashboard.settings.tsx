@@ -34,7 +34,7 @@ function Settings() {
               <Field label="Support email" v="hello@riveracoaching.com" />
               <Field label="Timezone" v="America/Los_Angeles" />
             </div>
-            <Button className="mt-6 rounded-full bg-brand-gradient text-primary-foreground">Save changes</Button>
+            <Button className="mt-6">Save changes</Button>
           </Card>
         </TabsContent>
 
@@ -99,17 +99,17 @@ function Settings() {
         </TabsContent>
 
         <TabsContent value="subscription">
-          <Card className="border-primary/30 bg-hero-gradient p-8 shadow-glow">
+          <Card className="border-primary/30 bg-card p-8">
             <Badge className="bg-primary/15 text-primary">Pro plan</Badge>
             <h3 className="mt-3 text-2xl font-semibold">$199/mo</h3>
             <p className="mt-2 text-sm text-muted-foreground">75 clients, AI Assistant, Content Studio and priority support.</p>
-            <div className="mt-6 flex gap-2"><Button variant="outline" className="rounded-full">Manage plan</Button><Button className="rounded-full bg-brand-gradient text-primary-foreground">Upgrade to Elite</Button></div>
+            <div className="mt-6 flex gap-2"><Button variant="outline">Manage plan</Button><Button>Upgrade to Elite</Button></div>
           </Card>
         </TabsContent>
 
         <TabsContent value="team">
           <Card className="border-border/60 bg-card p-6 shadow-card-premium">
-            <div className="mb-4 flex items-center justify-between"><h3 className="font-semibold">Team members</h3><Button size="sm" className="rounded-full bg-brand-gradient text-primary-foreground">Invite</Button></div>
+            <div className="mb-4 flex items-center justify-between"><h3 className="font-semibold">Team members</h3><Button size="sm">Invite</Button></div>
             {[
               { name: coach.name, role: "Owner", img: coach.avatar },
               { name: "Emma Riley", role: "Coach", img: "https://i.pravatar.cc/80?img=45" },

@@ -19,9 +19,9 @@ function About() {
     <div className="min-h-screen bg-background">
       <PublicNav />
       <section className="mx-auto max-w-4xl px-6 py-24">
-        <div className="text-xs uppercase tracking-widest text-primary">About</div>
+        <div className="text-sm font-semibold text-primary">About</div>
         <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">
-          Coaches deserve <span className="italic text-gradient" style={{ fontFamily: "var(--font-display)" }}>better software.</span>
+          Coaches deserve better software.
         </h1>
         <p className="mt-6 text-lg text-muted-foreground">
           FitnessOS was born inside a real coaching business. After years of gluing together spreadsheets, Notion pages,
@@ -55,8 +55,8 @@ function About() {
           <h3 className="text-2xl font-semibold">Want to see the platform?</h3>
           <p className="mt-2 text-muted-foreground">Tour the coach dashboard and client app.</p>
           <div className="mt-6 flex justify-center gap-3">
-            <Button asChild className="rounded-full bg-brand-gradient text-primary-foreground"><Link to="/dashboard">Open dashboard <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
-            <Button asChild variant="outline" className="rounded-full"><Link to="/apply">Apply for coaching</Link></Button>
+            <Button asChild><Link to="/dashboard">Open dashboard <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>
+            <Button asChild variant="outline"><Link to="/apply">Apply for coaching</Link></Button>
           </div>
         </div>
       </section>

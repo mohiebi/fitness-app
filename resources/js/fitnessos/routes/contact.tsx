@@ -41,7 +41,7 @@ function Contact() {
       <section className="mx-auto max-w-6xl px-6 py-24">
         <div className="grid gap-12 md:grid-cols-2">
           <div>
-            <div className="text-xs uppercase tracking-widest text-primary">Contact</div>
+            <div className="text-sm font-semibold text-primary">Contact</div>
             <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Say hi.</h1>
             <p className="mt-4 max-w-md text-muted-foreground">Questions about coaching or the platform? We reply within one business day.</p>
 
@@ -70,7 +70,7 @@ function Contact() {
               <div><Label className="mb-2 block">Email</Label><Input required type="email" placeholder="you@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
               <div><Label className="mb-2 block">Message</Label><Textarea required rows={5} placeholder="How can we help?" value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} /></div>
               {result && <p role="status" className="text-sm text-primary">{result}</p>}
-              <Button type="submit" disabled={busy} className="w-full rounded-full bg-brand-gradient text-primary-foreground">{busy ? 'Sending…' : 'Send message'}</Button>
+              <Button type="submit" disabled={busy} className="w-full">{busy ? 'Sending…' : 'Send message'}</Button>
             </form>
           </Card>
         </div>

@@ -44,7 +44,7 @@ function Leads() {
   return (
     <div>
       <PageHeader title="Leads" description="Track applications and convert prospects into clients."
-        actions={<Button asChild className="rounded-full bg-brand-gradient text-primary-foreground"><a href="/apply"><Plus className="mr-2 h-4 w-4" />New application</a></Button>} />
+        actions={<Button asChild><a href="/apply"><Plus className="mr-2 h-4 w-4" />New application</a></Button>} />
 
       <div className="grid gap-4 md:grid-cols-4">
         <StatCard label="New this week" value={newThisWeek} icon={UserPlus} />

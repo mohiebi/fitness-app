@@ -8,13 +8,19 @@ import { Input } from '@fitnessos/components/ui/input';
 import { Avatar, AvatarFallback } from '@fitnessos/components/ui/avatar';
 import { getJson, postJson } from '@fitnessos/lib/api';
 
-export const Route = createFileRoute('/dashboard/messages')({ component: Messages });
+export const Route = createFileRoute('/dashboard/messages')({
+    component: Messages,
+    validateSearch: (search: Record<string, unknown>): { client?: string } => ({
+        client: search.client ? String(search.client) : undefined,
+    }),
+});
 
 type Conversation = { id: string; name: string; last: string; time: string; unread: number };
 type Message = { id: number; from: 'client' | 'coach'; text: string; time: string };
 
 function Messages() {
-    const [active, setActive] = useState<string | null>(null);
+    const { client } = Route.useSearch();
+    const [active, setActive] = useState<string | null>(client ?? null);
     const [search, setSearch] = useState('');
     const [draft, setDraft] = useState('');
     const [sending, setSending] = useState(false);
@@ -59,7 +65,7 @@ function Messages() {
                 </div>
                 <div className="flex-1 overflow-y-auto">
                     {conversations.filter((conversation) => conversation.name.toLowerCase().includes(search.toLowerCase())).map((conversation) => (
-                        <button key={conversation.id} onClick={() => setActive(conversation.id)} className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition ${selected === conversation.id ? 'bg-accent/20' : 'hover:bg-accent/10'}`}>
+                        <button key={conversation.id} onClick={() => setActive(conversation.id)} className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition ${selected === conversation.id ? 'bg-secondary' : 'hover:bg-secondary'}`}>
                             <Avatar className="h-10 w-10"><AvatarFallback>{conversation.name[0]}</AvatarFallback></Avatar>
                             <div className="min-w-0 flex-1">
                                 <div className="flex justify-between gap-2"><span className="truncate text-sm font-medium">{conversation.name}</span><span className="shrink-0 text-[10px] text-muted-foreground">{conversation.time}</span></div>
@@ -92,7 +98,7 @@ function Messages() {
                             {error && <p role="alert" className="mb-2 text-sm text-destructive">{error}</p>}
                             <div className="flex gap-2">
                                 <Input placeholder="Type a message…" value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void send(); }} />
-                                <Button size="icon" disabled={sending || !draft.trim()} onClick={send} className="bg-brand-gradient text-primary-foreground"><Send className="h-4 w-4" /></Button>
+                                <Button size="icon" disabled={sending || !draft.trim()} onClick={send}><Send className="h-4 w-4" /></Button>
                             </div>
                         </div>
                     </>

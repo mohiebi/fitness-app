@@ -19,7 +19,7 @@ function Payments() {
   return (
     <div>
       <PageHeader title="Payments" description="Track revenue, subscriptions and invoices."
-        actions={<Button variant="outline" className="rounded-full"><Download className="mr-2 h-4 w-4" />Export CSV</Button>} />
+        actions={<Button variant="outline"><Download className="mr-2 h-4 w-4" />Export CSV</Button>} />
 
       <div className="grid gap-4 md:grid-cols-4">
         <StatCard label="MRR" value="$42,180" delta="+18%" trend="up" icon={DollarSign} />

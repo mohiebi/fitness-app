@@ -42,7 +42,7 @@ function ClientDetail() {
                     <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{client.name}</h1>
                     <p className="mt-1 text-sm text-muted-foreground">{client.email}</p>
                 </div>
-                <Button asChild variant="outline" className="ml-auto rounded-full"><Link to="/dashboard/messages"><MessageSquare className="mr-2 h-4 w-4" />Messages</Link></Button>
+                <Button asChild variant="outline" className="ml-auto"><Link to="/dashboard/messages"><MessageSquare className="mr-2 h-4 w-4" />Messages</Link></Button>
             </div>
 
             <Tabs defaultValue="overview">
@@ -74,5 +74,5 @@ function ClientDetail() {
 }
 
 function Summary({ icon: Icon, label, value }: { icon: typeof User; label: string; value: string }) {
-    return <Card className="border-border/60 bg-card p-5 shadow-card-premium"><Icon className="h-5 w-5 text-primary" /><div className="mt-3 text-xs uppercase text-muted-foreground">{label}</div><div className="mt-1 text-2xl font-semibold">{value}</div></Card>;
+    return <Card className="border-border/60 bg-card p-5 shadow-card-premium"><Icon className="h-5 w-5 text-primary" /><div className="mt-3 text-sm font-medium text-muted-foreground">{label}</div><div className="mt-1 text-2xl font-semibold">{value}</div></Card>;
 }

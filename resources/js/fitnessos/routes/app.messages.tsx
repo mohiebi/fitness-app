@@ -44,7 +44,7 @@ function ClientMessages() {
         <div className="flex-1 space-y-3 overflow-y-auto p-6">
           {messages.map((m, i) => (
             <div key={i} className={`flex ${m.from === "client" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-md rounded-[1.6rem] px-4 py-2.5 text-sm shadow-card-premium ${m.from === "client" ? "bg-brand-gradient text-primary-foreground" : "bg-secondary"}`}>
+              <div className={`max-w-md rounded-2xl px-4 py-2.5 text-sm ${m.from === "client" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>
                 {m.text}<div className="mt-1 text-[10px] opacity-70">{m.time}</div>
               </div>
             </div>
@@ -55,7 +55,7 @@ function ClientMessages() {
           {error && <p role="alert" className="mb-2 text-sm text-destructive">{error}</p>}
           <div className="flex items-end gap-2">
             <Input placeholder="Message your coach…" value={draft} onChange={e => setDraft(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void send(); }} className="flex-1 rounded-full bg-background/70" />
-            <Button size="icon" disabled={busy || !draft.trim()} onClick={send} className="bg-brand-gradient text-primary-foreground"><Send className="h-4 w-4" /></Button>
+            <Button size="icon" disabled={busy || !draft.trim()} onClick={send}><Send className="h-4 w-4" /></Button>
           </div>
         </div>
       </Card>

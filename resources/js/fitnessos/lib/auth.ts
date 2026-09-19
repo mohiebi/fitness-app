@@ -14,12 +14,14 @@ export function currentEmail() {
     )?.content ?? null;
 }
 
-export function requireRole(role: 'coach' | 'client') {
-    const authenticated = document.querySelector<HTMLMetaElement>(
+export function isAuthenticated() {
+    return document.querySelector<HTMLMetaElement>(
         'meta[name="fitnessos-authenticated"]',
     )?.content === '1';
+}
 
-    if (!authenticated) {
+export function requireRole(role: 'coach' | 'client') {
+    if (!isAuthenticated()) {
         throw redirect({ href: '/login', reloadDocument: true });
     }
 
