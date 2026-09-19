@@ -127,14 +127,14 @@ export function AppShell({ variant }: { variant: "coach" | "client" }) {
           "relative flex h-9 items-center gap-3 rounded-md px-3 text-sm transition-colors",
           collapsed && "lg:justify-center lg:px-0",
           active
-            ? "bg-sidebar-accent font-semibold text-sidebar-accent-foreground"
-            : "font-medium text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+            ? "bg-brand-gradient font-extrabold text-primary-foreground shadow-glow"
+            : "font-medium text-muted-foreground hover:translate-x-0.5 hover:bg-sidebar-accent/60 hover:text-foreground",
         )}
       >
-        <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary")} />
+        <Icon className={cn("h-4 w-4 shrink-0", active && "text-primary-foreground")} strokeWidth={active ? 2.6 : 2} />
         <span className={cn("flex-1 truncate", collapsed && "lg:hidden")}>{item.label}</span>
         {!!item.count && (
-          <span className={cn("grid h-5 min-w-5 place-items-center rounded-full bg-input px-1.5 text-[11px] font-bold text-foreground", collapsed && "lg:absolute lg:right-1 lg:top-0.5 lg:h-2 lg:min-w-2 lg:bg-primary lg:p-0 lg:text-[0px]")}>
+          <span className={cn("grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-bold", active ? "bg-primary-foreground/20 text-primary-foreground" : "bg-input text-foreground", collapsed && "lg:absolute lg:right-1 lg:top-0.5 lg:h-2 lg:min-w-2 lg:bg-primary lg:p-0 lg:text-[0px]")}>
             {item.count}
           </span>
         )}
@@ -154,7 +154,7 @@ export function AppShell({ variant }: { variant: "coach" | "client" }) {
       >
         <Link to={variant === "coach" ? "/dashboard" : "/app"} className={cn("flex items-center gap-2.5 px-2", collapsed && "lg:justify-center lg:px-0")}>
           <LogoMark />
-          <span className={cn("font-display text-[19px] font-bold tracking-tight", collapsed && "lg:hidden")}>FitnessOS</span>
+          <span className={cn("font-display text-[19px] font-extrabold uppercase", collapsed && "lg:hidden")}>Fitness<span className="text-volt">OS</span></span>
         </Link>
 
         <div className={cn("relative", collapsed && "lg:hidden")}>
@@ -226,7 +226,7 @@ export function AppShell({ variant }: { variant: "coach" | "client" }) {
             <Menu className="h-5 w-5" />
           </button>
           <LogoMark className="h-7 w-7 rounded-lg" />
-          <span className="font-display text-lg font-bold tracking-tight">FitnessOS</span>
+          <span className="font-display text-lg font-extrabold uppercase">Fitness<span className="text-volt">OS</span></span>
         </header>
 
         <main className={cn("flex-1 px-4 py-6 md:px-10 md:py-9", variant === "client" && "pb-24 lg:pb-9")}>
@@ -266,8 +266,8 @@ export function PageHeader({ title, description, actions, eyebrow }: { title: st
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div className="min-w-0">
-        {eyebrow && <div className="mb-1.5 font-mono text-xs uppercase tracking-wide text-subtle-foreground">{eyebrow}</div>}
-        <h1 className="font-display text-3xl font-bold tracking-tight md:text-[38px] md:leading-[1.1]">{title}</h1>
+        {eyebrow && <div className="mb-2 font-mono text-xs uppercase tracking-wider text-volt">{eyebrow}</div>}
+        <h1 className="font-display text-3xl font-extrabold uppercase md:text-[38px] md:leading-[1.05]">{title}</h1>
         {description && <p className="mt-1.5 text-[15px] text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

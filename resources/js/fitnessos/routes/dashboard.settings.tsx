@@ -99,7 +99,7 @@ function Settings() {
         </TabsContent>
 
         <TabsContent value="subscription">
-          <Card className="border-primary/30 bg-card p-8">
+          <Card className="border-primary/30 bg-hero-gradient p-8 shadow-glow">
             <Badge className="bg-primary/15 text-primary">Pro plan</Badge>
             <h3 className="mt-3 text-2xl font-semibold">$199/mo</h3>
             <p className="mt-2 text-sm text-muted-foreground">75 clients, AI Assistant, Content Studio and priority support.</p>

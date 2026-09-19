@@ -16,7 +16,7 @@ function Workout() {
     <div>
       <PageHeader title={day.name} description="Rest ~2 min between sets. Log honestly." />
 
-      <Card className="mb-6 border-primary/30 bg-card p-6">
+      <Card className="mb-6 border-primary/30 bg-hero-gradient p-6 shadow-glow">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/20"><Timer className="h-5 w-5 text-primary" /></div>

@@ -35,13 +35,13 @@ function Today() {
             <PageHeader eyebrow={todayLabel()} title={`${greeting()}, ${firstName}`} />
 
             <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
-                <Card className="flex flex-col gap-4 p-5">
+                <Card className="flex flex-col gap-4 border-primary/30 bg-hero-gradient p-5 shadow-glow">
                     <div className="flex items-center justify-between gap-3">
                         <span className="text-sm font-semibold text-muted-foreground">Weekly check-in</span>
                         {latest && <span className="font-mono text-[11px] uppercase text-subtle-foreground">{latest.status === 'Reviewed' ? 'Last one reviewed' : 'Awaiting review'}</span>}
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold leading-tight">
+                        <h2 className="font-display text-2xl font-extrabold uppercase leading-tight">
                             {!latest ? 'Send your first check-in' : due ? 'Your check-in is due' : `Next check-in in ${daysUntilDue} ${daysUntilDue === 1 ? 'day' : 'days'}`}
                         </h2>
                         <p className="mt-1.5 text-sm text-muted-foreground">

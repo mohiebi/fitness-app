@@ -19,11 +19,11 @@ function Resources() {
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
-      <section className="border-b border-border bg-card/40">
+      <section className="relative overflow-hidden bg-hero-gradient">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="text-sm font-semibold text-primary">Resources</div>
+          <div className="text-xs font-extrabold uppercase tracking-widest text-primary">Resources</div>
           <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">
-            Free guides & tools.
+            Free guides & <span className="text-gradient">tools.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
             Everything we teach our clients — free for you to read, apply and share.
@@ -37,7 +37,7 @@ function Resources() {
           {tools.map(t => {
             const Icon = icons[t.icon];
             return (
-              <Card key={t.title} className="group cursor-pointer border-border/60 bg-card p-6 shadow-card-premium transition-all hover:border-primary/40">
+              <Card key={t.title} className="group cursor-pointer border-border/60 bg-card p-6 shadow-card-premium transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="h-5 w-5" /></div>
                 <h3 className="mt-4 font-semibold">{t.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{t.desc}</p>
@@ -52,7 +52,7 @@ function Resources() {
         <h2 className="text-2xl font-semibold">Latest articles</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {resources.map(r => (
-            <Card key={r.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all">
+            <Card key={r.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all hover:-translate-y-1 hover:shadow-glow">
               <div className="aspect-[16/10] overflow-hidden">
                 <img src={r.img} className="h-full w-full object-cover" alt={r.title} />
               </div>

@@ -52,7 +52,7 @@ function ContentStudio() {
         })}
       </div>
 
-      <Card className="mt-6 border-primary/30 bg-card p-8">
+      <Card className="mt-6 border-primary/30 bg-hero-gradient p-8 shadow-glow">
         <div className="flex items-center gap-3">
           <Sparkles className="h-5 w-5 text-primary" />
           <h3 className="font-semibold">AI content generator</h3>

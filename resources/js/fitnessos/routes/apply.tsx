@@ -70,7 +70,7 @@ function Apply() {
     <div className="min-h-screen bg-background">
       <PublicNav />
       <section className="mx-auto max-w-3xl px-6 py-16">
-        <div className="text-sm font-semibold text-primary flex items-center gap-2">
+        <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-primary">
           <Sparkles className="h-3 w-3" /> Coaching application
         </div>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">Let's build your plan.</h1>

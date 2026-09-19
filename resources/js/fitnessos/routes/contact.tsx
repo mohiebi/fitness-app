@@ -41,7 +41,7 @@ function Contact() {
       <section className="mx-auto max-w-6xl px-6 py-24">
         <div className="grid gap-12 md:grid-cols-2">
           <div>
-            <div className="text-sm font-semibold text-primary">Contact</div>
+            <div className="text-xs font-extrabold uppercase tracking-widest text-primary">Contact</div>
             <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Say hi.</h1>
             <p className="mt-4 max-w-md text-muted-foreground">Questions about coaching or the platform? We reply within one business day.</p>
 

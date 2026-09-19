@@ -23,7 +23,7 @@ function AI() {
     <div>
       <PageHeader title="AI Assistant" description="Your coaching co-pilot. Build plans, replies and content in seconds." />
 
-      <Card className="relative overflow-hidden border-primary/30 bg-card p-8">
+      <Card className="relative overflow-hidden border-primary/30 bg-hero-gradient p-8 shadow-glow">
         <div className="mb-4 flex items-center gap-2"><Sparkles className="h-5 w-5 text-primary" /><span className="text-sm font-medium">Ask FitnessOS AI</span></div>
         <Textarea rows={4} placeholder="e.g. Build a 12-week strength program for a 45-year-old beginner with a bad shoulder…" className="border-border/60 bg-background/60 text-base backdrop-blur" />
         <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -39,7 +39,7 @@ function AI() {
           {aiPrompts.map(p => {
             const Icon = iconMap[p.icon] || Sparkles;
             return (
-              <Card key={p.title} className="group cursor-pointer border-border/60 bg-card p-5 shadow-card-premium transition hover:border-primary/40">
+              <Card key={p.title} className="group cursor-pointer border-border/60 bg-card p-5 shadow-card-premium transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow">
                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary"><Icon className="h-5 w-5" /></div>
                 <h4 className="mt-4 font-semibold">{p.title}</h4>
                 <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>

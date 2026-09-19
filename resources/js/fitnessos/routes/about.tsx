@@ -19,9 +19,9 @@ function About() {
     <div className="min-h-screen bg-background">
       <PublicNav />
       <section className="mx-auto max-w-4xl px-6 py-24">
-        <div className="text-sm font-semibold text-primary">About</div>
+        <div className="text-xs font-extrabold uppercase tracking-widest text-primary">About</div>
         <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">
-          Coaches deserve better software.
+          Coaches deserve <span className="text-gradient">better software.</span>
         </h1>
         <p className="mt-6 text-lg text-muted-foreground">
           FitnessOS was born inside a real coaching business. After years of gluing together spreadsheets, Notion pages,

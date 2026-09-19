@@ -22,10 +22,10 @@ function Transformations() {
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
-      <section className="border-b border-border bg-card/40">
+      <section className="relative overflow-hidden bg-hero-gradient">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="text-sm font-semibold text-primary">Transformations</div>
-          <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Proof over promises.</h1>
+          <div className="text-xs font-extrabold uppercase tracking-widest text-primary">Transformations</div>
+          <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Proof over <span className="text-gradient">promises.</span></h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">500+ transformations. 94% completion rate. Zero photoshop.</p>
         </div>
       </section>
@@ -38,7 +38,7 @@ function Transformations() {
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map(t => (
-            <Card key={t.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all">
+            <Card key={t.id} className="group overflow-hidden border-border/60 bg-card shadow-card-premium transition-all hover:-translate-y-1 hover:shadow-glow">
               <div className="grid grid-cols-2 gap-0.5">
                 <div className="relative">
                   <img src={t.before} className="aspect-[3/4] w-full object-cover" alt="before" />

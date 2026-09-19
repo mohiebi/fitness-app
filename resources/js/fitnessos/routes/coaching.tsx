@@ -19,11 +19,11 @@ function Coaching() {
   return (
     <div className="min-h-screen bg-background">
       <PublicNav />
-      <section className="border-b border-border bg-card/40">
+      <section className="relative overflow-hidden bg-hero-gradient">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <div className="text-sm font-semibold text-primary">Coaching</div>
+          <div className="text-xs font-extrabold uppercase tracking-widest text-primary">Coaching</div>
           <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">
-            Programs built for your life.
+            Programs built <span className="text-gradient">for your life.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
             Choose the path that fits — 1:1 personal coaching, high-touch nutrition, or a proven group cohort.
@@ -92,7 +92,7 @@ function Coaching() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24">
-        <Card className="border-primary/30 bg-card p-12 text-center">
+        <Card className="border-primary/30 bg-hero-gradient p-12 text-center shadow-glow">
           <h3 className="text-3xl font-semibold">Apply for coaching</h3>
           <p className="mt-2 text-muted-foreground">We only take on 20 new clients per month.</p>
           <Button asChild size="lg" className="mt-6"><Link to="/apply">Start application <ArrowRight className="ml-2 h-4 w-4" /></Link></Button>

@@ -20,9 +20,13 @@ export function StatCard({
     <Card className="p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="text-sm font-semibold text-muted-foreground">{label}</div>
-        {Icon && <Icon className="h-4 w-4 shrink-0 text-subtle-foreground" />}
+        {Icon && (
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
+            <Icon className="h-4 w-4" />
+          </div>
+        )}
       </div>
-      <div className="mt-3 font-display text-3xl font-bold tabular-nums md:text-4xl">{value}</div>
+      <div className="mt-3 font-display text-3xl font-extrabold tabular-nums md:text-4xl">{value}</div>
       {delta && (
         <div className={cn("mt-1.5 flex items-center gap-1 font-mono text-xs", trendColor)}>
           <TrendIcon className="h-3 w-3" />
@@ -53,7 +57,7 @@ export function ActionTile({
         </span>
         {meta && <span className="font-mono text-[11px] text-subtle-foreground">{meta}</span>}
       </div>
-      <div className={cn("font-display text-[44px] font-bold leading-none tabular-nums", tone === "alert" && value > 0 && "text-destructive")}>{value}</div>
+      <div className={cn("font-display text-[44px] font-extrabold leading-none tabular-nums", tone === "alert" && value > 0 && "text-destructive")}>{value}</div>
       <Link to={to} className="inline-flex min-h-6 items-center gap-1.5 self-start text-sm font-bold text-primary hover:underline">
         {action} <ArrowRight className="h-[15px] w-[15px]" strokeWidth={2.4} />
       </Link>
@@ -63,7 +67,8 @@ export function ActionTile({
 
 export function ChartCard({ title, description, children, actions }: { title: string; description?: string; children: ReactNode; actions?: ReactNode }) {
   return (
-    <Card className="p-6">
+    <Card className="relative overflow-hidden p-6">
+      <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-energy-gradient opacity-70" />
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold">{title}</h3>
