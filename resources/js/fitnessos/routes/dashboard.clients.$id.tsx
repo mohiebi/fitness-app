@@ -1,6 +1,12 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { MessageSquare, ClipboardCheck, User, UserMinus } from 'lucide-react';
+import {
+    ClipboardCheck,
+    Dumbbell,
+    MessageSquare,
+    User,
+    UserMinus,
+} from 'lucide-react';
 import { useState } from 'react';
 import { Card } from '@fitnessos/components/ui/card';
 import { Badge } from '@fitnessos/components/ui/badge';
@@ -14,6 +20,10 @@ import {
 } from '@fitnessos/components/ui/tabs';
 import { EndCoachingDialog } from '@fitnessos/components/end-coaching-dialog';
 import { IntakeSummary } from '@fitnessos/components/intake-summary';
+import {
+    AdherenceCard,
+    SessionList,
+} from '@fitnessos/components/training-summary';
 import { getJson } from '@fitnessos/lib/api';
 import { t } from '@fitnessos/lib/i18n';
 import { formatDate, formatNumber, messageTime } from '@fitnessos/lib/format';
@@ -22,6 +32,11 @@ import {
     type CoachingSummary,
     type TraineeProfileData,
 } from '@fitnessos/lib/marketplace';
+import type {
+    Adherence,
+    PlanSummary,
+    WorkoutLogData,
+} from '@fitnessos/lib/training';
 
 export const Route = createFileRoute('/dashboard/clients/$id')({
     component: ClientDetail,
@@ -128,6 +143,7 @@ function ClientDetail() {
             <Tabs defaultValue="overview">
                 <TabsList className="mb-6">
                     <TabsTrigger value="overview">{t('Overview')}</TabsTrigger>
+                    <TabsTrigger value="training">{t('Training')}</TabsTrigger>
                     <TabsTrigger value="checkins">{t('Check-ins')}</TabsTrigger>
                     <TabsTrigger value="messages">{t('Messages')}</TabsTrigger>
                 </TabsList>
@@ -159,6 +175,9 @@ function ClientDetail() {
                         </h2>
                         <IntakeSummary profile={client.profile} />
                     </Card>
+                </TabsContent>
+                <TabsContent value="training">
+                    <TraineeTraining traineeId={client.id} />
                 </TabsContent>
                 <TabsContent value="checkins">
                     <Card className="border-border/60 bg-card shadow-card-premium space-y-3 p-6">
@@ -265,5 +284,88 @@ function Summary({
             </div>
             <div className="mt-1 text-2xl font-semibold">{value}</div>
         </Card>
+    );
+}
+
+type Training = {
+    active_plan: PlanSummary | null;
+    adherence: Adherence;
+    recent_logs: WorkoutLogData[];
+};
+
+function TraineeTraining({ traineeId }: { traineeId: string }) {
+    const { data, isLoading } = useQuery({
+        queryKey: ['fitnessos', 'training', traineeId],
+        queryFn: () =>
+            getJson<Training>(`/fitnessos/trainees/${traineeId}/training`),
+    });
+
+    if (isLoading || !data) {
+        return <p className="text-muted-foreground text-sm">{t('Loading…')}</p>;
+    }
+
+    return (
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-start">
+            <div className="flex flex-col gap-4">
+                <Card className="flex flex-col gap-3 p-5">
+                    <h2 className="font-semibold">{t('Current plan')}</h2>
+                    {data.active_plan ? (
+                        <>
+                            <div>
+                                <div className="text-lg font-bold">
+                                    {data.active_plan.title}
+                                </div>
+                                <div className="text-muted-foreground text-sm">
+                                    {t(':count training days', {
+                                        count: formatNumber(
+                                            data.active_plan.days_count,
+                                        ),
+                                    })}
+                                    {data.active_plan.activated_at &&
+                                        ` · ${t('Active since :date', { date: formatDate(data.active_plan.activated_at) })}`}
+                                </div>
+                            </div>
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="self-start"
+                            >
+                                <Link
+                                    to="/dashboard/workouts/$planId"
+                                    params={{
+                                        planId: String(data.active_plan.id),
+                                    }}
+                                >
+                                    {t('Edit plan')}
+                                </Link>
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-muted-foreground text-sm">
+                                {t('This trainee has no active plan yet.')}
+                            </p>
+                            <Button asChild className="self-start">
+                                <Link
+                                    to="/dashboard/workouts"
+                                    search={{ trainee: traineeId }}
+                                >
+                                    <Dumbbell />
+                                    {t('Build a plan')}
+                                </Link>
+                            </Button>
+                        </>
+                    )}
+                </Card>
+                <AdherenceCard adherence={data.adherence} />
+            </div>
+            <Card className="flex flex-col gap-4 p-5">
+                <h2 className="font-semibold">{t('Recent sessions')}</h2>
+                <SessionList
+                    logs={data.recent_logs}
+                    empty={t('No sessions logged yet.')}
+                />
+            </Card>
+        </div>
     );
 }

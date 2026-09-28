@@ -636,4 +636,21 @@ export const fa: Record<string, string> = {
     'Delete this plan?': 'این برنامه حذف شود؟',
     'The plan is removed. Sessions the trainee already logged stay in their history.':
         'برنامه حذف می‌شود. تمرین‌هایی که شاگرد ثبت کرده در سوابقش باقی می‌ماند.',
+    'Last 7 days': '۷ روز گذشته',
+    ':done of :planned sessions': ':done از :planned جلسه',
+    ':done sessions': ':done جلسه',
+    'Sessions per week': 'جلسه‌ها در هر هفته',
+    'This week': 'این هفته',
+    'No active plan, so there is no weekly target yet.':
+        'برنامه‌ی فعالی نیست، پس هنوز هدف هفتگی وجود ندارد.',
+    'Effort :value/10': 'سختی :value از ۱۰',
+    ':value min': ':value دقیقه',
+    Training: 'تمرین',
+    'Current plan': 'برنامه‌ی فعلی',
+    'Active since :date': 'فعال از :date',
+    'Edit plan': 'ویرایش برنامه',
+    'This trainee has no active plan yet.':
+        'این شاگرد هنوز برنامه‌ی فعالی ندارد.',
+    'Recent sessions': 'جلسه‌های اخیر',
+    'No sessions logged yet.': 'هنوز جلسه‌ای ثبت نشده است.',
 };
