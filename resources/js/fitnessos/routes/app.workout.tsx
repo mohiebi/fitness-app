@@ -15,8 +15,12 @@ import { Label } from '@fitnessos/components/ui/label';
 import { Slider } from '@fitnessos/components/ui/slider';
 import { Textarea } from '@fitnessos/components/ui/textarea';
 import { deleteJson, getJson, postJson } from '@fitnessos/lib/api';
-import { formatDate, formatNumber } from '@fitnessos/lib/format';
-import { t } from '@fitnessos/lib/i18n';
+import {
+    formatDate,
+    formatNumber,
+    localizeDigits,
+} from '@fitnessos/lib/format';
+import { sep, t } from '@fitnessos/lib/i18n';
 import {
     exerciseName,
     type Adherence,
@@ -168,7 +172,8 @@ function DayCard({
                             {exerciseName(item.exercise)}
                         </span>
                         <span dir="ltr">
-                            {formatNumber(item.sets)} × {item.reps}
+                            {formatNumber(item.sets)} ×{' '}
+                            {localizeDigits(item.reps)}
                         </span>
                     </li>
                 ))}
@@ -304,10 +309,10 @@ function SessionLogger({
                             >
                                 {t('Target: :sets × :reps', {
                                     sets: formatNumber(item.sets),
-                                    reps: item.reps,
+                                    reps: localizeDigits(item.reps),
                                 })}
                                 {item.rest_seconds !== null &&
-                                    ` · ${t('Rest :seconds s', { seconds: formatNumber(item.rest_seconds) })}`}
+                                    `${sep()}${t('Rest :seconds s', { seconds: formatNumber(item.rest_seconds) })}`}
                             </div>
                             {item.notes && (
                                 <p className="text-aqua mt-1 text-sm">
@@ -426,8 +431,9 @@ function SessionLogger({
             <Card className="grid gap-4 p-5 sm:grid-cols-2">
                 <div className="grid gap-2 sm:col-span-2">
                     <Label>
-                        {t('How hard was it?')} · {formatNumber(effort)}/
-                        {formatNumber(10)}
+                        {t('How hard was it?')}
+                        {sep()}
+                        {formatNumber(effort)}/{formatNumber(10)}
                     </Label>
                     <Slider
                         value={[effort]}

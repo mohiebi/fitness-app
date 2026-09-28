@@ -9,7 +9,7 @@ import { Slider } from '@fitnessos/components/ui/slider';
 import { Camera } from 'lucide-react';
 import { useState } from 'react';
 import { postJson } from '@fitnessos/lib/api';
-import { t } from '@fitnessos/lib/i18n';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { formatNumber } from '@fitnessos/lib/format';
 import { NoCoachCard, useMyCoaching } from '@fitnessos/components/no-coach';
 
@@ -159,8 +159,9 @@ function Checkin() {
                     </div>
                     <div className="mt-6">
                         <Label className="mb-2 block">
-                            {t('Energy')} · {formatNumber(form.energy)}/
-                            {formatNumber(10)}
+                            {t('Energy')}
+                            {sep()}
+                            {formatNumber(form.energy)}/{formatNumber(10)}
                         </Label>
                         <Slider
                             value={[form.energy]}
@@ -174,8 +175,9 @@ function Checkin() {
                     </div>
                     <div className="mt-6">
                         <Label className="mb-2 block">
-                            {t('Hunger')} · {formatNumber(form.hunger)}/
-                            {formatNumber(10)}
+                            {t('Hunger')}
+                            {sep()}
+                            {formatNumber(form.hunger)}/{formatNumber(10)}
                         </Label>
                         <Slider
                             value={[form.hunger]}

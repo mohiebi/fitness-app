@@ -28,3 +28,11 @@ export function t(
         translated,
     );
 }
+
+/**
+ * Separator between short facts. The middle dot reads as a Persian zero
+ * (۰) in Persian fonts, so Persian uses its own comma instead.
+ */
+export function sep(): string {
+    return locale() === 'fa' ? '، ' : ' · ';
+}

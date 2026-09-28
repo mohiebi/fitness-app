@@ -218,7 +218,7 @@ export const fa: Record<string, string> = {
     Reviewed: 'بررسی‌شده',
     Pending: 'در انتظار',
     'Weight :weight kg · Sleep :sleep h · Energy :energy/10':
-        'وزن :weight کیلوگرم · خواب :sleep ساعت · انرژی :energy از ۱۰',
+        'وزن :weight کیلوگرم، خواب :sleep ساعت، انرژی :energy از ۱۰',
     'No check-ins yet.': 'هنوز گزارشی ثبت نشده است.',
     'No messages yet.': 'هنوز پیامی نیست.',
     'End coaching with :name?': 'همکاری با :name پایان یابد؟',
@@ -436,7 +436,7 @@ export const fa: Record<string, string> = {
     'Find a coach': 'پیدا کردن مربی',
     'Close menu': 'بستن منو',
     'Find your coach · FitnessOS · Train with a plan ·':
-        'مربی‌ات را پیدا کن · فیتنس‌اواس · با برنامه تمرین کن ·',
+        'مربی‌ات را پیدا کن — فیتنس‌اواس — با برنامه تمرین کن —',
     'Find a verified coach, follow your plan and check in with them every week.':
         'مربی تأییدشده پیدا کن، برنامه‌ات را دنبال کن و هر هفته به او گزارش بده.',
     Company: 'فیتنس‌اواس',
@@ -444,7 +444,7 @@ export const fa: Record<string, string> = {
     'Coach dashboard': 'داشبورد مربی',
     'Trainee app': 'برنامه‌ی شاگرد',
     '© :year FitnessOS · All rights reserved':
-        '© :year فیتنس‌اواس · همه‌ی حقوق محفوظ است',
+        '© :year فیتنس‌اواس، همه‌ی حقوق محفوظ است',
     'Built for coaches and the people they train':
         'ساخته‌شده برای مربی‌ها و شاگردانشان',
 

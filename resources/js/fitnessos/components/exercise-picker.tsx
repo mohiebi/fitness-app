@@ -15,7 +15,7 @@ import {
 import { Input } from '@fitnessos/components/ui/input';
 import { Label } from '@fitnessos/components/ui/label';
 import { getJson, postJson } from '@fitnessos/lib/api';
-import { t } from '@fitnessos/lib/i18n';
+import { sep, t } from '@fitnessos/lib/i18n';
 import {
     equipmentTypes,
     exerciseName,
@@ -122,14 +122,14 @@ export function ExercisePicker({
                                         </span>
                                         <span className="text-muted-foreground shrink-0 text-xs">
                                             {muscleLabel(exercise.muscle_group)}
-                                            {' · '}
+                                            {sep()}
                                             {t(
                                                 equipmentTypes[
                                                     exercise.equipment
                                                 ] ?? exercise.equipment,
                                             )}
                                             {exercise.custom &&
-                                                ` · ${t('Custom')}`}
+                                                `${sep()}${t('Custom')}`}
                                         </span>
                                     </button>
                                 </li>

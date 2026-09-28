@@ -25,7 +25,7 @@ import {
     SessionList,
 } from '@fitnessos/components/training-summary';
 import { getJson } from '@fitnessos/lib/api';
-import { t } from '@fitnessos/lib/i18n';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { formatDate, formatNumber, messageTime } from '@fitnessos/lib/format';
 import {
     initials,
@@ -322,7 +322,7 @@ function TraineeTraining({ traineeId }: { traineeId: string }) {
                                         ),
                                     })}
                                     {data.active_plan.activated_at &&
-                                        ` · ${t('Active since :date', { date: formatDate(data.active_plan.activated_at) })}`}
+                                        `${sep()}${t('Active since :date', { date: formatDate(data.active_plan.activated_at) })}`}
                                 </div>
                             </div>
                             <Button
