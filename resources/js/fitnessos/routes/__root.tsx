@@ -7,7 +7,8 @@ import {
   useRouter,
   HeadContent,
 } from "@tanstack/react-router";
-import { locale, t } from "@fitnessos/lib/i18n";
+import { DirectionProvider } from "@radix-ui/react-direction";
+import { isRtl, locale, t } from "@fitnessos/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -92,8 +93,11 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      {createPortal(<HeadContent />, document.head)}
-      <Outlet />
+      {/* Radix sliders, tabs and menus follow the page direction. */}
+      <DirectionProvider dir={isRtl() ? "rtl" : "ltr"}>
+        {createPortal(<HeadContent />, document.head)}
+        <Outlet />
+      </DirectionProvider>
     </QueryClientProvider>
   );
 }
