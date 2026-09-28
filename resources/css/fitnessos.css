@@ -1,6 +1,7 @@
 @import "tailwindcss" source(none);
 @source "../js/fitnessos";
 @import "tw-animate-css";
+@import "@fontsource-variable/vazirmatn";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -52,9 +53,9 @@
   --color-aqua: var(--aqua);
   --color-sun: var(--sun);
 
-  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-display: var(--app-font-display);
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
 }
 
 /* Sprint Circuit — dark-first sport palette, sprint lime on ink.
@@ -64,6 +65,10 @@
    so the daily work screens stay scannable. */
 :root {
   --radius: 1rem;
+
+  --app-font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --app-font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --app-font-mono: "Space Mono", ui-monospace, monospace;
 
   --background: oklch(0.12 0.018 238);
   --foreground: oklch(0.98 0.018 112);
@@ -128,6 +133,14 @@
   --shadow-card: 0 1px 0 0 oklch(1 0 0 / 0.06) inset, 0 18px 40px -30px oklch(0 0 0 / 0.8);
   --shadow-brutal: 0 18px 40px -22px oklch(0.91 0.25 132 / 0.75);
   --shadow-brutal-blaze: 0 18px 42px -22px oklch(0.72 0.23 31 / 0.7);
+}
+
+/* Persian: Vazirmatn is self-hosted (Google Fonts is unreliable in Iran).
+   It also covers Latin, so mixed Persian/English text stays consistent. */
+:root:lang(fa) {
+  --app-font-display: "Vazirmatn Variable", "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --app-font-sans: "Vazirmatn Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --app-font-mono: "Vazirmatn Variable", "Space Mono", ui-monospace, monospace;
 }
 
 @layer base {
