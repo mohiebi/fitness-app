@@ -47,7 +47,6 @@ type NavItem = {
 type NavGroup = { label?: string; items: NavItem[] };
 
 const previewPaths = new Set([
-    '/dashboard/workouts',
     '/dashboard/nutrition',
     '/dashboard/progress',
     '/dashboard/calendar',
