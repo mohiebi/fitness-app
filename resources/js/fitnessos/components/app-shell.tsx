@@ -55,7 +55,6 @@ const previewPaths = new Set([
     '/dashboard/ai',
     '/dashboard/reports',
     '/dashboard/settings',
-    '/app/workout',
     '/app/nutrition',
     '/app/resources',
 ]);

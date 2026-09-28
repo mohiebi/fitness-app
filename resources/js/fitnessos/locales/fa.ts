@@ -653,4 +653,32 @@ export const fa: Record<string, string> = {
         'این شاگرد هنوز برنامه‌ی فعالی ندارد.',
     'Recent sessions': 'جلسه‌های اخیر',
     'No sessions logged yet.': 'هنوز جلسه‌ای ثبت نشده است.',
+    "Pick today's workout and log each set as you go.":
+        'تمرین امروز را انتخاب کن و هر ست را همان موقع ثبت کن.',
+    'Your coach has not assigned a plan yet. You will see it here as soon as they do.':
+        'مربی‌ات هنوز برنامه‌ای تعیین نکرده است. به محض تعیین، اینجا نمایش داده می‌شود.',
+    'Last done :date': 'آخرین بار: :date',
+    'Not done yet': 'هنوز انجام نشده',
+    Start: 'شروع',
+    'Enter reps and weight, and tick each set when it is done.':
+        'تکرار و وزنه را وارد کن و بعد از هر ست تیکش را بزن.',
+    'Target: :sets × :reps': 'هدف: :sets ست × :reps',
+    'Rest :seconds s': 'استراحت :seconds ثانیه',
+    'Watch demo': 'دیدن ویدیو',
+    'Reps for set :number': 'تکرار ست :number',
+    'Weight for set :number': 'وزنه‌ی ست :number',
+    'Set :number done': 'ست :number انجام شد',
+    'Add set': 'افزودن ست',
+    'How hard was it?': 'چقدر سخت بود؟',
+    Date: 'تاریخ',
+    'Duration (minutes)': 'مدت (دقیقه)',
+    'Notes for your coach': 'یادداشت برای مربی',
+    'How did it feel? Any pain or anything that was too easy?':
+        'چه حسی داشت؟ دردی بود یا چیزی خیلی سبک بود؟',
+    'Tick at least one set you finished.': 'دست‌کم یک ست انجام‌شده را تیک بزن.',
+    'Finish workout (:count sets)': 'پایان تمرین (:count ست)',
+    'Your sessions': 'جلسه‌های تو',
+    'Sessions you log show up here.':
+        'جلسه‌هایی که ثبت می‌کنی اینجا نمایش داده می‌شوند.',
+    'Delete this session?': 'این جلسه حذف شود؟',
 };
