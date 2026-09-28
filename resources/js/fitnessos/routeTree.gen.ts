@@ -20,6 +20,7 @@ import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as TransformationsRouteImport } from './routes/transformations'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCheckinRouteImport } from './routes/app.checkin'
+import { Route as AppCoachRouteImport } from './routes/app.coach'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppNutritionRouteImport } from './routes/app.nutrition'
 import { Route as AppProfileRouteImport } from './routes/app.profile'
@@ -98,6 +99,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppCheckinRoute = AppCheckinRouteImport.update({
   id: '/checkin',
   path: '/checkin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCoachRoute = AppCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMessagesRoute = AppMessagesRouteImport.update({
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
@@ -305,6 +313,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
@@ -379,6 +389,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
@@ -416,6 +427,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
@@ -534,6 +546,13 @@ declare module '@tanstack/react-router' {
       path: '/checkin'
       fullPath: '/app/checkin'
       preLoaderRoute: typeof AppCheckinRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/coach': {
+      id: '/app/coach'
+      path: '/coach'
+      fullPath: '/app/coach'
+      preLoaderRoute: typeof AppCoachRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/messages': {
@@ -709,6 +728,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCheckinRoute: typeof AppCheckinRoute
+  AppCoachRoute: typeof AppCoachRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppNutritionRoute: typeof AppNutritionRoute
   AppProfileRoute: typeof AppProfileRoute
@@ -720,6 +740,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCheckinRoute: AppCheckinRoute,
+  AppCoachRoute: AppCoachRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppNutritionRoute: AppNutritionRoute,
   AppProfileRoute: AppProfileRoute,

@@ -2,7 +2,9 @@
 
 use App\Models\Coaching;
 use App\Models\User;
+use App\Services\CoachingLifecycle;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -148,6 +150,23 @@ test('request, accept, message, switch and cancel through the API', function () 
     $this->actingAs($trainee->fresh())->postJson("/fitnessos/coachings/{$switch['id']}/end", ['reason' => 'Too expensive'])->assertOk();
     expect($trainee->fresh()->coach_id)->toBeNull();
     $this->actingAs($trainee->fresh())->getJson('/fitnessos/messages')->assertUnprocessable();
+});
+
+test('trainees keep their check-in history after coaching ends, but coaches lose it', function () {
+    $coach = User::factory()->publishedCoach()->create();
+    $trainee = User::factory()->trainee()->create();
+    $coaching = app(CoachingLifecycle::class)->startDirect($coach, $trainee);
+
+    $this->actingAs($trainee->fresh())->postJson('/fitnessos/checkins', ['weight_kg' => 80])->assertCreated();
+    app(CoachingLifecycle::class)->end($coaching, $trainee->fresh());
+
+    $this->actingAs($trainee->fresh())->getJson('/fitnessos/checkins')->assertOk()->assertJsonCount(1);
+    $this->actingAs($trainee->fresh())->postJson('/fitnessos/checkins', ['weight_kg' => 79])->assertUnprocessable();
+    $this->actingAs($coach)->getJson('/fitnessos/checkins/'.$trainee->id)->assertNotFound();
+    $this->actingAs($coach)->getJson('/fitnessos/checkins')->assertOk()->assertJsonCount(0);
+
+    $checkinId = DB::table('fitnessos_checkins')->value('id');
+    $this->actingAs($coach)->patchJson('/fitnessos/checkins/'.$checkinId, ['feedback' => 'Late reply'])->assertNotFound();
 });
 
 test('coach-created clients start with an active coaching', function () {

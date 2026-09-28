@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class FitnessOsActivityController extends Controller
 {
@@ -35,10 +35,15 @@ class FitnessOsActivityController extends Controller
             ->join('users', 'fitnessos_checkins.client_id', '=', 'users.id')
             ->select('fitnessos_checkins.*', 'users.name as client_name');
 
-        if ($request->user()->role === 'client' || $client !== null) {
+        // Trainees always see their full history, including check-ins sent to past coaches.
+        if ($request->user()->role === 'client') {
+            $query->where('fitnessos_checkins.client_id', $request->user()->id);
+        } elseif ($client !== null) {
             $query->where('fitnessos_checkins.client_id', $this->clientFor($request, $client)->id);
         } else {
-            $query->where('fitnessos_checkins.coach_id', $request->user()->id);
+            // Only current trainees: a coach loses access once the coaching ends.
+            $query->where('fitnessos_checkins.coach_id', $request->user()->id)
+                ->where('users.coach_id', $request->user()->id);
         }
 
         return response()->json($query->orderByDesc('fitnessos_checkins.created_at')->limit(100)->get());
@@ -77,8 +82,11 @@ class FitnessOsActivityController extends Controller
         abort_unless(in_array($request->user()->role, ['coach', 'admin'], true), 403);
         $data = $request->validate(['feedback' => ['required', 'string', 'max:5000']]);
         $entry = DB::table('fitnessos_checkins')
-            ->where('id', $checkin)
-            ->where('coach_id', $request->user()->id)
+            ->join('users', 'fitnessos_checkins.client_id', '=', 'users.id')
+            ->select('fitnessos_checkins.*')
+            ->where('fitnessos_checkins.id', $checkin)
+            ->where('fitnessos_checkins.coach_id', $request->user()->id)
+            ->where('users.coach_id', $request->user()->id)
             ->first();
         abort_unless($entry, 404);
 
