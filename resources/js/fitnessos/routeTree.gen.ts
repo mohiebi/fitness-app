@@ -26,6 +26,8 @@ import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
 import { Route as AppResourcesRouteImport } from './routes/app.resources'
 import { Route as AppWorkoutRouteImport } from './routes/app.workout'
+import { Route as CoachesIndexRouteImport } from './routes/coaches.index'
+import { Route as CoachesSlugRouteImport } from './routes/coaches.$slug'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardAiRouteImport } from './routes/dashboard.ai'
 import { Route as DashboardCalendarRouteImport } from './routes/dashboard.calendar'
@@ -127,6 +129,16 @@ const AppWorkoutRoute = AppWorkoutRouteImport.update({
   path: '/workout',
   getParentRoute: () => AppRoute,
 } as any)
+const CoachesIndexRoute = CoachesIndexRouteImport.update({
+  id: '/coaches/',
+  path: '/coaches/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoachesSlugRoute = CoachesSlugRouteImport.update({
+  id: '/coaches/$slug',
+  path: '/coaches/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -220,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
@@ -233,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
+  '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
@@ -252,6 +266,7 @@ export interface FileRoutesByTo {
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
@@ -265,6 +280,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app': typeof AppIndexRoute
+  '/coaches': typeof CoachesIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients': typeof DashboardClientsIndexRoute
@@ -287,6 +303,7 @@ export interface FileRoutesById {
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
@@ -300,6 +317,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
+  '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
@@ -323,6 +341,7 @@ export interface FileRouteTypes {
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
@@ -336,6 +355,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app/'
+    | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
     | '/dashboard/clients/'
@@ -355,6 +375,7 @@ export interface FileRouteTypes {
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
@@ -368,6 +389,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app'
+    | '/coaches'
     | '/dashboard'
     | '/dashboard/clients/$id'
     | '/dashboard/clients'
@@ -389,6 +411,7 @@ export interface FileRouteTypes {
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
@@ -402,6 +425,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app/'
+    | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
     | '/dashboard/clients/'
@@ -417,6 +441,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   ResourcesRoute: typeof ResourcesRoute
   TransformationsRoute: typeof TransformationsRoute
+  CoachesSlugRoute: typeof CoachesSlugRoute
+  CoachesIndexRoute: typeof CoachesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -539,6 +565,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/workout'
       preLoaderRoute: typeof AppWorkoutRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/coaches/': {
+      id: '/coaches/'
+      path: '/coaches'
+      fullPath: '/coaches/'
+      preLoaderRoute: typeof CoachesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coaches/$slug': {
+      id: '/coaches/$slug'
+      path: '/coaches/$slug'
+      fullPath: '/coaches/$slug'
+      preLoaderRoute: typeof CoachesSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
       id: '/dashboard/'
@@ -722,6 +762,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   ResourcesRoute: ResourcesRoute,
   TransformationsRoute: TransformationsRoute,
+  CoachesSlugRoute: CoachesSlugRoute,
+  CoachesIndexRoute: CoachesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

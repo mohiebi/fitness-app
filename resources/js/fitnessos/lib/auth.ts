@@ -20,16 +20,26 @@ export function isAuthenticated() {
     )?.content === '1';
 }
 
+export function currentRole(): 'coach' | 'client' | 'admin' | null {
+    if (!isAuthenticated()) {
+        return null;
+    }
+
+    const role = document.querySelector<HTMLMetaElement>(
+        'meta[name="fitnessos-role"]',
+    )?.content;
+
+    return role === 'client' || role === 'admin' ? role : 'coach';
+}
+
 export function requireRole(role: 'coach' | 'client') {
     if (!isAuthenticated()) {
         throw redirect({ href: '/login', reloadDocument: true });
     }
 
-    const currentRole = document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-role"]',
-    )?.content;
+    const current = currentRole();
 
-    if (currentRole !== role && !(role === 'coach' && currentRole === 'admin')) {
+    if (current !== role && !(role === 'coach' && current === 'admin')) {
         throw redirect({ href: '/portal', reloadDocument: true });
     }
 }

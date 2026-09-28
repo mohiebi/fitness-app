@@ -28,7 +28,7 @@ class CoachDirectoryController extends Controller
                 });
             })
             ->when($filters['specialty'] ?? null, fn ($query, string $specialty) => $query->whereJsonContains('specialties', $specialty))
-            ->when($filters['city'] ?? null, fn ($query, string $city) => $query->where('city', $city))
+            ->when($filters['city'] ?? null, fn ($query, string $city) => $query->where('city', 'like', "%{$city}%"))
             ->when($request->boolean('online'), fn ($query) => $query->where('online', true))
             ->orderByRaw('verified_at is null')
             ->latest('updated_at')
