@@ -1,6 +1,10 @@
 import { t } from './i18n';
 
-async function requestJson(path: string, method: string, data?: Record<string, unknown> | FormData) {
+async function requestJson(
+    path: string,
+    method: string,
+    data?: Record<string, unknown> | FormData,
+) {
     const token = document.querySelector<HTMLMetaElement>(
         'meta[name="csrf-token"]',
     )?.content;
@@ -30,7 +34,9 @@ async function requestJson(path: string, method: string, data?: Record<string, u
         const firstError = payload?.errors
             ? Object.values(payload.errors).flat()[0]
             : null;
-        throw new Error(firstError ?? payload?.message ?? t('The request failed.'));
+        throw new Error(
+            firstError ?? payload?.message ?? t('The request failed.'),
+        );
     }
 
     if (!response.headers.get('content-type')?.includes('application/json')) {

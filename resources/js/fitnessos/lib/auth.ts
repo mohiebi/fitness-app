@@ -9,15 +9,19 @@ export function currentUser() {
 }
 
 export function currentEmail() {
-    return document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-user-email"]',
-    )?.content ?? null;
+    return (
+        document.querySelector<HTMLMetaElement>(
+            'meta[name="fitnessos-user-email"]',
+        )?.content ?? null
+    );
 }
 
 export function isAuthenticated() {
-    return document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-authenticated"]',
-    )?.content === '1';
+    return (
+        document.querySelector<HTMLMetaElement>(
+            'meta[name="fitnessos-authenticated"]',
+        )?.content === '1'
+    );
 }
 
 export function currentRole(): 'coach' | 'client' | 'admin' | null {

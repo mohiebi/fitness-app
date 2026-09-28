@@ -35,7 +35,12 @@ export type TraineeProfileData = {
     health_consent: boolean;
 };
 
-export type CoachingStatus = 'requested' | 'active' | 'declined' | 'withdrawn' | 'ended';
+export type CoachingStatus =
+    | 'requested'
+    | 'active'
+    | 'declined'
+    | 'withdrawn'
+    | 'ended';
 
 export type CoachingSummary = {
     id: number;
@@ -48,7 +53,12 @@ export type CoachingSummary = {
 };
 
 export type CoachRequest = CoachingSummary & {
-    trainee: { id: number; name: string; email: string; profile: TraineeProfileData | null };
+    trainee: {
+        id: number;
+        name: string;
+        email: string;
+        profile: TraineeProfileData | null;
+    };
 };
 
 export type TraineeCoaching = CoachingSummary & { coach: CoachSummary };
@@ -96,7 +106,10 @@ export const experienceLevels: Record<string, string> = {
     advanced: 'Advanced',
 };
 
-export function labelFrom(map: Record<string, string>, key: string | null): string {
+export function labelFrom(
+    map: Record<string, string>,
+    key: string | null,
+): string {
     if (!key) return '—';
     return t(map[key] ?? key);
 }
@@ -114,5 +127,10 @@ export function initials(name: string): string {
     const trimmed = name.trim();
     if (/[\u0600-\u06FF]/.test(trimmed)) return trimmed.charAt(0);
 
-    return trimmed.split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+    return trimmed
+        .split(/\s+/)
+        .map((part) => part[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
 }

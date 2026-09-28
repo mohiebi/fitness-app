@@ -10,21 +10,35 @@ function toDate(value: string | Date): Date {
     return typeof value === 'string' ? parseServerDate(value) : value;
 }
 
-export function formatDate(value: string | Date, options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' }): string {
+export function formatDate(
+    value: string | Date,
+    options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    },
+): string {
     return new Intl.DateTimeFormat(intlLocale(), options).format(toDate(value));
 }
 
 export function formatNumber(value: number): string {
-    return new Intl.NumberFormat(locale() === 'fa' ? 'fa-IR' : 'en-GB').format(value);
+    return new Intl.NumberFormat(locale() === 'fa' ? 'fa-IR' : 'en-GB').format(
+        value,
+    );
 }
 
 export function formatToman(value: number): string {
-    return locale() === 'fa' ? `${formatNumber(value)} تومان` : `${formatNumber(value)} toman`;
+    return locale() === 'fa'
+        ? `${formatNumber(value)} تومان`
+        : `${formatNumber(value)} toman`;
 }
 
 export function formatRelative(value: string | Date): string {
     const seconds = Math.round((toDate(value).getTime() - Date.now()) / 1000);
-    const rtf = new Intl.RelativeTimeFormat(locale() === 'fa' ? 'fa-IR' : 'en-GB', { numeric: 'auto' });
+    const rtf = new Intl.RelativeTimeFormat(
+        locale() === 'fa' ? 'fa-IR' : 'en-GB',
+        { numeric: 'auto' },
+    );
     const units: [Intl.RelativeTimeFormatUnit, number][] = [
         ['year', 31_536_000],
         ['month', 2_592_000],
@@ -44,5 +58,10 @@ export function formatRelative(value: string | Date): string {
 }
 
 export function messageTime(sentAt: string): string {
-    return formatDate(sentAt, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return formatDate(sentAt, {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
 }

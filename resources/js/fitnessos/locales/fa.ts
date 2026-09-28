@@ -1,16 +1,20 @@
 // Persian translations keyed by the English source text (see lib/i18n.ts).
 export const fa: Record<string, string> = {
     // Shell and errors
-    'FitnessOS — Find your coach, follow your plan': 'فیتنس‌اواس — مربی‌ات را پیدا کن، برنامه‌ات را دنبال کن',
+    'FitnessOS — Find your coach, follow your plan':
+        'فیتنس‌اواس — مربی‌ات را پیدا کن، برنامه‌ات را دنبال کن',
     'FitnessOS connects trainees with verified coaches, personal plans and direct coach chat.':
         'فیتنس‌اواس شاگردها را به مربی‌های تأییدشده، برنامه‌ی شخصی و گفتگوی مستقیم با مربی وصل می‌کند.',
     'Page not found': 'صفحه پیدا نشد',
-    "The page you're looking for doesn't exist or has been moved.": 'صفحه‌ای که دنبالش هستید وجود ندارد یا جابه‌جا شده است.',
+    "The page you're looking for doesn't exist or has been moved.":
+        'صفحه‌ای که دنبالش هستید وجود ندارد یا جابه‌جا شده است.',
     'Go home': 'بازگشت به خانه',
     "This page didn't load": 'این صفحه بارگذاری نشد',
-    'Something went wrong. Try refreshing or head back home.': 'مشکلی پیش آمد. صفحه را دوباره بارگذاری کنید یا به خانه برگردید.',
+    'Something went wrong. Try refreshing or head back home.':
+        'مشکلی پیش آمد. صفحه را دوباره بارگذاری کنید یا به خانه برگردید.',
     'Try again': 'تلاش دوباره',
-    'Your session has expired. Redirecting to login.': 'نشست شما منقضی شده است. در حال انتقال به صفحه‌ی ورود…',
+    'Your session has expired. Redirecting to login.':
+        'نشست شما منقضی شده است. در حال انتقال به صفحه‌ی ورود…',
     'The request failed.': 'درخواست انجام نشد.',
     'The server returned an unexpected response.': 'پاسخ سرور غیرمنتظره بود.',
 
@@ -52,7 +56,8 @@ export const fa: Record<string, string> = {
     Collapse: 'جمع کردن',
     'Log out': 'خروج',
     'Open menu': 'باز کردن منو',
-    'Preview screen: the data and controls on this page are sample content.': 'صفحه‌ی پیش‌نمایش: داده‌ها و کنترل‌های این صفحه نمونه هستند.',
+    'Preview screen: the data and controls on this page are sample content.':
+        'صفحه‌ی پیش‌نمایش: داده‌ها و کنترل‌های این صفحه نمونه هستند.',
 
     // Common
     'Loading…': 'در حال بارگذاری…',
@@ -112,12 +117,14 @@ export const fa: Record<string, string> = {
     Specialty: 'تخصص',
     'Loading coaches…': 'در حال بارگذاری مربی‌ها…',
     ':count coaches found': ':count مربی پیدا شد',
-    'No coaches match these filters yet. Try removing a filter.': 'هنوز مربی‌ای با این فیلترها نیست. یکی از فیلترها را بردارید.',
+    'No coaches match these filters yet. Try removing a filter.':
+        'هنوز مربی‌ای با این فیلترها نیست. یکی از فیلترها را بردارید.',
 
     // Coach profile page
     'Coach profile — FitnessOS': 'پروفایل مربی — فیتنس‌اواس',
     'Coach not found': 'مربی پیدا نشد',
-    'This profile is not public or no longer exists.': 'این پروفایل عمومی نیست یا دیگر وجود ندارد.',
+    'This profile is not public or no longer exists.':
+        'این پروفایل عمومی نیست یا دیگر وجود ندارد.',
     'Browse coaches': 'دیدن مربی‌ها',
     'About me': 'درباره‌ی من',
     Certifications: 'مدارک',
@@ -125,12 +132,16 @@ export const fa: Record<string, string> = {
     'From :price': 'از :price',
     'In person': 'حضوری',
     'Message your coach': 'پیام به مربی',
-    'Request sent. The coach will review it soon.': 'درخواست فرستاده شد. مربی به‌زودی بررسی می‌کند.',
-    'This coach is not accepting new trainees right now.': 'این مربی در حال حاضر شاگرد جدید نمی‌پذیرد.',
+    'Request sent. The coach will review it soon.':
+        'درخواست فرستاده شد. مربی به‌زودی بررسی می‌کند.',
+    'This coach is not accepting new trainees right now.':
+        'این مربی در حال حاضر شاگرد جدید نمی‌پذیرد.',
     'Request coaching': 'درخواست مربیگری',
     'Sign up to request coaching': 'ثبت‌نام و درخواست مربیگری',
-    'You are signed in as a coach. Trainee accounts can request coaching.': 'شما با حساب مربی وارد شده‌اید. فقط حساب شاگرد می‌تواند درخواست بدهد.',
-    'If this coach accepts, your coaching with :name ends automatically.': 'اگر این مربی بپذیرد، همکاری شما با :name به‌طور خودکار پایان می‌یابد.',
+    'You are signed in as a coach. Trainee accounts can request coaching.':
+        'شما با حساب مربی وارد شده‌اید. فقط حساب شاگرد می‌تواند درخواست بدهد.',
+    'If this coach accepts, your coaching with :name ends automatically.':
+        'اگر این مربی بپذیرد، همکاری شما با :name به‌طور خودکار پایان می‌یابد.',
     'Request coaching from :name': 'درخواست مربیگری از :name',
     'Tell the coach about your goal. They see your intake profile too, so keep it up to date.':
         'درباره‌ی هدفت به مربی بگو. مربی پروفایل سلامت و اهدافت را هم می‌بیند، پس آن را به‌روز نگه دار.',
@@ -154,7 +165,8 @@ export const fa: Record<string, string> = {
     'Switched to another coach': 'به مربی دیگری رفت',
     'No reason given': 'دلیلی ثبت نشده',
     'No past trainees yet.': 'هنوز شاگرد قبلی ندارید.',
-    'This trainee has not filled in their intake profile yet.': 'این شاگرد هنوز پروفایل اولیه‌اش را کامل نکرده است.',
+    'This trainee has not filled in their intake profile yet.':
+        'این شاگرد هنوز پروفایل اولیه‌اش را کامل نکرده است.',
     Goal: 'هدف',
     Experience: 'سابقه‌ی تمرین',
     Age: 'سن',
@@ -166,16 +178,19 @@ export const fa: Record<string, string> = {
     'Injuries and limitations': 'آسیب‌ها و محدودیت‌ها',
 
     // Coach: public profile editor
-    'This is what trainees see before they request coaching with you.': 'شاگردها پیش از درخواست همکاری این صفحه را می‌بینند.',
+    'This is what trainees see before they request coaching with you.':
+        'شاگردها پیش از درخواست همکاری این صفحه را می‌بینند.',
     'View public page': 'دیدن صفحه‌ی عمومی',
     Basics: 'اطلاعات پایه',
     'Change photo': 'تغییر عکس',
     'JPG or PNG, up to 2 MB.': 'JPG یا PNG، حداکثر ۲ مگابایت.',
     Headline: 'عنوان',
-    'One line about who you help, e.g. strength coach for busy beginners.': 'یک خط درباره‌ی اینکه به چه کسانی کمک می‌کنید؛ مثلاً مربی قدرتی برای مبتدی‌های پرمشغله.',
+    'One line about who you help, e.g. strength coach for busy beginners.':
+        'یک خط درباره‌ی اینکه به چه کسانی کمک می‌کنید؛ مثلاً مربی قدرتی برای مبتدی‌های پرمشغله.',
     'Profile address': 'نشانی پروفایل',
     Specialties: 'تخصص‌ها',
-    'One per line. Verified coaches get a badge after we check them.': 'هر مدرک در یک خط. پس از بررسی مدارک، نشان «تأییدشده» می‌گیرید.',
+    'One per line. Verified coaches get a badge after we check them.':
+        'هر مدرک در یک خط. پس از بررسی مدارک، نشان «تأییدشده» می‌گیرید.',
     'Years of experience': 'سال‌های تجربه',
     Languages: 'زبان‌ها',
     'Separate with commas.': 'با ویرگول جدا کنید.',
@@ -183,7 +198,8 @@ export const fa: Record<string, string> = {
     'Monthly price from (toman)': 'شروع هزینه‌ی ماهانه (تومان)',
     'In-person sessions': 'جلسه‌ی حضوری',
     Visibility: 'نمایش',
-    'Show my profile in the coach directory': 'پروفایلم در فهرست مربی‌ها نمایش داده شود',
+    'Show my profile in the coach directory':
+        'پروفایلم در فهرست مربی‌ها نمایش داده شود',
     'Accept new trainees': 'شاگرد جدید می‌پذیرم',
     'Maximum trainees': 'حداکثر شاگرد',
     'Leave empty for no limit.': 'برای نامحدود خالی بگذارید.',
@@ -193,14 +209,16 @@ export const fa: Record<string, string> = {
         'پروفایل شما هنوز تأیید نشده است. برای گرفتن نشان تأیید، مدارکتان را برای پشتیبانی بفرستید.',
 
     // Coach: trainees
-    'Trainee not found. They may have ended coaching with you.': 'شاگرد پیدا نشد. شاید همکاری را با شما پایان داده باشد.',
+    'Trainee not found. They may have ended coaching with you.':
+        'شاگرد پیدا نشد. شاید همکاری را با شما پایان داده باشد.',
     'End coaching': 'پایان همکاری',
     Overview: 'نمای کلی',
     'Coaching since': 'شروع همکاری',
     'Intake profile': 'پروفایل اولیه',
     Reviewed: 'بررسی‌شده',
     Pending: 'در انتظار',
-    'Weight :weight kg · Sleep :sleep h · Energy :energy/10': 'وزن :weight کیلوگرم · خواب :sleep ساعت · انرژی :energy از ۱۰',
+    'Weight :weight kg · Sleep :sleep h · Energy :energy/10':
+        'وزن :weight کیلوگرم · خواب :sleep ساعت · انرژی :energy از ۱۰',
     'No check-ins yet.': 'هنوز گزارشی ثبت نشده است.',
     'No messages yet.': 'هنوز پیامی نیست.',
     'End coaching with :name?': 'همکاری با :name پایان یابد؟',
@@ -211,7 +229,8 @@ export const fa: Record<string, string> = {
     'Ending…': 'در حال پایان…',
     ':count active trainees.': ':count شاگرد فعال.',
     'Add trainee': 'افزودن شاگرد',
-    'Add a trainee you already coach': 'افزودن شاگردی که هم‌اکنون با شما کار می‌کند',
+    'Add a trainee you already coach':
+        'افزودن شاگردی که هم‌اکنون با شما کار می‌کند',
     Name: 'نام',
     Email: 'ایمیل',
     'They receive an email to set their password. New trainees can also find you through your public profile.':
@@ -219,7 +238,8 @@ export const fa: Record<string, string> = {
     'Adding…': 'در حال افزودن…',
     'Last check-in': 'آخرین گزارش',
     'No check-in yet': 'هنوز گزارشی نفرستاده',
-    'No trainees yet. Accepted requests show up here.': 'هنوز شاگردی ندارید. درخواست‌های پذیرفته‌شده اینجا نمایش داده می‌شوند.',
+    'No trainees yet. Accepted requests show up here.':
+        'هنوز شاگردی ندارید. درخواست‌های پذیرفته‌شده اینجا نمایش داده می‌شوند.',
 
     // Coach: dashboard home
     'Low sleep': 'خواب کم',
@@ -229,10 +249,12 @@ export const fa: Record<string, string> = {
     'Good afternoon': 'ظهر بخیر',
     'Good evening': 'عصر بخیر',
     ':greeting, :name': ':greeting :name',
-    ':checkins check-ins and :requests coaching requests are waiting for you.': ':checkins گزارش هفتگی و :requests درخواست همکاری منتظر شماست.',
+    ':checkins check-ins and :requests coaching requests are waiting for you.':
+        ':checkins گزارش هفتگی و :requests درخواست همکاری منتظر شماست.',
     'Nothing is waiting on you right now.': 'فعلاً کاری منتظر شما نیست.',
     'Build a plan': 'ساخت برنامه',
-    'Your public profile is not live yet': 'پروفایل عمومی شما هنوز منتشر نشده است',
+    'Your public profile is not live yet':
+        'پروفایل عمومی شما هنوز منتشر نشده است',
     'Add a headline and bio, then publish it so trainees can find you in the coach directory.':
         'عنوان و معرفی خود را بنویسید و منتشرش کنید تا شاگردها شما را در فهرست مربی‌ها پیدا کنند.',
     'Set up profile': 'تنظیم پروفایل',
@@ -248,7 +270,8 @@ export const fa: Record<string, string> = {
     'Check-in queue': 'صف گزارش‌ها',
     'oldest first': 'قدیمی‌ترین اول',
     'All check-ins': 'همه‌ی گزارش‌ها',
-    'No check-ins waiting. New ones show up here as trainees send them.': 'گزارشی منتظر نیست. گزارش‌های جدید اینجا نمایش داده می‌شوند.',
+    'No check-ins waiting. New ones show up here as trainees send them.':
+        'گزارشی منتظر نیست. گزارش‌های جدید اینجا نمایش داده می‌شوند.',
     Sent: 'ارسال',
     Sleep: 'خواب',
     Energy: 'انرژی',
@@ -260,17 +283,21 @@ export const fa: Record<string, string> = {
     'Send nudge': 'ارسال یادآوری',
     'Waiting for their first check-in': 'منتظر اولین گزارش',
     Message: 'پیام',
-    'Everyone has checked in within the last week.': 'همه در هفته‌ی گذشته گزارش داده‌اند.',
-    'Accept a request or add a trainee to start tracking check-ins.': 'برای پیگیری گزارش‌ها، یک درخواست را بپذیرید یا شاگرد اضافه کنید.',
+    'Everyone has checked in within the last week.':
+        'همه در هفته‌ی گذشته گزارش داده‌اند.',
+    'Accept a request or add a trainee to start tracking check-ins.':
+        'برای پیگیری گزارش‌ها، یک درخواست را بپذیرید یا شاگرد اضافه کنید.',
     'All requests': 'همه‌ی درخواست‌ها',
-    'No new requests. Trainees who find your public profile land here.': 'درخواست جدیدی نیست. شاگردهایی که پروفایل شما را پیدا کنند اینجا می‌آیند.',
+    'No new requests. Trainees who find your public profile land here.':
+        'درخواست جدیدی نیست. شاگردهایی که پروفایل شما را پیدا کنند اینجا می‌آیند.',
     Conversations: 'گفتگوها',
     Inbox: 'صندوق پیام',
 
     // Trainee: no coach yet
     'Waiting for :name to accept': 'در انتظار پذیرش :name',
     'Find your coach to get started': 'برای شروع، مربی‌ات را پیدا کن',
-    'Chat, check-ins and your plan unlock as soon as the coach accepts your request.': 'گفتگو، گزارش هفتگی و برنامه‌ات به محض پذیرش درخواست فعال می‌شوند.',
+    'Chat, check-ins and your plan unlock as soon as the coach accepts your request.':
+        'گفتگو، گزارش هفتگی و برنامه‌ات به محض پذیرش درخواست فعال می‌شوند.',
     'Chat, check-ins and your plan unlock once a coach accepts you. Browse coaches and send a request.':
         'وقتی مربی‌ای تو را بپذیرد، گفتگو، گزارش هفتگی و برنامه‌ات فعال می‌شوند. مربی‌ها را ببین و درخواست بفرست.',
     'View request': 'دیدن درخواست',
@@ -309,7 +336,8 @@ export const fa: Record<string, string> = {
     'Height (cm)': 'قد (سانتی‌متر)',
     'Weight (kg)': 'وزن (کیلوگرم)',
     'Injuries, pain or medical conditions': 'آسیب، درد یا بیماری',
-    'e.g. lower back pain when deadlifting, knee surgery in 2023': 'مثلاً کمردرد هنگام ددلیفت، جراحی زانو در سال ۱۴۰۲',
+    'e.g. lower back pain when deadlifting, knee surgery in 2023':
+        'مثلاً کمردرد هنگام ددلیفت، جراحی زانو در سال ۱۴۰۲',
     'I confirm this information is accurate, I will tell my coach about any health changes, and I have checked with a doctor if I have a medical condition.':
         'تأیید می‌کنم این اطلاعات درست است، هر تغییری در سلامتم را به مربی اطلاع می‌دهم و اگر بیماری دارم با پزشک مشورت کرده‌ام.',
 
@@ -321,29 +349,35 @@ export const fa: Record<string, string> = {
     'Your check-in is due': 'وقت گزارش هفتگی است',
     'Next check-in in :days days': 'گزارش بعدی تا :days روز دیگر',
     'Last sent :when.': 'آخرین ارسال :when.',
-    'Takes about 3 minutes. Your coach uses it to adjust your plan.': 'حدود ۳ دقیقه وقت می‌گیرد. مربی با آن برنامه‌ات را تنظیم می‌کند.',
+    'Takes about 3 minutes. Your coach uses it to adjust your plan.':
+        'حدود ۳ دقیقه وقت می‌گیرد. مربی با آن برنامه‌ات را تنظیم می‌کند.',
     'Start check-in': 'شروع گزارش',
     'From :name': 'از :name',
     'your coach': 'مربی‌ات',
-    'No messages yet. Send your coach a note about your week.': 'هنوز پیامی نیست. درباره‌ی هفته‌ات برای مربی بنویس.',
+    'No messages yet. Send your coach a note about your week.':
+        'هنوز پیامی نیست. درباره‌ی هفته‌ات برای مربی بنویس.',
     Reply: 'پاسخ',
     'Open chat': 'باز کردن گفتگو',
     'View all': 'همه',
     kg: 'کیلوگرم',
     h: 'ساعت',
-    'Your weight, sleep and energy show up here after your first check-in.': 'وزن، خواب و انرژی‌ات بعد از اولین گزارش اینجا نمایش داده می‌شود.',
+    'Your weight, sleep and energy show up here after your first check-in.':
+        'وزن، خواب و انرژی‌ات بعد از اولین گزارش اینجا نمایش داده می‌شود.',
     'Your current training plan': 'برنامه‌ی تمرینی فعلی',
     'Daily targets and meals': 'اهداف روزانه و وعده‌ها',
 
     // Trainee: chat and check-in
     'Chat with your coach': 'گفتگو با مربی',
     'Your coach': 'مربی تو',
-    'Only you and your coach can read this chat.': 'فقط تو و مربی‌ات این گفتگو را می‌بینید.',
-    'No messages yet. Say hello to your coach.': 'هنوز پیامی نیست. به مربی‌ات سلام کن.',
+    'Only you and your coach can read this chat.':
+        'فقط تو و مربی‌ات این گفتگو را می‌بینید.',
+    'No messages yet. Say hello to your coach.':
+        'هنوز پیامی نیست. به مربی‌ات سلام کن.',
     'Message your coach…': 'پیام به مربی…',
     Send: 'ارسال',
     'Check-in submitted to your coach.': 'گزارش برای مربی فرستاده شد.',
-    'Takes about 5 minutes. Your coach reviews it and replies in chat.': 'حدود ۵ دقیقه وقت می‌گیرد. مربی آن را بررسی می‌کند و در گفتگو پاسخ می‌دهد.',
+    'Takes about 5 minutes. Your coach reviews it and replies in chat.':
+        'حدود ۵ دقیقه وقت می‌گیرد. مربی آن را بررسی می‌کند و در گفتگو پاسخ می‌دهد.',
     Metrics: 'اندازه‌ها',
     'Waist (cm)': 'دور کمر (سانتی‌متر)',
     'Average sleep (h)': 'میانگین خواب (ساعت)',
@@ -354,9 +388,11 @@ export const fa: Record<string, string> = {
     Upload: 'بارگذاری',
     Reflection: 'مرور هفته',
     'How did this week go?': 'این هفته چطور گذشت؟',
-    'Wins, struggles, anything on your mind…': 'موفقیت‌ها، سختی‌ها، هر چیزی که در ذهنت است…',
+    'Wins, struggles, anything on your mind…':
+        'موفقیت‌ها، سختی‌ها، هر چیزی که در ذهنت است…',
     'Anything your coach should adjust?': 'چیزی هست که مربی باید تغییر دهد؟',
-    'Optional — energy, workouts, meals, life…': 'اختیاری — انرژی، تمرین‌ها، وعده‌ها، زندگی…',
+    'Optional — energy, workouts, meals, life…':
+        'اختیاری — انرژی، تمرین‌ها، وعده‌ها، زندگی…',
     'Draft saved on this device.': 'پیش‌نویس روی این دستگاه ذخیره شد.',
     'Save draft': 'ذخیره‌ی پیش‌نویس',
     'Submitting…': 'در حال ارسال…',
@@ -366,9 +402,11 @@ export const fa: Record<string, string> = {
     Register: 'ثبت‌نام',
     'Account type': 'نوع حساب',
     'I want a coach': 'دنبال مربی هستم',
-    'Find a coach, follow your plan and chat with them.': 'مربی پیدا کن، برنامه‌ات را دنبال کن و با او گفتگو کن.',
+    'Find a coach, follow your plan and chat with them.':
+        'مربی پیدا کن، برنامه‌ات را دنبال کن و با او گفتگو کن.',
     'I am a coach': 'مربی هستم',
-    'Get a public profile and manage your trainees.': 'پروفایل عمومی بساز و شاگردانت را مدیریت کن.',
+    'Get a public profile and manage your trainees.':
+        'پروفایل عمومی بساز و شاگردانت را مدیریت کن.',
     'Full name': 'نام و نام خانوادگی',
     'Email address': 'نشانی ایمیل',
     Password: 'رمز عبور',
@@ -377,13 +415,15 @@ export const fa: Record<string, string> = {
     'Already have an account?': 'حساب داری؟',
     'Log in': 'ورود',
     'Create an account': 'ساخت حساب کاربری',
-    'Choose your account type and enter your details': 'نوع حساب را انتخاب کن و اطلاعاتت را وارد کن',
+    'Choose your account type and enter your details':
+        'نوع حساب را انتخاب کن و اطلاعاتت را وارد کن',
     'Forgot your password?': 'رمز عبور را فراموش کرده‌اید؟',
     'Remember me': 'مرا به خاطر بسپار',
     "Don't have an account?": 'حساب نداری؟',
     'Sign up': 'ثبت‌نام',
     'Log in to your account': 'ورود به حساب کاربری',
-    'Enter your email and password below to log in': 'برای ورود، ایمیل و رمز عبورت را وارد کن',
+    'Enter your email and password below to log in':
+        'برای ورود، ایمیل و رمز عبورت را وارد کن',
     'Hide password': 'پنهان کردن رمز',
     'Show password': 'نمایش رمز',
 
@@ -395,14 +435,18 @@ export const fa: Record<string, string> = {
     Main: 'منوی اصلی',
     'Find a coach': 'پیدا کردن مربی',
     'Close menu': 'بستن منو',
-    'Find your coach · FitnessOS · Train with a plan ·': 'مربی‌ات را پیدا کن · فیتنس‌اواس · با برنامه تمرین کن ·',
-    'Find a verified coach, follow your plan and check in with them every week.': 'مربی تأییدشده پیدا کن، برنامه‌ات را دنبال کن و هر هفته به او گزارش بده.',
+    'Find your coach · FitnessOS · Train with a plan ·':
+        'مربی‌ات را پیدا کن · فیتنس‌اواس · با برنامه تمرین کن ·',
+    'Find a verified coach, follow your plan and check in with them every week.':
+        'مربی تأییدشده پیدا کن، برنامه‌ات را دنبال کن و هر هفته به او گزارش بده.',
     Company: 'فیتنس‌اواس',
     'Sign in': 'ورود',
     'Coach dashboard': 'داشبورد مربی',
     'Trainee app': 'برنامه‌ی شاگرد',
-    '© :year FitnessOS · All rights reserved': '© :year فیتنس‌اواس · همه‌ی حقوق محفوظ است',
-    'Built for coaches and the people they train': 'ساخته‌شده برای مربی‌ها و شاگردانشان',
+    '© :year FitnessOS · All rights reserved':
+        '© :year فیتنس‌اواس · همه‌ی حقوق محفوظ است',
+    'Built for coaches and the people they train':
+        'ساخته‌شده برای مربی‌ها و شاگردانشان',
 
     // Landing page
     'Verified coaches': 'مربی‌های تأییدشده',
@@ -429,14 +473,16 @@ export const fa: Record<string, string> = {
     'Can I change my coach?': 'می‌توانم مربی‌ام را عوض کنم؟',
     'Yes. Request a new coach any time. When they accept, your current coaching ends automatically. You can also stop coaching without picking someone new.':
         'بله. هر زمان از مربی جدیدی درخواست بده. وقتی بپذیرد، همکاری فعلی خودکار تمام می‌شود. می‌توانی بدون انتخاب مربی جدید هم همکاری را تمام کنی.',
-    'What happens to my data if I switch?': 'اگر مربی‌ام را عوض کنم اطلاعاتم چه می‌شود؟',
+    'What happens to my data if I switch?':
+        'اگر مربی‌ام را عوض کنم اطلاعاتم چه می‌شود؟',
     'Your intake profile and check-in history belong to you and stay in your account. Your previous coach loses access when the coaching ends.':
         'پروفایل سلامت و سوابق گزارش‌هایت مال خودت است و در حسابت می‌ماند. با پایان همکاری، دسترسی مربی قبلی قطع می‌شود.',
     'Will I be talking to an AI?': 'آیا با هوش مصنوعی صحبت می‌کنم؟',
     'No. Coaches can use an AI assistant to draft plans and replies, but every message and plan is reviewed and approved by your coach before you see it.':
         'نه. مربی‌ها می‌توانند برای پیش‌نویس برنامه و پاسخ از دستیار هوشمند کمک بگیرند، اما هر پیام و برنامه پیش از رسیدن به تو توسط مربی بررسی و تأیید می‌شود.',
     'How do I pay my coach?': 'هزینه‌ی مربی را چطور پرداخت کنم؟',
-    'For now you agree on payment directly with your coach. In-app payments are coming soon.': 'فعلاً پرداخت را مستقیم با مربی هماهنگ می‌کنی. پرداخت درون برنامه به‌زودی اضافه می‌شود.',
+    'For now you agree on payment directly with your coach. In-app payments are coming soon.':
+        'فعلاً پرداخت را مستقیم با مربی هماهنگ می‌کنی. پرداخت درون برنامه به‌زودی اضافه می‌شود.',
     'How are coaches verified?': 'مربی‌ها چطور تأیید می‌شوند؟',
     'Coaches upload their certifications and our team checks them. Verified coaches show a badge on their profile.':
         'مربی‌ها مدارکشان را ارائه می‌دهند و تیم ما آن‌ها را بررسی می‌کند. مربی‌های تأییدشده نشان ویژه‌ای در پروفایل دارند.',
@@ -447,7 +493,8 @@ export const fa: Record<string, string> = {
     "I'm a coach": 'مربی هستم',
     'Coaches on FitnessOS': 'مربی‌های فیتنس‌اواس',
     'See all coaches': 'دیدن همه‌ی مربی‌ها',
-    'The first coaches are setting up their profiles. Are you a coach?': 'اولین مربی‌ها در حال ساختن پروفایلشان هستند. شما مربی هستید؟',
+    'The first coaches are setting up their profiles. Are you a coach?':
+        'اولین مربی‌ها در حال ساختن پروفایلشان هستند. شما مربی هستید؟',
     'Create your profile': 'پروفایل‌تان را بسازید',
     'For trainees': 'برای شاگردها',
     'How it works': 'چطور کار می‌کند',
@@ -458,20 +505,25 @@ export const fa: Record<string, string> = {
     'Create your coach profile': 'ساخت پروفایل مربی',
     Questions: 'پرسش‌ها',
     'Frequently asked': 'پرسش‌های پرتکرار',
-    'Your next coach is one request away.': 'مربی بعدی‌ات فقط یک درخواست فاصله دارد.',
+    'Your next coach is one request away.':
+        'مربی بعدی‌ات فقط یک درخواست فاصله دارد.',
     'Ask a question': 'پرسیدن سؤال',
     'The FitnessOS trainee app, showing a due check-in, a message from the coach and weekly progress':
         'برنامه‌ی شاگرد فیتنس‌اواس با گزارش هفتگی، پیام مربی و پیشرفت هفتگی',
     'From your coach': 'از طرف مربی',
-    "Great depth on Tuesday's squats. If the first set feels easy today, add 2.5 kg.": 'عمق اسکوات سه‌شنبه عالی بود. اگر ست اول امروز سبک بود، ۲٫۵ کیلو اضافه کن.',
+    "Great depth on Tuesday's squats. If the first set feels easy today, add 2.5 kg.":
+        'عمق اسکوات سه‌شنبه عالی بود. اگر ست اول امروز سبک بود، ۲٫۵ کیلو اضافه کن.',
 
     // About and contact
     'About — FitnessOS': 'درباره‌ی ما — فیتنس‌اواس',
-    'Why we built FitnessOS: a home for coaches and the people they train.': 'چرا فیتنس‌اواس را ساختیم: خانه‌ای برای مربی‌ها و شاگردانشان.',
+    'Why we built FitnessOS: a home for coaches and the people they train.':
+        'چرا فیتنس‌اواس را ساختیم: خانه‌ای برای مربی‌ها و شاگردانشان.',
     'Coaches first': 'اول مربی‌ها',
-    'Coaches own their profile, their prices and their trainees. We give them the tools, not a script.': 'پروفایل، قیمت و شاگردان هر مربی مال خودش است. ما ابزار می‌دهیم، نه دستورالعمل.',
+    'Coaches own their profile, their prices and their trainees. We give them the tools, not a script.':
+        'پروفایل، قیمت و شاگردان هر مربی مال خودش است. ما ابزار می‌دهیم، نه دستورالعمل.',
     'Trainees stay free to choose': 'شاگردها در انتخاب آزادند',
-    'Switching or stopping is one tap. Your intake and check-in history always stay in your account.': 'تغییر یا پایان همکاری با یک ضربه انجام می‌شود. پروفایل و سوابق گزارش‌ها همیشه در حساب خودت می‌ماند.',
+    'Switching or stopping is one tap. Your intake and check-in history always stay in your account.':
+        'تغییر یا پایان همکاری با یک ضربه انجام می‌شود. پروفایل و سوابق گزارش‌ها همیشه در حساب خودت می‌ماند.',
     'AI behind the coach, never in front': 'هوش مصنوعی پشت مربی، نه جای او',
     'AI helps coaches draft plans and replies faster. Every word is approved by the coach, and trainees never chat with a bot.':
         'هوش مصنوعی به مربی کمک می‌کند برنامه و پاسخ را سریع‌تر آماده کند. هر کلمه را مربی تأیید می‌کند و شاگرد هیچ‌وقت با ربات گفتگو نمی‌کند.',
@@ -483,7 +535,8 @@ export const fa: Record<string, string> = {
     'Join as a coach': 'پیوستن به‌عنوان مربی',
     'Contact — FitnessOS': 'تماس — فیتنس‌اواس',
     'Get in touch with the FitnessOS team.': 'با تیم فیتنس‌اواس در تماس باشید.',
-    'Message sent. We will reply by email.': 'پیام فرستاده شد. با ایمیل پاسخ می‌دهیم.',
+    'Message sent. We will reply by email.':
+        'پیام فرستاده شد. با ایمیل پاسخ می‌دهیم.',
     'Say hi.': 'سلام کن.',
     'Questions about finding a coach, joining as a coach, or the platform? We reply within one business day.':
         'درباره‌ی پیدا کردن مربی، پیوستن به‌عنوان مربی یا خود پلتفرم سؤال داری؟ ظرف یک روز کاری پاسخ می‌دهیم.',
@@ -495,7 +548,9 @@ export const fa: Record<string, string> = {
     'Trainee app — FitnessOS': 'برنامه‌ی شاگرد — فیتنس‌اواس',
     'Coach dashboard — FitnessOS': 'داشبورد مربی — فیتنس‌اواس',
     Close: 'بستن',
-    'Accept a request or add a trainee to start a conversation.': 'برای شروع گفتگو، یک درخواست را بپذیرید یا شاگرد اضافه کنید.',
+    'Accept a request or add a trainee to start a conversation.':
+        'برای شروع گفتگو، یک درخواست را بپذیرید یا شاگرد اضافه کنید.',
     'Type a message…': 'پیام بنویسید…',
-    'Select a trainee to view messages.': 'برای دیدن پیام‌ها یک شاگرد را انتخاب کنید.',
+    'Select a trainee to view messages.':
+        'برای دیدن پیام‌ها یک شاگرد را انتخاب کنید.',
 };

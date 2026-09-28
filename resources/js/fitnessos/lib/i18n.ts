@@ -17,7 +17,10 @@ export function isRtl(): boolean {
     return document.documentElement.dir === 'rtl';
 }
 
-export function t(text: string, replace: Record<string, string | number> = {}): string {
+export function t(
+    text: string,
+    replace: Record<string, string | number> = {},
+): string {
     const translated = dictionaries[locale()][text] ?? text;
 
     return Object.entries(replace).reduce(

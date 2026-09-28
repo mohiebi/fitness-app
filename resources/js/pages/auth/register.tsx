@@ -30,9 +30,24 @@ function initialChoice(): { role: Role | null; coach: string } {
     };
 }
 
-const roles: { value: Role; title: string; detail: string; icon: typeof Dumbbell }[] = [
-    { value: 'client', title: 'I want a coach', detail: 'Find a coach, follow your plan and chat with them.', icon: Dumbbell },
-    { value: 'coach', title: 'I am a coach', detail: 'Get a public profile and manage your trainees.', icon: Megaphone },
+const roles: {
+    value: Role;
+    title: string;
+    detail: string;
+    icon: typeof Dumbbell;
+}[] = [
+    {
+        value: 'client',
+        title: 'I want a coach',
+        detail: 'Find a coach, follow your plan and chat with them.',
+        icon: Dumbbell,
+    },
+    {
+        value: 'coach',
+        title: 'I am a coach',
+        detail: 'Get a public profile and manage your trainees.',
+        icon: Megaphone,
+    },
 ];
 
 export default function Register({ passwordRules }: Props) {
@@ -52,8 +67,13 @@ export default function Register({ passwordRules }: Props) {
                     <>
                         <div className="grid gap-6">
                             <fieldset className="grid gap-2">
-                                <legend className="mb-2 text-sm font-medium">{t('Account type')}</legend>
-                                <div className="grid gap-2 sm:grid-cols-2" role="radiogroup">
+                                <legend className="mb-2 text-sm font-medium">
+                                    {t('Account type')}
+                                </legend>
+                                <div
+                                    className="grid gap-2 sm:grid-cols-2"
+                                    role="radiogroup"
+                                >
                                     {roles.map((option) => {
                                         const Icon = option.icon;
                                         return (
@@ -61,20 +81,31 @@ export default function Register({ passwordRules }: Props) {
                                                 key={option.value}
                                                 className={cn(
                                                     'flex cursor-pointer flex-col gap-1 rounded-lg border p-3 text-sm transition-colors',
-                                                    role === option.value ? 'border-primary bg-primary/5' : 'border-input hover:bg-accent',
+                                                    role === option.value
+                                                        ? 'border-primary bg-primary/5'
+                                                        : 'border-input hover:bg-accent',
                                                 )}
                                             >
                                                 <input
                                                     type="radio"
                                                     name="role"
                                                     value={option.value}
-                                                    checked={role === option.value}
-                                                    onChange={() => setRole(option.value)}
+                                                    checked={
+                                                        role === option.value
+                                                    }
+                                                    onChange={() =>
+                                                        setRole(option.value)
+                                                    }
                                                     className="sr-only"
                                                     required
                                                 />
-                                                <span className="flex items-center gap-2 font-semibold"><Icon className="size-4" />{t(option.title)}</span>
-                                                <span className="text-muted-foreground text-xs">{t(option.detail)}</span>
+                                                <span className="flex items-center gap-2 font-semibold">
+                                                    <Icon className="size-4" />
+                                                    {t(option.title)}
+                                                </span>
+                                                <span className="text-muted-foreground text-xs">
+                                                    {t(option.detail)}
+                                                </span>
                                             </label>
                                         );
                                     })}
@@ -82,7 +113,13 @@ export default function Register({ passwordRules }: Props) {
                                 <InputError message={errors.role} />
                             </fieldset>
 
-                            {coach && role === 'client' && <input type="hidden" name="coach" value={coach} />}
+                            {coach && role === 'client' && (
+                                <input
+                                    type="hidden"
+                                    name="coach"
+                                    value={coach}
+                                />
+                            )}
 
                             <div className="grid gap-2">
                                 <Label htmlFor="name">{t('Name')}</Label>
@@ -103,7 +140,9 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">{t('Email address')}</Label>
+                                <Label htmlFor="email">
+                                    {t('Email address')}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -118,7 +157,9 @@ export default function Register({ passwordRules }: Props) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">{t('Password')}</Label>
+                                <Label htmlFor="password">
+                                    {t('Password')}
+                                </Label>
                                 <PasswordInput
                                     id="password"
                                     required
