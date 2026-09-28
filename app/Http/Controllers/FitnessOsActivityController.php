@@ -15,12 +15,12 @@ class FitnessOsActivityController extends Controller
         $user = $request->user();
 
         if ($user->role === 'client') {
-            abort_unless($user->coach_id, 422, 'No coach is assigned to this account.');
+            abort_unless($user->coach_id !== null, 422, __('No coach is assigned to this account.'));
 
             return $user;
         }
 
-        abort_unless($client, 422, 'Choose a client.');
+        abort_unless($client !== null, 422, __('Choose a trainee.'));
 
         return User::query()
             ->whereKey($client)
@@ -88,7 +88,7 @@ class FitnessOsActivityController extends Controller
             ->where('fitnessos_checkins.coach_id', $request->user()->id)
             ->where('users.coach_id', $request->user()->id)
             ->first();
-        abort_unless($entry, 404);
+        abort_unless($entry !== null, 404);
 
         DB::transaction(function () use ($entry, $request, $data): void {
             DB::table('fitnessos_checkins')->where('id', $entry->id)->update([
@@ -128,7 +128,7 @@ class FitnessOsActivityController extends Controller
                     'id' => (string) $client->id,
                     'name' => $client->name,
                     'avatar' => null,
-                    'last' => $last?->body ?? __('No messages yet'),
+                    'last' => $last->body ?? __('No messages yet'),
                     'time' => $last ? Carbon::parse($last->created_at)->diffForHumans() : '',
                     'last_at' => $last ? Carbon::parse($last->created_at)->toIso8601String() : null,
                     'unread' => 0,

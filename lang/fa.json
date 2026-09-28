@@ -13,5 +13,7 @@
     "Request withdrawn.": "درخواست لغو شد.",
     "Coaching ended.": "همکاری پایان یافت.",
     "Message received.": "پیام شما دریافت شد.",
-    "No messages yet": "هنوز پیامی نیست"
+    "No messages yet": "هنوز پیامی نیست",
+    "No coach is assigned to this account.": "هنوز مربی‌ای برای این حساب تعیین نشده است.",
+    "Choose a trainee.": "یک شاگرد را انتخاب کنید."
 }
