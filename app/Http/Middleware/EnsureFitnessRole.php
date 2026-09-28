@@ -10,7 +10,7 @@ class EnsureFitnessRole
 {
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        $currentRole = $request->user()?->role ?? 'coach';
+        $currentRole = $request->user()->role ?? 'coach';
         $allowed = $role === 'coach'
             ? in_array($currentRole, ['coach', 'admin'], true)
             : $currentRole === $role;

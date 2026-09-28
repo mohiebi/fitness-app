@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\CoachProfile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -30,10 +31,38 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'coach',
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
         ];
+    }
+
+    /**
+     * A trainee account (stored with the legacy "client" role).
+     */
+    public function trainee(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'client',
+        ]);
+    }
+
+    /**
+     * A coach with a published public profile.
+     *
+     * @param  array<string, mixed>  $profile
+     */
+    public function publishedCoach(array $profile = []): static
+    {
+        return $this->afterCreating(function (User $user) use ($profile): void {
+            $user->coachProfile()->create([
+                'slug' => CoachProfile::uniqueSlugFor($user->name),
+                'headline' => 'Strength coach',
+                'is_published' => true,
+                ...$profile,
+            ]);
+        });
     }
 
     /**

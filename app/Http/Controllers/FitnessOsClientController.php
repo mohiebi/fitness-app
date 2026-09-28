@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coaching;
 use App\Models\User;
+use App\Services\CoachingLifecycle;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -13,6 +15,13 @@ class FitnessOsClientController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $coachings = Coaching::query()
+            ->where('coach_id', $request->user()->id)
+            ->where('status', Coaching::ACTIVE)
+            ->with('trainee.traineeProfile')
+            ->get()
+            ->keyBy('trainee_id');
+
         $clients = User::query()
             ->where('role', 'client')
             ->where('coach_id', $request->user()->id)
@@ -23,18 +32,20 @@ class FitnessOsClientController extends Controller
                 'name' => $client->name,
                 'email' => $client->email,
                 'avatar' => null,
-                'goal' => 'Not set',
+                'goal' => $client->traineeProfile->goal ?? 'Not set',
                 'status' => 'Active',
                 'package' => 'Not set',
                 'progress' => 0,
                 'lastCheckin' => 'No check-in yet',
                 'notes' => '',
+                'coaching_id' => $coachings->get($client->id)?->id,
+                'started_at' => $coachings->get($client->id)?->started_at?->toIso8601String(),
             ]);
 
         return response()->json($clients);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, CoachingLifecycle $lifecycle): JsonResponse
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -45,8 +56,8 @@ class FitnessOsClientController extends Controller
             ...$data,
             'password' => Str::random(40),
             'role' => 'client',
-            'coach_id' => $request->user()->id,
         ]);
+        $lifecycle->startDirect($request->user(), $client);
 
         try {
             $mailStatus = Password::sendResetLink(['email' => $client->email]);
@@ -69,7 +80,7 @@ class FitnessOsClientController extends Controller
         ], 201);
     }
 
-    public function show(Request $request, int $client): JsonResponse
+    public function show(Request $request, int $client, CoachingLifecycle $lifecycle): JsonResponse
     {
         $user = User::query()
             ->whereKey($client)
@@ -82,6 +93,8 @@ class FitnessOsClientController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'joined_at' => $user->created_at?->toDateString(),
+            'profile' => $user->traineeProfile?->toSummaryArray(),
+            'coaching' => $lifecycle->activeFor($user)?->toSummaryArray(),
         ]);
     }
 }

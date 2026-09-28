@@ -4,8 +4,11 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Models\CoachProfile;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -22,12 +25,30 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
+            'role' => ['required', Rule::in(['coach', 'client'])],
+            'coach' => ['nullable', 'string', 'max:60'],
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => $input['password'],
-        ]);
+        $user = DB::transaction(function () use ($input): User {
+            $user = User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'password' => $input['password'],
+                'role' => $input['role'],
+            ]);
+
+            if ($user->isCoach()) {
+                $user->coachProfile()->create(['slug' => CoachProfile::uniqueSlugFor($user->name)]);
+            }
+
+            return $user;
+        });
+
+        // A trainee who signed up from a coach's page continues the request there.
+        if ($user->isTrainee() && ! empty($input['coach'])) {
+            session()->put('fitnessos.intended_coach', $input['coach']);
+        }
+
+        return $user;
     }
 }

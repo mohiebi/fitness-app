@@ -1,0 +1,19 @@
+{
+    "This coach is not accepting new trainees right now.": "این مربی در حال حاضر شاگرد جدید نمی‌پذیرد.",
+    "This is already your coach.": "این مربی هم‌اکنون مربی شماست.",
+    "You already have a pending request. Withdraw it before requesting another coach.": "یک درخواست در انتظار دارید. پیش از درخواست از مربی دیگر، آن را لغو کنید.",
+    "This request is no longer pending.": "این درخواست دیگر در انتظار نیست.",
+    "You have reached your maximum number of trainees.": "به حداکثر تعداد شاگردان خود رسیده‌اید.",
+    "This coaching is not active.": "این همکاری فعال نیست.",
+    "Profile saved.": "پروفایل ذخیره شد.",
+    "The photo could not be saved.": "عکس ذخیره نشد.",
+    "Your request was sent. The coach will review it soon.": "درخواست شما فرستاده شد. مربی به‌زودی آن را بررسی می‌کند.",
+    "Request accepted.": "درخواست پذیرفته شد.",
+    "Request declined.": "درخواست رد شد.",
+    "Request withdrawn.": "درخواست لغو شد.",
+    "Coaching ended.": "همکاری پایان یافت.",
+    "Message received.": "پیام شما دریافت شد.",
+    "No messages yet": "هنوز پیامی نیست",
+    "No coach is assigned to this account.": "هنوز مربی‌ای برای این حساب تعیین نشده است.",
+    "Choose a trainee.": "یک شاگرد را انتخاب کنید."
+}

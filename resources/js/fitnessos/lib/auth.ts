@@ -9,15 +9,31 @@ export function currentUser() {
 }
 
 export function currentEmail() {
-    return document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-user-email"]',
-    )?.content ?? null;
+    return (
+        document.querySelector<HTMLMetaElement>(
+            'meta[name="fitnessos-user-email"]',
+        )?.content ?? null
+    );
 }
 
 export function isAuthenticated() {
-    return document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-authenticated"]',
-    )?.content === '1';
+    return (
+        document.querySelector<HTMLMetaElement>(
+            'meta[name="fitnessos-authenticated"]',
+        )?.content === '1'
+    );
+}
+
+export function currentRole(): 'coach' | 'client' | 'admin' | null {
+    if (!isAuthenticated()) {
+        return null;
+    }
+
+    const role = document.querySelector<HTMLMetaElement>(
+        'meta[name="fitnessos-role"]',
+    )?.content;
+
+    return role === 'client' || role === 'admin' ? role : 'coach';
 }
 
 export function requireRole(role: 'coach' | 'client') {
@@ -25,11 +41,9 @@ export function requireRole(role: 'coach' | 'client') {
         throw redirect({ href: '/login', reloadDocument: true });
     }
 
-    const currentRole = document.querySelector<HTMLMetaElement>(
-        'meta[name="fitnessos-role"]',
-    )?.content;
+    const current = currentRole();
 
-    if (currentRole !== role && !(role === 'coach' && currentRole === 'admin')) {
+    if (current !== role && !(role === 'coach' && current === 'admin')) {
         throw redirect({ href: '/portal', reloadDocument: true });
     }
 }

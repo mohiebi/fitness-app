@@ -12,7 +12,12 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
     plugins: lazyPlugins(() => [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.tsx', 'resources/css/fitnessos.css', 'resources/js/fitnessos/main.tsx'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.tsx',
+                'resources/css/fitnessos.css',
+                'resources/js/fitnessos/main.tsx',
+            ],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
@@ -37,7 +42,9 @@ export default defineConfig({
     ]),
     resolve: {
         alias: {
-            '@fitnessos': fileURLToPath(new URL('./resources/js/fitnessos/', import.meta.url)),
+            '@fitnessos': fileURLToPath(
+                new URL('./resources/js/fitnessos/', import.meta.url),
+            ),
         },
     },
     server: {
@@ -62,6 +69,7 @@ export default defineConfig({
             'resources/js/components/ui/*',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
+            'resources/js/fitnessos/routeTree.gen.ts',
         ],
         options: {
             denyWarnings: true,
@@ -80,6 +88,7 @@ export default defineConfig({
             'composer.json',
             'resources/js/components/ui/*',
             'resources/views/mail/*',
+            'resources/js/fitnessos/routeTree.gen.ts',
         ],
         sortTailwindcss: {
             functions: ['clsx', 'cn', 'cva'],

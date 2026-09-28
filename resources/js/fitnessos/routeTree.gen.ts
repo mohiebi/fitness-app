@@ -12,31 +12,32 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as ApplyRouteImport } from './routes/apply'
-import { Route as CoachingRouteImport } from './routes/coaching'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ResourcesRouteImport } from './routes/resources'
-import { Route as TransformationsRouteImport } from './routes/transformations'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCheckinRouteImport } from './routes/app.checkin'
+import { Route as AppCoachRouteImport } from './routes/app.coach'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppNutritionRouteImport } from './routes/app.nutrition'
 import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppProgressRouteImport } from './routes/app.progress'
 import { Route as AppResourcesRouteImport } from './routes/app.resources'
 import { Route as AppWorkoutRouteImport } from './routes/app.workout'
+import { Route as CoachesIndexRouteImport } from './routes/coaches.index'
+import { Route as CoachesSlugRouteImport } from './routes/coaches.$slug'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardAiRouteImport } from './routes/dashboard.ai'
 import { Route as DashboardCalendarRouteImport } from './routes/dashboard.calendar'
 import { Route as DashboardCheckinsRouteImport } from './routes/dashboard.checkins'
 import { Route as DashboardContentRouteImport } from './routes/dashboard.content'
-import { Route as DashboardLeadsRouteImport } from './routes/dashboard.leads'
 import { Route as DashboardMessagesRouteImport } from './routes/dashboard.messages'
 import { Route as DashboardNutritionRouteImport } from './routes/dashboard.nutrition'
 import { Route as DashboardPaymentsRouteImport } from './routes/dashboard.payments'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard.profile'
 import { Route as DashboardProgressRouteImport } from './routes/dashboard.progress'
 import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
+import { Route as DashboardRequestsRouteImport } from './routes/dashboard.requests'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
 import { Route as DashboardWorkoutsRouteImport } from './routes/dashboard.workouts'
 import { Route as DashboardClientsIndexRouteImport } from './routes/dashboard.clients.index'
@@ -57,16 +58,6 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApplyRoute = ApplyRouteImport.update({
-  id: '/apply',
-  path: '/apply',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoachingRoute = CoachingRouteImport.update({
-  id: '/coaching',
-  path: '/coaching',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -82,11 +73,6 @@ const ResourcesRoute = ResourcesRouteImport.update({
   path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TransformationsRoute = TransformationsRouteImport.update({
-  id: '/transformations',
-  path: '/transformations',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -95,6 +81,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppCheckinRoute = AppCheckinRouteImport.update({
   id: '/checkin',
   path: '/checkin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCoachRoute = AppCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMessagesRoute = AppMessagesRouteImport.update({
@@ -127,6 +118,16 @@ const AppWorkoutRoute = AppWorkoutRouteImport.update({
   path: '/workout',
   getParentRoute: () => AppRoute,
 } as any)
+const CoachesIndexRoute = CoachesIndexRouteImport.update({
+  id: '/coaches/',
+  path: '/coaches/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoachesSlugRoute = CoachesSlugRouteImport.update({
+  id: '/coaches/$slug',
+  path: '/coaches/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -152,11 +153,6 @@ const DashboardContentRoute = DashboardContentRouteImport.update({
   path: '/content',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardLeadsRoute = DashboardLeadsRouteImport.update({
-  id: '/leads',
-  path: '/leads',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const DashboardMessagesRoute = DashboardMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -172,6 +168,11 @@ const DashboardPaymentsRoute = DashboardPaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardProgressRoute = DashboardProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
@@ -180,6 +181,11 @@ const DashboardProgressRoute = DashboardProgressRouteImport.update({
 const DashboardReportsRoute = DashboardReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardRequestsRoute = DashboardRequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
@@ -207,32 +213,33 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
-  '/dashboard/leads': typeof DashboardLeadsRoute
   '/dashboard/messages': typeof DashboardMessagesRoute
   '/dashboard/nutrition': typeof DashboardNutritionRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
+  '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
@@ -240,31 +247,32 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
-  '/dashboard/leads': typeof DashboardLeadsRoute
   '/dashboard/messages': typeof DashboardMessagesRoute
   '/dashboard/nutrition': typeof DashboardNutritionRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app': typeof AppIndexRoute
+  '/coaches': typeof CoachesIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients': typeof DashboardClientsIndexRoute
@@ -274,32 +282,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
+  '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/nutrition': typeof AppNutritionRoute
   '/app/profile': typeof AppProfileRoute
   '/app/progress': typeof AppProgressRoute
   '/app/resources': typeof AppResourcesRoute
   '/app/workout': typeof AppWorkoutRoute
+  '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
-  '/dashboard/leads': typeof DashboardLeadsRoute
   '/dashboard/messages': typeof DashboardMessagesRoute
   '/dashboard/nutrition': typeof DashboardNutritionRoute
   '/dashboard/payments': typeof DashboardPaymentsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/progress': typeof DashboardProgressRoute
   '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
+  '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
@@ -310,32 +319,33 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/dashboard'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
-    | '/dashboard/leads'
     | '/dashboard/messages'
     | '/dashboard/nutrition'
     | '/dashboard/payments'
+    | '/dashboard/profile'
     | '/dashboard/progress'
     | '/dashboard/reports'
+    | '/dashboard/requests'
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app/'
+    | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
     | '/dashboard/clients/'
@@ -343,31 +353,32 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
-    | '/dashboard/leads'
     | '/dashboard/messages'
     | '/dashboard/nutrition'
     | '/dashboard/payments'
+    | '/dashboard/profile'
     | '/dashboard/progress'
     | '/dashboard/reports'
+    | '/dashboard/requests'
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app'
+    | '/coaches'
     | '/dashboard'
     | '/dashboard/clients/$id'
     | '/dashboard/clients'
@@ -376,32 +387,33 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/dashboard'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
+    | '/app/coach'
     | '/app/messages'
     | '/app/nutrition'
     | '/app/profile'
     | '/app/progress'
     | '/app/resources'
     | '/app/workout'
+    | '/coaches/$slug'
     | '/dashboard/ai'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
-    | '/dashboard/leads'
     | '/dashboard/messages'
     | '/dashboard/nutrition'
     | '/dashboard/payments'
+    | '/dashboard/profile'
     | '/dashboard/progress'
     | '/dashboard/reports'
+    | '/dashboard/requests'
     | '/dashboard/settings'
     | '/dashboard/workouts'
     | '/app/'
+    | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
     | '/dashboard/clients/'
@@ -411,12 +423,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRouteWithChildren
-  ApplyRoute: typeof ApplyRoute
-  CoachingRoute: typeof CoachingRoute
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   ResourcesRoute: typeof ResourcesRoute
-  TransformationsRoute: typeof TransformationsRoute
+  CoachesSlugRoute: typeof CoachesSlugRoute
+  CoachesIndexRoute: typeof CoachesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -442,20 +453,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/apply': {
-      id: '/apply'
-      path: '/apply'
-      fullPath: '/apply'
-      preLoaderRoute: typeof ApplyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/coaching': {
-      id: '/coaching'
-      path: '/coaching'
-      fullPath: '/coaching'
-      preLoaderRoute: typeof CoachingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -477,13 +474,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/transformations': {
-      id: '/transformations'
-      path: '/transformations'
-      fullPath: '/transformations'
-      preLoaderRoute: typeof TransformationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/app/': {
       id: '/app/'
       path: '/'
@@ -496,6 +486,13 @@ declare module '@tanstack/react-router' {
       path: '/checkin'
       fullPath: '/app/checkin'
       preLoaderRoute: typeof AppCheckinRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/coach': {
+      id: '/app/coach'
+      path: '/coach'
+      fullPath: '/app/coach'
+      preLoaderRoute: typeof AppCoachRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/messages': {
@@ -540,6 +537,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWorkoutRouteImport
       parentRoute: typeof AppRoute
     }
+    '/coaches/': {
+      id: '/coaches/'
+      path: '/coaches'
+      fullPath: '/coaches/'
+      preLoaderRoute: typeof CoachesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/coaches/$slug': {
+      id: '/coaches/$slug'
+      path: '/coaches/$slug'
+      fullPath: '/coaches/$slug'
+      preLoaderRoute: typeof CoachesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -575,13 +586,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardContentRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/leads': {
-      id: '/dashboard/leads'
-      path: '/leads'
-      fullPath: '/dashboard/leads'
-      preLoaderRoute: typeof DashboardLeadsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/dashboard/messages': {
       id: '/dashboard/messages'
       path: '/messages'
@@ -603,6 +607,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPaymentsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/progress': {
       id: '/dashboard/progress'
       path: '/progress'
@@ -615,6 +626,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/dashboard/reports'
       preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/requests': {
+      id: '/dashboard/requests'
+      path: '/requests'
+      fullPath: '/dashboard/requests'
+      preLoaderRoute: typeof DashboardRequestsRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/settings': {
@@ -650,6 +668,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCheckinRoute: typeof AppCheckinRoute
+  AppCoachRoute: typeof AppCoachRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppNutritionRoute: typeof AppNutritionRoute
   AppProfileRoute: typeof AppProfileRoute
@@ -661,6 +680,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCheckinRoute: AppCheckinRoute,
+  AppCoachRoute: AppCoachRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppNutritionRoute: AppNutritionRoute,
   AppProfileRoute: AppProfileRoute,
@@ -677,12 +697,13 @@ interface DashboardRouteChildren {
   DashboardCalendarRoute: typeof DashboardCalendarRoute
   DashboardCheckinsRoute: typeof DashboardCheckinsRoute
   DashboardContentRoute: typeof DashboardContentRoute
-  DashboardLeadsRoute: typeof DashboardLeadsRoute
   DashboardMessagesRoute: typeof DashboardMessagesRoute
   DashboardNutritionRoute: typeof DashboardNutritionRoute
   DashboardPaymentsRoute: typeof DashboardPaymentsRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardProgressRoute: typeof DashboardProgressRoute
   DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardRequestsRoute: typeof DashboardRequestsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardWorkoutsRoute: typeof DashboardWorkoutsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -695,12 +716,13 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardCalendarRoute: DashboardCalendarRoute,
   DashboardCheckinsRoute: DashboardCheckinsRoute,
   DashboardContentRoute: DashboardContentRoute,
-  DashboardLeadsRoute: DashboardLeadsRoute,
   DashboardMessagesRoute: DashboardMessagesRoute,
   DashboardNutritionRoute: DashboardNutritionRoute,
   DashboardPaymentsRoute: DashboardPaymentsRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
   DashboardProgressRoute: DashboardProgressRoute,
   DashboardReportsRoute: DashboardReportsRoute,
+  DashboardRequestsRoute: DashboardRequestsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardWorkoutsRoute: DashboardWorkoutsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
@@ -716,12 +738,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
-  ApplyRoute: ApplyRoute,
-  CoachingRoute: CoachingRoute,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   ResourcesRoute: ResourcesRoute,
-  TransformationsRoute: TransformationsRoute,
+  CoachesSlugRoute: CoachesSlugRoute,
+  CoachesIndexRoute: CoachesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

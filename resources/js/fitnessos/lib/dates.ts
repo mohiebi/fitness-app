@@ -13,7 +13,10 @@ export function daysSince(value: string | Date): number {
 }
 
 export function shortAge(value: string): string {
-    const minutes = Math.max(0, Math.floor((Date.now() - parseServerDate(value).getTime()) / 60_000));
+    const minutes = Math.max(
+        0,
+        Math.floor((Date.now() - parseServerDate(value).getTime()) / 60_000),
+    );
     if (minutes < 60) return `${minutes}m`;
     if (minutes < 1440) return `${Math.floor(minutes / 60)}h`;
     return `${Math.floor(minutes / 1440)}d`;
@@ -25,10 +28,18 @@ export function timeAgo(value: string): string {
 }
 
 export function todayLabel(): string {
-    return new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    return new Date().toLocaleDateString('en-GB', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+    });
 }
 
 export function greeting(): string {
     const hour = new Date().getHours();
-    return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    return hour < 12
+        ? 'Good morning'
+        : hour < 18
+          ? 'Good afternoon'
+          : 'Good evening';
 }

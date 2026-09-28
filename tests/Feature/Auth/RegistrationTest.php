@@ -1,10 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     $this->skipUnlessFortifyHas(Features::registration());
@@ -22,6 +19,7 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'role' => 'coach',
     ]);
 
     $this->assertAuthenticated();
@@ -39,6 +37,7 @@ test('Inertia registration opens the fitness dashboard', function () {
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'role' => 'coach',
     ]);
 
     $this->assertAuthenticated();

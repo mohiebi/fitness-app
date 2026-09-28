@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -28,6 +30,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read CoachProfile|null $coachProfile
+ * @property-read TraineeProfile|null $traineeProfile
  */
 #[Fillable(['name', 'email', 'password', 'role', 'coach_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -48,5 +52,39 @@ class User extends Authenticatable implements PasskeyUser
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function isCoach(): bool
+    {
+        return in_array($this->role, ['coach', 'admin'], true);
+    }
+
+    public function isTrainee(): bool
+    {
+        return $this->role === 'client';
+    }
+
+    /** @return HasOne<CoachProfile, $this> */
+    public function coachProfile(): HasOne
+    {
+        return $this->hasOne(CoachProfile::class);
+    }
+
+    /** @return HasOne<TraineeProfile, $this> */
+    public function traineeProfile(): HasOne
+    {
+        return $this->hasOne(TraineeProfile::class);
+    }
+
+    /** @return HasMany<Coaching, $this> */
+    public function coachingsAsTrainee(): HasMany
+    {
+        return $this->hasMany(Coaching::class, 'trainee_id');
+    }
+
+    /** @return HasMany<Coaching, $this> */
+    public function coachingsAsCoach(): HasMany
+    {
+        return $this->hasMany(Coaching::class, 'coach_id');
     }
 }
