@@ -23,5 +23,8 @@
     "The plan is now active for your trainee.": "برنامه برای شاگرد شما فعال شد.",
     "Plan archived.": "برنامه بایگانی شد.",
     "Archive the plan before deleting it.": "پیش از حذف، برنامه را بایگانی کنید.",
-    "Plan deleted.": "برنامه حذف شد."
+    "Plan deleted.": "برنامه حذف شد.",
+    "This workout is not part of your current plan.": "این تمرین بخشی از برنامه‌ی فعلی شما نیست.",
+    "Workout saved. Nice work!": "تمرین ثبت شد. آفرین!",
+    "Workout deleted.": "تمرین حذف شد."
 }
