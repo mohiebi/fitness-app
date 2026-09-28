@@ -61,7 +61,7 @@ function ErrorComponent({
                 <div className="mt-6 flex flex-wrap justify-center gap-2">
                     <button
                         onClick={() => {
-                            router.invalidate();
+                            void router.invalidate();
                             reset();
                         }}
                         className="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-medium transition-colors hover:opacity-90"

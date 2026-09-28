@@ -49,17 +49,17 @@ Then open `http://localhost:8000`. For a built frontend, run `npm run build` and
 
 ## App structure
 
-| Path | Purpose |
-| --- | --- |
-| `resources/js/fitnessos` | Public site, coach directory, coach dashboard, and trainee app (React and TanStack Router) |
-| `resources/js/fitnessos/locales/fa.ts` | Persian translations, keyed by the English text passed to `t()` |
-| `resources/js/pages/auth` | Registration, login, and other Laravel Fortify screens (Inertia) |
-| `resources/views/fitnessos.blade.php` | HTML entry point for the FitnessOS frontend |
-| `routes/web.php` | Public pages, role-protected app routes, and FitnessOS endpoints |
-| `app/Services/CoachingLifecycle.php` | The only place coachings change state (request, accept, decline, withdraw, end) |
-| `app/Http/Controllers` | Coach directory and profiles, coachings, trainee intake, check-ins, messages, and portal routing |
-| `database/migrations` | Account roles, coach and trainee profiles, coachings, and FitnessOS data tables |
-| `lang/fa`, `lang/fa.json` | Persian validation and server messages |
+| Path                                   | Purpose                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `resources/js/fitnessos`               | Public site, coach directory, coach dashboard, and trainee app (React and TanStack Router)       |
+| `resources/js/fitnessos/locales/fa.ts` | Persian translations, keyed by the English text passed to `t()`                                  |
+| `resources/js/pages/auth`              | Registration, login, and other Laravel Fortify screens (Inertia)                                 |
+| `resources/views/fitnessos.blade.php`  | HTML entry point for the FitnessOS frontend                                                      |
+| `routes/web.php`                       | Public pages, role-protected app routes, and FitnessOS endpoints                                 |
+| `app/Services/CoachingLifecycle.php`   | The only place coachings change state (request, accept, decline, withdraw, end)                  |
+| `app/Http/Controllers`                 | Coach directory and profiles, coachings, trainee intake, check-ins, messages, and portal routing |
+| `database/migrations`                  | Account roles, coach and trainee profiles, coachings, and FitnessOS data tables                  |
+| `lang/fa`, `lang/fa.json`              | Persian validation and server messages                                                           |
 
 Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`, and `/contact`. The old single-coach pages `/apply`, `/coaching`, and `/transformations` redirect to `/coaches`. Registration and login are at `/register` and `/login`. After authentication, `/portal` sends coaches to `/dashboard` and trainees to `/app`. The corresponding routes and JSON endpoints require authentication and the appropriate account role.
 
