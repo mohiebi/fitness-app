@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $goal
  * @property string|null $experience
  * @property string|null $limitations
- * @property Carbon|null $health_consent_at
+ * @property CarbonInterface|null $health_consent_at
  */
 #[Fillable(['birth_year', 'height_cm', 'weight_kg', 'goal', 'experience', 'limitations'])]
 class TraineeProfile extends Model

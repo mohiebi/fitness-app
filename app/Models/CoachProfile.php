@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -28,7 +28,7 @@ use Illuminate\Support\Str;
  * @property int|null $max_clients
  * @property string|null $avatar_path
  * @property bool $is_published
- * @property Carbon|null $verified_at
+ * @property CarbonInterface|null $verified_at
  * @property-read User $user
  */
 #[Fillable([

@@ -30,6 +30,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read CoachProfile|null $coachProfile
+ * @property-read TraineeProfile|null $traineeProfile
  */
 #[Fillable(['name', 'email', 'password', 'role', 'coach_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]

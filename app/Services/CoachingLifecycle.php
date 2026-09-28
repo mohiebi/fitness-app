@@ -91,7 +91,7 @@ class CoachingLifecycle
 
     public function end(Coaching $coaching, User $by, ?string $reason = null): Coaching
     {
-        abort_unless(in_array($by->id, [$coaching->coach_id, $coaching->trainee_id], true), 404);
+        abort_unless($by->id === $coaching->coach_id || $by->id === $coaching->trainee_id, 404);
 
         return DB::transaction(function () use ($coaching, $by, $reason): Coaching {
             $trainee = $this->lockTrainee($coaching->trainee);

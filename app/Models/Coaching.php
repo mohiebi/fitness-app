@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 
 /**
  * One trainee-coach relationship, from request to end.
@@ -14,11 +14,11 @@ use Illuminate\Support\Carbon;
  * @property int $trainee_id
  * @property string $status
  * @property string|null $request_message
- * @property Carbon|null $started_at
- * @property Carbon|null $ended_at
+ * @property CarbonInterface|null $started_at
+ * @property CarbonInterface|null $ended_at
  * @property int|null $ended_by
  * @property string|null $end_reason
- * @property Carbon|null $created_at
+ * @property CarbonInterface|null $created_at
  * @property-read User $coach
  * @property-read User $trainee
  */
