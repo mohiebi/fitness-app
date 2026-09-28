@@ -43,19 +43,11 @@ test('Inertia portal visits reload the fitness app for each role', function () {
         ->assertHeader('X-Inertia-Location', '/app');
 });
 
-test('application and contact forms save validated submissions', function () {
-    $this->postJson('/fitnessos/apply', [
-        'name' => 'Taylor Smith',
-        'email' => 'taylor@example.com',
-        'goal' => 'strength',
-        'package' => 'pro',
-    ])->assertCreated();
+test('retired single-coach pages redirect to the coach directory', function (string $page) {
+    $this->get('/'.$page)->assertRedirect('/coaches');
+})->with(['apply', 'coaching', 'transformations']);
 
-    $this->assertDatabaseHas('fitnessos_leads', [
-        'email' => 'taylor@example.com',
-        'stage' => 'New',
-    ]);
-
+test('the contact form saves validated submissions', function () {
     $this->postJson('/fitnessos/contact', [
         'first_name' => 'Taylor',
         'last_name' => 'Smith',
@@ -67,6 +59,8 @@ test('application and contact forms save validated submissions', function () {
         'email' => 'taylor@example.com',
         'message' => 'I have a question.',
     ]);
+
+    $this->postJson('/fitnessos/contact', ['email' => 'not-an-email'])->assertUnprocessable();
 });
 
 test('a coach can invite a client and only see their own clients', function () {

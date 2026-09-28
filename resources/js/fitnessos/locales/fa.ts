@@ -386,4 +386,110 @@ export const fa: Record<string, string> = {
     'Enter your email and password below to log in': 'برای ورود، ایمیل و رمز عبورت را وارد کن',
     'Hide password': 'پنهان کردن رمز',
     'Show password': 'نمایش رمز',
+
+    // Public nav and footer
+    Home: 'خانه',
+    About: 'درباره‌ی ما',
+    Contact: 'تماس',
+    'Open app': 'ورود به برنامه',
+    Main: 'منوی اصلی',
+    'Find a coach': 'پیدا کردن مربی',
+    'Close menu': 'بستن منو',
+    'Find your coach · FitnessOS · Train with a plan ·': 'مربی‌ات را پیدا کن · فیتنس‌اواس · با برنامه تمرین کن ·',
+    'Find a verified coach, follow your plan and check in with them every week.': 'مربی تأییدشده پیدا کن، برنامه‌ات را دنبال کن و هر هفته به او گزارش بده.',
+    Company: 'فیتنس‌اواس',
+    'Sign in': 'ورود',
+    'Coach dashboard': 'داشبورد مربی',
+    'Trainee app': 'برنامه‌ی شاگرد',
+    '© :year FitnessOS · All rights reserved': '© :year فیتنس‌اواس · همه‌ی حقوق محفوظ است',
+    'Built for coaches and the people they train': 'ساخته‌شده برای مربی‌ها و شاگردانشان',
+
+    // Landing page
+    'Verified coaches': 'مربی‌های تأییدشده',
+    'Switch coach any time': 'تغییر مربی در هر زمان',
+    'Direct chat with your coach': 'گفتگوی مستقیم با مربی',
+    'Weekly check-ins': 'گزارش هفتگی',
+    'Find your coach': 'مربی‌ات را پیدا کن',
+    'Browse public profiles by specialty, city and price. Every profile shows certifications and experience.':
+        'پروفایل‌ها را بر اساس تخصص، شهر و قیمت ببین. هر پروفایل مدارک و سابقه‌ی مربی را نشان می‌دهد.',
+    'Tell the coach your goal. Your intake profile goes with it, so they can plan safely from day one.':
+        'هدفت را به مربی بگو. پروفایل سلامتت هم همراهش می‌رود تا از روز اول برنامه‌ای امن بچیند.',
+    'Train and check in': 'تمرین کن و گزارش بده',
+    'Follow your plan, send a weekly check-in and chat with your coach. Your history stays yours.':
+        'برنامه‌ات را دنبال کن، هر هفته گزارش بفرست و با مربی گفتگو کن. سوابقت همیشه مال خودت است.',
+    'A public profile that sells': 'پروفایل عمومی که مشتری می‌آورد',
+    'Your page in the coach directory with specialties, certifications and price. Share the link anywhere.':
+        'صفحه‌ی شما در فهرست مربی‌ها با تخصص، مدارک و قیمت. پیوندش را هر جا خواستید به اشتراک بگذارید.',
+    'Your trainees in one dashboard': 'همه‌ی شاگردان در یک داشبورد',
+    'Requests, check-in queue, chat and progress. See who is going quiet before they drop off.':
+        'درخواست‌ها، صف گزارش‌ها، گفتگو و پیشرفت. پیش از اینکه شاگردی رها کند، ببینید چه کسی کم‌فعال شده است.',
+    'AI assistant, you stay in charge': 'دستیار هوشمند، تصمیم با شما',
+    'Draft plans and replies faster. Nothing reaches a trainee until you approve it, and trainees never talk to the AI.':
+        'برنامه‌ها و پاسخ‌ها را سریع‌تر پیش‌نویس کنید. تا شما تأیید نکنید چیزی به شاگرد نمی‌رسد و شاگردها هیچ‌وقت با هوش مصنوعی صحبت نمی‌کنند.',
+    'Can I change my coach?': 'می‌توانم مربی‌ام را عوض کنم؟',
+    'Yes. Request a new coach any time. When they accept, your current coaching ends automatically. You can also stop coaching without picking someone new.':
+        'بله. هر زمان از مربی جدیدی درخواست بده. وقتی بپذیرد، همکاری فعلی خودکار تمام می‌شود. می‌توانی بدون انتخاب مربی جدید هم همکاری را تمام کنی.',
+    'What happens to my data if I switch?': 'اگر مربی‌ام را عوض کنم اطلاعاتم چه می‌شود؟',
+    'Your intake profile and check-in history belong to you and stay in your account. Your previous coach loses access when the coaching ends.':
+        'پروفایل سلامت و سوابق گزارش‌هایت مال خودت است و در حسابت می‌ماند. با پایان همکاری، دسترسی مربی قبلی قطع می‌شود.',
+    'Will I be talking to an AI?': 'آیا با هوش مصنوعی صحبت می‌کنم؟',
+    'No. Coaches can use an AI assistant to draft plans and replies, but every message and plan is reviewed and approved by your coach before you see it.':
+        'نه. مربی‌ها می‌توانند برای پیش‌نویس برنامه و پاسخ از دستیار هوشمند کمک بگیرند، اما هر پیام و برنامه پیش از رسیدن به تو توسط مربی بررسی و تأیید می‌شود.',
+    'How do I pay my coach?': 'هزینه‌ی مربی را چطور پرداخت کنم؟',
+    'For now you agree on payment directly with your coach. In-app payments are coming soon.': 'فعلاً پرداخت را مستقیم با مربی هماهنگ می‌کنی. پرداخت درون برنامه به‌زودی اضافه می‌شود.',
+    'How are coaches verified?': 'مربی‌ها چطور تأیید می‌شوند؟',
+    'Coaches upload their certifications and our team checks them. Verified coaches show a badge on their profile.':
+        'مربی‌ها مدارکشان را ارائه می‌دهند و تیم ما آن‌ها را بررسی می‌کند. مربی‌های تأییدشده نشان ویژه‌ای در پروفایل دارند.',
+    'Find the right coach.': 'مربی مناسب را پیدا کن.',
+    'Follow a plan made for you.': 'با برنامه‌ای که برای تو ساخته شده پیش برو.',
+    'FitnessOS connects you with verified personal coaches. Pick one from their public profile, get a personal plan, check in every week and chat with them directly.':
+        'فیتنس‌اواس تو را به مربی‌های شخصی تأییدشده وصل می‌کند. از روی پروفایل عمومی مربی انتخاب کن، برنامه‌ی شخصی بگیر، هر هفته گزارش بده و مستقیم با مربی گفتگو کن.',
+    "I'm a coach": 'مربی هستم',
+    'Coaches on FitnessOS': 'مربی‌های فیتنس‌اواس',
+    'See all coaches': 'دیدن همه‌ی مربی‌ها',
+    'The first coaches are setting up their profiles. Are you a coach?': 'اولین مربی‌ها در حال ساختن پروفایلشان هستند. شما مربی هستید؟',
+    'Create your profile': 'پروفایل‌تان را بسازید',
+    'For trainees': 'برای شاگردها',
+    'How it works': 'چطور کار می‌کند',
+    'For coaches': 'برای مربی‌ها',
+    'Grow your coaching business': 'کسب‌وکار مربیگری‌تان را رشد دهید',
+    'Get discovered by trainees looking for a coach like you, and run your whole coaching practice from one dashboard.':
+        'شاگردهایی که دنبال مربی‌ای مثل شما هستند پیدایتان می‌کنند و همه‌ی کارهای مربیگری را از یک داشبورد مدیریت می‌کنید.',
+    'Create your coach profile': 'ساخت پروفایل مربی',
+    Questions: 'پرسش‌ها',
+    'Frequently asked': 'پرسش‌های پرتکرار',
+    'Your next coach is one request away.': 'مربی بعدی‌ات فقط یک درخواست فاصله دارد.',
+    'Ask a question': 'پرسیدن سؤال',
+    'The FitnessOS trainee app, showing a due check-in, a message from the coach and weekly progress':
+        'برنامه‌ی شاگرد فیتنس‌اواس با گزارش هفتگی، پیام مربی و پیشرفت هفتگی',
+    'From your coach': 'از طرف مربی',
+    "Great depth on Tuesday's squats. If the first set feels easy today, add 2.5 kg.": 'عمق اسکوات سه‌شنبه عالی بود. اگر ست اول امروز سبک بود، ۲٫۵ کیلو اضافه کن.',
+
+    // About and contact
+    'About — FitnessOS': 'درباره‌ی ما — فیتنس‌اواس',
+    'Why we built FitnessOS: a home for coaches and the people they train.': 'چرا فیتنس‌اواس را ساختیم: خانه‌ای برای مربی‌ها و شاگردانشان.',
+    'Coaches first': 'اول مربی‌ها',
+    'Coaches own their profile, their prices and their trainees. We give them the tools, not a script.': 'پروفایل، قیمت و شاگردان هر مربی مال خودش است. ما ابزار می‌دهیم، نه دستورالعمل.',
+    'Trainees stay free to choose': 'شاگردها در انتخاب آزادند',
+    'Switching or stopping is one tap. Your intake and check-in history always stay in your account.': 'تغییر یا پایان همکاری با یک ضربه انجام می‌شود. پروفایل و سوابق گزارش‌ها همیشه در حساب خودت می‌ماند.',
+    'AI behind the coach, never in front': 'هوش مصنوعی پشت مربی، نه جای او',
+    'AI helps coaches draft plans and replies faster. Every word is approved by the coach, and trainees never chat with a bot.':
+        'هوش مصنوعی به مربی کمک می‌کند برنامه و پاسخ را سریع‌تر آماده کند. هر کلمه را مربی تأیید می‌کند و شاگرد هیچ‌وقت با ربات گفتگو نمی‌کند.',
+    'Good coaching should be': 'مربی خوب باید',
+    'easy to find.': 'راحت پیدا شود.',
+    'Most people who want a coach find one through a friend or a social media page, then juggle chat apps, PDFs and spreadsheets. FitnessOS puts it in one place: public coach profiles to choose from, personal plans, weekly check-ins and direct chat.':
+        'بیشتر کسانی که مربی می‌خواهند، از طریق دوستان یا صفحه‌های شبکه‌های اجتماعی پیدایش می‌کنند و بعد بین پیام‌رسان‌ها، فایل‌های PDF و جدول‌ها سرگردان می‌شوند. فیتنس‌اواس همه را یک‌جا جمع کرده است: پروفایل عمومی مربی‌ها برای انتخاب، برنامه‌ی شخصی، گزارش هفتگی و گفتگوی مستقیم.',
+    'Ready to start?': 'آماده‌ی شروع هستی؟',
+    'Join as a coach': 'پیوستن به‌عنوان مربی',
+    'Contact — FitnessOS': 'تماس — فیتنس‌اواس',
+    'Get in touch with the FitnessOS team.': 'با تیم فیتنس‌اواس در تماس باشید.',
+    'Message sent. We will reply by email.': 'پیام فرستاده شد. با ایمیل پاسخ می‌دهیم.',
+    'Say hi.': 'سلام کن.',
+    'Questions about finding a coach, joining as a coach, or the platform? We reply within one business day.':
+        'درباره‌ی پیدا کردن مربی، پیوستن به‌عنوان مربی یا خود پلتفرم سؤال داری؟ ظرف یک روز کاری پاسخ می‌دهیم.',
+    Support: 'پشتیبانی',
+    'First name': 'نام',
+    'Last name': 'نام خانوادگی',
+    'How can we help?': 'چطور می‌توانیم کمک کنیم؟',
+    'Send message': 'ارسال پیام',
 };

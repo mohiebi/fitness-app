@@ -12,14 +12,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'fitnessos')->name('home');
 
-foreach (['about', 'coaching', 'transformations', 'resources', 'contact', 'apply', 'coaches'] as $page) {
+foreach (['about', 'resources', 'contact', 'coaches'] as $page) {
     Route::view($page, 'fitnessos');
 }
 Route::view('coaches/{slug}', 'fitnessos')->where('slug', '[a-z0-9-]+');
 
+// Pages from the single-coach site now live in the coach directory.
+foreach (['apply', 'coaching', 'transformations'] as $page) {
+    Route::permanentRedirect($page, '/coaches');
+}
+
 Route::get('fitnessos/coaches', [CoachDirectoryController::class, 'index']);
 Route::get('fitnessos/coaches/{slug}', [CoachDirectoryController::class, 'show']);
-Route::post('fitnessos/apply', [FitnessOsInquiryController::class, 'application'])->middleware('throttle:5,1');
 Route::post('fitnessos/contact', [FitnessOsInquiryController::class, 'contact'])->middleware('throttle:5,1');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -33,8 +37,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('fitnessos/contact-messages', [FitnessOsInquiryController::class, 'contactMessages'])->middleware('fitness.role:admin');
 
     Route::middleware('fitness.role:coach')->group(function () {
-        Route::get('fitnessos/leads', [FitnessOsInquiryController::class, 'leads']);
-        Route::patch('fitnessos/leads/{lead}', [FitnessOsInquiryController::class, 'updateLead']);
         Route::get('fitnessos/clients', [FitnessOsClientController::class, 'index']);
         Route::post('fitnessos/clients', [FitnessOsClientController::class, 'store']);
         Route::get('fitnessos/clients/{client}', [FitnessOsClientController::class, 'show']);

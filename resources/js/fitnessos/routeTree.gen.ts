@@ -12,12 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as ApplyRouteImport } from './routes/apply'
-import { Route as CoachingRouteImport } from './routes/coaching'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ResourcesRouteImport } from './routes/resources'
-import { Route as TransformationsRouteImport } from './routes/transformations'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCheckinRouteImport } from './routes/app.checkin'
 import { Route as AppCoachRouteImport } from './routes/app.coach'
@@ -61,16 +58,6 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApplyRoute = ApplyRouteImport.update({
-  id: '/apply',
-  path: '/apply',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CoachingRoute = CoachingRouteImport.update({
-  id: '/coaching',
-  path: '/coaching',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -84,11 +71,6 @@ const DashboardRoute = DashboardRouteImport.update({
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TransformationsRoute = TransformationsRouteImport.update({
-  id: '/transformations',
-  path: '/transformations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -231,12 +213,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
@@ -268,11 +247,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
@@ -306,12 +282,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/app': typeof AppRouteWithChildren
-  '/apply': typeof ApplyRoute
-  '/coaching': typeof CoachingRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/resources': typeof ResourcesRoute
-  '/transformations': typeof TransformationsRoute
   '/app/checkin': typeof AppCheckinRoute
   '/app/coach': typeof AppCoachRoute
   '/app/messages': typeof AppMessagesRoute
@@ -346,12 +319,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/dashboard'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
     | '/app/coach'
     | '/app/messages'
@@ -383,11 +353,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
     | '/app/coach'
     | '/app/messages'
@@ -420,12 +387,9 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/app'
-    | '/apply'
-    | '/coaching'
     | '/contact'
     | '/dashboard'
     | '/resources'
-    | '/transformations'
     | '/app/checkin'
     | '/app/coach'
     | '/app/messages'
@@ -459,12 +423,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AppRoute: typeof AppRouteWithChildren
-  ApplyRoute: typeof ApplyRoute
-  CoachingRoute: typeof CoachingRoute
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   ResourcesRoute: typeof ResourcesRoute
-  TransformationsRoute: typeof TransformationsRoute
   CoachesSlugRoute: typeof CoachesSlugRoute
   CoachesIndexRoute: typeof CoachesIndexRoute
 }
@@ -492,20 +453,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/apply': {
-      id: '/apply'
-      path: '/apply'
-      fullPath: '/apply'
-      preLoaderRoute: typeof ApplyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/coaching': {
-      id: '/coaching'
-      path: '/coaching'
-      fullPath: '/coaching'
-      preLoaderRoute: typeof CoachingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -525,13 +472,6 @@ declare module '@tanstack/react-router' {
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/transformations': {
-      id: '/transformations'
-      path: '/transformations'
-      fullPath: '/transformations'
-      preLoaderRoute: typeof TransformationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -798,12 +738,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AppRoute: AppRouteWithChildren,
-  ApplyRoute: ApplyRoute,
-  CoachingRoute: CoachingRoute,
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   ResourcesRoute: ResourcesRoute,
-  TransformationsRoute: TransformationsRoute,
   CoachesSlugRoute: CoachesSlugRoute,
   CoachesIndexRoute: CoachesIndexRoute,
 }
