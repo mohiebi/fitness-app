@@ -33,7 +33,7 @@ To try the marketplace with sample Persian coaches and trainees, run:
 php artisan db:seed --class=MarketplaceDemoSeeder
 ```
 
-The seeded accounts and their shared development password are listed at the top of `database/seeders/MarketplaceDemoSeeder.php`.
+The seeded accounts and their shared development password are listed at the top of `database/seeders/MarketplaceDemoSeeder.php`. The seeder also gives one trainee an active plan with two logged sessions.
 
 Start the Laravel server and Vite in separate terminals:
 
@@ -49,17 +49,18 @@ Then open `http://localhost:8000`. For a built frontend, run `npm run build` and
 
 ## App structure
 
-| Path                                   | Purpose                                                                                          |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `resources/js/fitnessos`               | Public site, coach directory, coach dashboard, and trainee app (React and TanStack Router)       |
-| `resources/js/fitnessos/locales/fa.ts` | Persian translations, keyed by the English text passed to `t()`                                  |
-| `resources/js/pages/auth`              | Registration, login, and other Laravel Fortify screens (Inertia)                                 |
-| `resources/views/fitnessos.blade.php`  | HTML entry point for the FitnessOS frontend                                                      |
-| `routes/web.php`                       | Public pages, role-protected app routes, and FitnessOS endpoints                                 |
-| `app/Services/CoachingLifecycle.php`   | The only place coachings change state (request, accept, decline, withdraw, end)                  |
-| `app/Http/Controllers`                 | Coach directory and profiles, coachings, trainee intake, check-ins, messages, and portal routing |
-| `database/migrations`                  | Account roles, coach and trainee profiles, coachings, and FitnessOS data tables                  |
-| `lang/fa`, `lang/fa.json`              | Persian validation and server messages                                                           |
+| Path                                   | Purpose                                                                                                                                  |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `resources/js/fitnessos`               | Public site, coach directory, coach dashboard, and trainee app (React and TanStack Router)                                               |
+| `resources/js/fitnessos/locales/fa.ts` | Persian translations, keyed by the English text passed to `t()`                                                                          |
+| `resources/js/pages/auth`              | Registration, login, and other Laravel Fortify screens (Inertia)                                                                         |
+| `resources/views/fitnessos.blade.php`  | HTML entry point for the FitnessOS frontend                                                                                              |
+| `routes/web.php`                       | Public pages, role-protected app routes, and FitnessOS endpoints                                                                         |
+| `app/Services/CoachingLifecycle.php`   | The only place coachings change state (request, accept, decline, withdraw, end)                                                          |
+| `app/Services/TrainingPlans.php`       | Plan creation, copying from templates, saving, activation, and adherence                                                                 |
+| `app/Http/Controllers`                 | Coach directory and profiles, coachings, trainee intake, workout plans, exercises, workout logs, check-ins, messages, and portal routing |
+| `database/migrations`                  | Account roles, coach and trainee profiles, coachings, exercises, plans, workout logs, and FitnessOS data tables                          |
+| `lang/fa`, `lang/fa.json`              | Persian validation and server messages                                                                                                   |
 
 Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`, and `/contact`. The old single-coach pages `/apply`, `/coaching`, and `/transformations` redirect to `/coaches`. Registration and login are at `/register` and `/login`. After authentication, `/portal` sends coaches to `/dashboard` and trainees to `/app`. The corresponding routes and JSON endpoints require authentication and the appropriate account role.
 
@@ -73,9 +74,17 @@ Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`,
 - After checking a coach's certifications, mark the profile as verified with `php artisan fitnessos:verify-coach coach@example.com` (add `--revoke` to remove the badge).
 - Platform contact messages at `/fitnessos/contact-messages` are only available to the `admin` role.
 
+### Training plans
+
+- The migration ships a shared exercise library with Persian and English names. Coaches can add their own exercises, which only they see.
+- A plan belongs to a coach and, optionally, a trainee. A plan without a trainee is a template. Coaches build plans at `/dashboard/workouts`, can start a trainee's plan from a template, and activate it. A trainee has one active plan; activating a new one archives the previous one.
+- Saving a plan updates days and exercises in place when they keep their ids, so logged sessions stay linked to them.
+- Trainees follow the active plan at `/app/workout` and log each set. Sessions store a copy of the exercise names, so history survives plan edits and deletion, and sessions stay with the trainee after coaching ends.
+- Adherence compares sessions logged in each rolling 7-day window with the number of training days in the active plan. Coaches see it, with recent sessions, in the Training tab of a trainee's page.
+
 ### Language
 
-`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (workouts, nutrition, payments, reports, and the AI assistant) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
+`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments, reports, and the AI assistant) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
 
 ## Checks
 

@@ -3,11 +3,14 @@
 use App\Http\Controllers\CoachDirectoryController;
 use App\Http\Controllers\CoachingController;
 use App\Http\Controllers\CoachProfileController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FitnessOsActivityController;
 use App\Http\Controllers\FitnessOsClientController;
 use App\Http\Controllers\FitnessOsInquiryController;
 use App\Http\Controllers\FitnessOsPortalController;
 use App\Http\Controllers\TraineeProfileController;
+use App\Http\Controllers\WorkoutLogController;
+use App\Http\Controllers\WorkoutPlanController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'fitnessos')->name('home');
@@ -48,6 +51,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
+        Route::get('fitnessos/exercises', [ExerciseController::class, 'index']);
+        Route::post('fitnessos/exercises', [ExerciseController::class, 'store']);
+        Route::get('fitnessos/plans', [WorkoutPlanController::class, 'index']);
+        Route::post('fitnessos/plans', [WorkoutPlanController::class, 'store']);
+        Route::get('fitnessos/plans/{plan}', [WorkoutPlanController::class, 'show']);
+        Route::put('fitnessos/plans/{plan}', [WorkoutPlanController::class, 'update']);
+        Route::delete('fitnessos/plans/{plan}', [WorkoutPlanController::class, 'destroy']);
+        Route::post('fitnessos/plans/{plan}/activate', [WorkoutPlanController::class, 'activate']);
+        Route::post('fitnessos/plans/{plan}/archive', [WorkoutPlanController::class, 'archive']);
+        Route::get('fitnessos/trainees/{trainee}/training', [WorkoutPlanController::class, 'training']);
         Route::view('dashboard', 'fitnessos')->name('dashboard');
         Route::view('dashboard/{path}', 'fitnessos')->where('path', '.*');
     });
@@ -58,6 +71,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/my-coaching', [CoachingController::class, 'mine']);
         Route::post('fitnessos/coachings', [CoachingController::class, 'store'])->middleware('throttle:10,1');
         Route::post('fitnessos/coachings/{coaching}/withdraw', [CoachingController::class, 'withdraw']);
+        Route::get('fitnessos/my-plan', [WorkoutLogController::class, 'myPlan']);
+        Route::get('fitnessos/workout-logs', [WorkoutLogController::class, 'index']);
+        Route::post('fitnessos/workout-logs', [WorkoutLogController::class, 'store'])->middleware('throttle:30,1');
+        Route::delete('fitnessos/workout-logs/{log}', [WorkoutLogController::class, 'destroy']);
         Route::view('app', 'fitnessos')->name('client.app');
         Route::view('app/{path}', 'fitnessos')->where('path', '.*');
     });

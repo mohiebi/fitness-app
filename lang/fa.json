@@ -15,5 +15,16 @@
     "Message received.": "پیام شما دریافت شد.",
     "No messages yet": "هنوز پیامی نیست",
     "No coach is assigned to this account.": "هنوز مربی‌ای برای این حساب تعیین نشده است.",
-    "Choose a trainee.": "یک شاگرد را انتخاب کنید."
+    "Choose a trainee.": "یک شاگرد را انتخاب کنید.",
+    "One of the exercises is not available.": "یکی از حرکات در دسترس نیست.",
+    "Assign the template to a trainee before activating it.": "پیش از فعال‌سازی، این قالب را به یک شاگرد اختصاص دهید.",
+    "Add at least one exercise before activating the plan.": "پیش از فعال‌سازی برنامه، دست‌کم یک حرکت اضافه کنید.",
+    "Plan saved.": "برنامه ذخیره شد.",
+    "The plan is now active for your trainee.": "برنامه برای شاگرد شما فعال شد.",
+    "Plan archived.": "برنامه بایگانی شد.",
+    "Archive the plan before deleting it.": "پیش از حذف، برنامه را بایگانی کنید.",
+    "Plan deleted.": "برنامه حذف شد.",
+    "This workout is not part of your current plan.": "این تمرین بخشی از برنامه‌ی فعلی شما نیست.",
+    "Workout saved. Nice work!": "تمرین ثبت شد. آفرین!",
+    "Workout deleted.": "تمرین حذف شد."
 }

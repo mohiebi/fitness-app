@@ -26,7 +26,7 @@ import { Label } from '@fitnessos/components/ui/label';
 import { Textarea } from '@fitnessos/components/ui/textarea';
 import { getJson, postJson } from '@fitnessos/lib/api';
 import { currentRole } from '@fitnessos/lib/auth';
-import { t } from '@fitnessos/lib/i18n';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { formatNumber, formatToman } from '@fitnessos/lib/format';
 import {
     specialtyLabel,
@@ -183,7 +183,7 @@ function CoachProfilePage() {
                             <li className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4" />
                                 {coach.city}
-                                {coach.in_person && ` · ${t('In person')}`}
+                                {coach.in_person && `${sep()}${t('In person')}`}
                             </li>
                         )}
                         {coach.online && (
