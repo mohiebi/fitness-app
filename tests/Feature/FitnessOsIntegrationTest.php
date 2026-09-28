@@ -1,12 +1,9 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
-
-uses(RefreshDatabase::class);
 
 test('public pages load and private pages require the right role', function () {
     $this->get('/')->assertOk();
