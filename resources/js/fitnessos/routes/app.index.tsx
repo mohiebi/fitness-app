@@ -15,7 +15,7 @@ import { t } from '@fitnessos/lib/i18n';
 export const Route = createFileRoute('/app/')({ component: Today });
 
 type Checkin = { id: number; weight_kg: string | null; sleep_hours: string | null; energy: number | null; status: string; created_at: string };
-type Message = { id: number; text: string; from: 'coach' | 'client'; time: string };
+type Message = { id: number; text: string; from: 'coach' | 'client'; sent_at: string };
 
 const CHECKIN_EVERY_DAYS = 7;
 
@@ -73,7 +73,7 @@ function Today() {
                     <Card className="p-5">
                         <div className="flex items-center justify-between gap-3">
                             <span className="text-sm font-semibold text-muted-foreground">{t('From :name', { name: coaching?.active?.coach.name ?? t('your coach') })}</span>
-                            {coachMessage && <span className="text-[11px] text-subtle-foreground">{coachMessage.time}</span>}
+                            {coachMessage && <span className="text-[11px] text-subtle-foreground">{formatRelative(coachMessage.sent_at)}</span>}
                         </div>
                         <p className="mt-3 line-clamp-4 text-[15px] leading-relaxed text-foreground">
                             {coachMessage ? coachMessage.text : t('No messages yet. Send your coach a note about your week.')}

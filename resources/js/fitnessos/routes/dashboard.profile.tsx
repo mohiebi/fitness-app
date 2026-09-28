@@ -64,9 +64,11 @@ function ProfileEditor() {
 
   if (isLoading || !profile || !form) return <p className="text-sm text-muted-foreground">{t("Loading…")}</p>;
 
-  const set = <K extends keyof Form>(key: K, value: Form[K]) => setForm({ ...form, [key]: value });
-  const toggleSpecialty = (key: string) =>
-    set("specialties", form.specialties.includes(key) ? form.specialties.filter((item) => item !== key) : [...form.specialties, key]);
+  const set = <K extends keyof Form>(key: K, value: Form[K]) => setForm((current) => current && { ...current, [key]: value });
+  const toggleSpecialty = (key: string) => setForm((current) => current && {
+    ...current,
+    specialties: current.specialties.includes(key) ? current.specialties.filter((item) => item !== key) : [...current.specialties, key],
+  });
 
   const save = async (event: FormEvent) => {
     event.preventDefault();

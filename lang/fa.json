@@ -12,5 +12,6 @@
     "Request declined.": "درخواست رد شد.",
     "Request withdrawn.": "درخواست لغو شد.",
     "Coaching ended.": "همکاری پایان یافت.",
-    "Message received.": "پیام شما دریافت شد."
+    "Message received.": "پیام شما دریافت شد.",
+    "No messages yet": "هنوز پیامی نیست"
 }

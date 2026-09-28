@@ -128,8 +128,9 @@ class FitnessOsActivityController extends Controller
                     'id' => (string) $client->id,
                     'name' => $client->name,
                     'avatar' => null,
-                    'last' => $last?->body ?? 'No messages yet',
+                    'last' => $last?->body ?? __('No messages yet'),
                     'time' => $last ? Carbon::parse($last->created_at)->diffForHumans() : '',
+                    'last_at' => $last ? Carbon::parse($last->created_at)->toIso8601String() : null,
                     'unread' => 0,
                 ];
             });
@@ -152,6 +153,7 @@ class FitnessOsActivityController extends Controller
                 'from' => $message->sender_id === $recipient->id ? 'client' : 'coach',
                 'text' => $message->body,
                 'time' => Carbon::parse($message->created_at)->format('M j, H:i'),
+                'sent_at' => Carbon::parse($message->created_at)->toIso8601String(),
             ]);
 
         return response()->json($messages);

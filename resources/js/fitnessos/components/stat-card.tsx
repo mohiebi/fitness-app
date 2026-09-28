@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Card } from "@fitnessos/components/ui/card";
 import { ArrowDown, ArrowRight, ArrowUp, Minus, type LucideIcon } from "lucide-react";
 import { cn } from "@fitnessos/lib/utils";
+import { formatNumber } from "@fitnessos/lib/format";
 import type { ReactNode } from "react";
 
 export function StatCard({
@@ -26,7 +27,7 @@ export function StatCard({
           </div>
         )}
       </div>
-      <div className="mt-3 font-display text-3xl font-extrabold tabular-nums md:text-4xl">{value}</div>
+      <div className="mt-3 font-display text-3xl font-extrabold tabular-nums md:text-4xl">{typeof value === "number" ? formatNumber(value) : value}</div>
       {delta && (
         <div className={cn("mt-1.5 flex items-center gap-1 font-mono text-xs", trendColor)}>
           <TrendIcon className="h-3 w-3" />
@@ -57,7 +58,7 @@ export function ActionTile({
         </span>
         {meta && <span className="font-mono text-[11px] text-subtle-foreground">{meta}</span>}
       </div>
-      <div className={cn("font-display text-[44px] font-extrabold leading-none tabular-nums", tone === "alert" && value > 0 && "text-destructive")}>{value}</div>
+      <div className={cn("font-display text-[44px] font-extrabold leading-none tabular-nums", tone === "alert" && value > 0 && "text-destructive")}>{formatNumber(value)}</div>
       <Link to={to} className="inline-flex min-h-6 items-center gap-1.5 self-start text-sm font-bold text-primary hover:underline">
         {action} <ArrowRight className="h-[15px] w-[15px] rtl:rotate-180" strokeWidth={2.4} />
       </Link>

@@ -12,6 +12,7 @@ import { cn } from "@fitnessos/lib/utils";
 import { currentUser } from "@fitnessos/lib/auth";
 import { getJson } from "@fitnessos/lib/api";
 import { t } from "@fitnessos/lib/i18n";
+import { initials } from "@fitnessos/lib/marketplace";
 
 type NavItem = { to: string; label: string; icon: LucideIcon; exact?: boolean; count?: number };
 type NavGroup = { label?: string; items: NavItem[] };
@@ -114,7 +115,7 @@ export function AppShell({ variant }: { variant: "coach" | "client" }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const initials = userName.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+  const userInitials = initials(userName);
 
   const renderItem = (item: NavItem) => {
     const active = isActive(pathname, item);
@@ -197,7 +198,7 @@ export function AppShell({ variant }: { variant: "coach" | "client" }) {
         </div>
 
         <div className={cn("flex items-center gap-2.5 border-t border-sidebar-border ps-2 pt-3.5", collapsed && "lg:flex-col lg:ps-0")}>
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold">{initials}</div>
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold">{userInitials}</div>
           <div className={cn("min-w-0 flex-1", collapsed && "lg:hidden")}>
             <div className="truncate text-sm font-semibold">{userName}</div>
             <div className="truncate text-xs text-subtle-foreground">{variant === "coach" ? t("Coach") : t("Trainee")}</div>

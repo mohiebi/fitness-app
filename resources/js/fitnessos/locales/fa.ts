@@ -492,4 +492,10 @@ export const fa: Record<string, string> = {
     'Last name': 'نام خانوادگی',
     'How can we help?': 'چطور می‌توانیم کمک کنیم؟',
     'Send message': 'ارسال پیام',
+    'Trainee app — FitnessOS': 'برنامه‌ی شاگرد — فیتنس‌اواس',
+    'Coach dashboard — FitnessOS': 'داشبورد مربی — فیتنس‌اواس',
+    Close: 'بستن',
+    'Accept a request or add a trainee to start a conversation.': 'برای شروع گفتگو، یک درخواست را بپذیرید یا شاگرد اضافه کنید.',
+    'Type a message…': 'پیام بنویسید…',
+    'Select a trainee to view messages.': 'برای دیدن پیام‌ها یک شاگرد را انتخاب کنید.',
 };

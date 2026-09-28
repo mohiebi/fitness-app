@@ -11,14 +11,14 @@ import { EndCoachingDialog } from '@fitnessos/components/end-coaching-dialog';
 import { IntakeSummary } from '@fitnessos/components/intake-summary';
 import { getJson } from '@fitnessos/lib/api';
 import { t } from '@fitnessos/lib/i18n';
-import { formatDate, formatNumber } from '@fitnessos/lib/format';
+import { formatDate, formatNumber, messageTime } from '@fitnessos/lib/format';
 import { initials, type CoachingSummary, type TraineeProfileData } from '@fitnessos/lib/marketplace';
 
 export const Route = createFileRoute('/dashboard/clients/$id')({ component: ClientDetail });
 
 type Client = { id: string; name: string; email: string; joined_at: string | null; profile: TraineeProfileData | null; coaching: CoachingSummary | null };
 type Checkin = { id: number; weight_kg: string | null; sleep_hours: string | null; energy: number | null; reflection: string | null; status: string; created_at: string };
-type Message = { id: number; from: 'coach' | 'client'; text: string; time: string };
+type Message = { id: number; from: 'coach' | 'client'; text: string; sent_at: string };
 
 function ClientDetail() {
     const { id } = Route.useParams();
@@ -88,7 +88,7 @@ function ClientDetail() {
                 </TabsContent>
                 <TabsContent value="messages">
                     <Card className="space-y-3 border-border/60 bg-card p-6 shadow-card-premium">
-                        {messages.map((message) => <div key={message.id} className={`flex ${message.from === 'coach' ? 'justify-end' : 'justify-start'}`}><div className={`max-w-md rounded-xl px-4 py-2 text-sm ${message.from === 'coach' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>{message.text}<div className="mt-1 text-xs opacity-70">{message.time}</div></div></div>)}
+                        {messages.map((message) => <div key={message.id} className={`flex ${message.from === 'coach' ? 'justify-end' : 'justify-start'}`}><div className={`max-w-md rounded-xl px-4 py-2 text-sm ${message.from === 'coach' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>{message.text}<div className="mt-1 text-xs opacity-70">{messageTime(message.sent_at)}</div></div></div>)}
                         {messages.length === 0 && <p className="text-sm text-muted-foreground">{t('No messages yet.')}</p>}
                     </Card>
                 </TabsContent>

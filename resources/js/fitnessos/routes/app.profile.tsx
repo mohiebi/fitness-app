@@ -57,7 +57,7 @@ function Profile() {
         if (profile && !form) setForm(toForm(profile));
     }, [profile, form]);
 
-    const set = <K extends keyof Form>(key: K, value: Form[K]) => form && setForm({ ...form, [key]: value });
+    const set = <K extends keyof Form>(key: K, value: Form[K]) => setForm((current) => current && { ...current, [key]: value });
 
     const save = async (event: FormEvent) => {
         event.preventDefault();

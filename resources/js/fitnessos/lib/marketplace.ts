@@ -109,6 +109,10 @@ export const endReasons = [
     'Other',
 ];
 
+// Persian letters join when placed side by side, so use a single letter there.
 export function initials(name: string): string {
-    return name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+    const trimmed = name.trim();
+    if (/[\u0600-\u06FF]/.test(trimmed)) return trimmed.charAt(0);
+
+    return trimmed.split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase();
 }

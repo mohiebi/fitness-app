@@ -42,3 +42,7 @@ export function formatRelative(value: string | Date): string {
 
     return rtf.format(0, 'minute');
 }
+
+export function messageTime(sentAt: string): string {
+    return formatDate(sentAt, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}

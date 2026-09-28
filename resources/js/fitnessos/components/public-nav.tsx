@@ -5,7 +5,7 @@ import { Button } from "@fitnessos/components/ui/button";
 import { LogoMark } from "@fitnessos/components/logo-mark";
 import { isAuthenticated } from "@fitnessos/lib/auth";
 import { t } from "@fitnessos/lib/i18n";
-import { formatNumber } from "@fitnessos/lib/format";
+import { formatDate } from "@fitnessos/lib/format";
 
 const links = [
   { to: "/", label: t("Home") },
@@ -103,7 +103,7 @@ export function Footer() {
         </div>
         <div className="border-t border-border/60">
           <div className="flex flex-col items-center justify-between gap-2 px-6 py-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground sm:flex-row">
-            <span>{t("© :year FitnessOS · All rights reserved", { year: formatNumber(new Date().getFullYear()) })}</span>
+            <span>{t("© :year FitnessOS · All rights reserved", { year: formatDate(new Date(), { year: 'numeric' }) })}</span>
             <span>{t("Built for coaches and the people they train")}</span>
           </div>
         </div>

@@ -9,12 +9,13 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getJson, postJson } from "@fitnessos/lib/api";
 import { t } from "@fitnessos/lib/i18n";
+import { messageTime } from "@fitnessos/lib/format";
 import { initials } from "@fitnessos/lib/marketplace";
 import { NoCoachCard, useMyCoaching } from "@fitnessos/components/no-coach";
 
 export const Route = createFileRoute("/app/messages")({ component: ClientMessages });
 
-type Message = { id: number; from: 'client' | 'coach'; text: string; time: string };
+type Message = { id: number; from: 'client' | 'coach'; text: string; sent_at: string };
 
 function ClientMessages() {
   const [draft, setDraft] = useState('');
@@ -59,7 +60,7 @@ function ClientMessages() {
           {messages.map((m, i) => (
             <div key={i} className={`flex ${m.from === "client" ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-md rounded-2xl px-4 py-2.5 text-sm ${m.from === "client" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>
-                {m.text}<div className="mt-1 text-[10px] opacity-70">{m.time}</div>
+                {m.text}<div className="mt-1 text-[10px] opacity-70">{messageTime(m.sent_at)}</div>
               </div>
             </div>
           ))}

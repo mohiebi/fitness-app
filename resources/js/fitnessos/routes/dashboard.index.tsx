@@ -11,7 +11,7 @@ import { currentUser } from '@fitnessos/lib/auth';
 import { daysSince, parseServerDate } from '@fitnessos/lib/dates';
 import { formatDate, formatNumber, formatRelative } from '@fitnessos/lib/format';
 import { t } from '@fitnessos/lib/i18n';
-import { labelFrom, goals, type CoachOwnProfile, type CoachRequest } from '@fitnessos/lib/marketplace';
+import { initials, labelFrom, goals, type CoachOwnProfile, type CoachRequest } from '@fitnessos/lib/marketplace';
 import { cn } from '@fitnessos/lib/utils';
 
 export const Route = createFileRoute('/dashboard/')({ component: DashboardIndex });
@@ -22,7 +22,7 @@ type Checkin = {
     sleep_hours: string | null; energy: number | null; adjustments: string | null;
     status: string; created_at: string;
 };
-type Conversation = { id: string; name: string; last: string; time: string };
+type Conversation = { id: string; name: string; last: string; last_at: string | null };
 
 const QUIET_AFTER_DAYS = 7;
 
@@ -74,7 +74,7 @@ function DashboardIndex() {
         })
         .sort((a, b) => b.days - a.days);
     const awaitingFirst = clients.filter((client) => !lastCheckin.has(client.id));
-    const recentConversations = conversations.filter((conversation) => conversation.time !== '').slice(0, 3);
+    const recentConversations = conversations.filter((conversation) => conversation.last_at !== null).slice(0, 3);
 
     const waiting = pending.length + requests.length;
     const summary = waiting
@@ -208,7 +208,7 @@ function DashboardIndex() {
                                     <div className="min-w-0 flex-1">
                                         <div className="flex items-center gap-2">
                                             <span className="flex-1 truncate text-sm font-semibold group-hover:underline">{conversation.name}</span>
-                                            <span className="shrink-0 font-mono text-[11px] text-subtle-foreground">{conversation.time}</span>
+                                            <span className="shrink-0 text-[11px] text-subtle-foreground">{conversation.last_at && formatRelative(conversation.last_at)}</span>
                                         </div>
                                         <p className="mt-1 line-clamp-2 text-[13px] leading-normal text-muted-foreground">{conversation.last}</p>
                                     </div>
@@ -251,7 +251,7 @@ function PersonRow({ name, detail, children }: { name: string; detail: string; c
 function Initials({ name }: { name: string }) {
     return (
         <div className="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-secondary text-xs font-bold">
-            {name.split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase()}
+            {initials(name)}
         </div>
     );
 }
