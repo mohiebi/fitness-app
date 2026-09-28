@@ -168,6 +168,8 @@ test('roles are enforced on marketplace endpoints', function () {
     $outsider = User::factory()->trainee()->create();
     $coaching = Coaching::create(['coach_id' => $coach->id, 'trainee_id' => $trainee->id, 'status' => Coaching::REQUESTED]);
 
+    $this->actingAs($coach)->getJson('/fitnessos/contact-messages')->assertForbidden();
+    $this->actingAs(User::factory()->create(['role' => 'admin']))->getJson('/fitnessos/contact-messages')->assertOk();
     $this->actingAs($trainee)->getJson('/fitnessos/coach-profile')->assertForbidden();
     $this->actingAs($trainee)->getJson('/fitnessos/coachings')->assertForbidden();
     $this->actingAs($trainee)->postJson("/fitnessos/coachings/{$coaching->id}/accept")->assertForbidden();

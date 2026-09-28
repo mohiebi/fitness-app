@@ -31,7 +31,7 @@ export function StatCard({
         <div className={cn("mt-1.5 flex items-center gap-1 font-mono text-xs", trendColor)}>
           <TrendIcon className="h-3 w-3" />
           <span>{delta}</span>
-          {hint && <span className="ml-1 text-subtle-foreground">{hint}</span>}
+          {hint && <span className="ms-1 text-subtle-foreground">{hint}</span>}
         </div>
       )}
     </Card>
@@ -59,7 +59,7 @@ export function ActionTile({
       </div>
       <div className={cn("font-display text-[44px] font-extrabold leading-none tabular-nums", tone === "alert" && value > 0 && "text-destructive")}>{value}</div>
       <Link to={to} className="inline-flex min-h-6 items-center gap-1.5 self-start text-sm font-bold text-primary hover:underline">
-        {action} <ArrowRight className="h-[15px] w-[15px]" strokeWidth={2.4} />
+        {action} <ArrowRight className="h-[15px] w-[15px] rtl:rotate-180" strokeWidth={2.4} />
       </Link>
     </Card>
   );

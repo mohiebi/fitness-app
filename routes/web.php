@@ -30,9 +30,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('fitnessos/messages', [FitnessOsActivityController::class, 'sendMessage']);
     Route::post('fitnessos/coachings/{coaching}/end', [CoachingController::class, 'end']);
 
+    Route::get('fitnessos/contact-messages', [FitnessOsInquiryController::class, 'contactMessages'])->middleware('fitness.role:admin');
+
     Route::middleware('fitness.role:coach')->group(function () {
         Route::get('fitnessos/leads', [FitnessOsInquiryController::class, 'leads']);
-        Route::get('fitnessos/contact-messages', [FitnessOsInquiryController::class, 'contactMessages']);
         Route::patch('fitnessos/leads/{lead}', [FitnessOsInquiryController::class, 'updateLead']);
         Route::get('fitnessos/clients', [FitnessOsClientController::class, 'index']);
         Route::post('fitnessos/clients', [FitnessOsClientController::class, 'store']);

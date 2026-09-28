@@ -88,7 +88,7 @@ function navFor(variant: "coach" | "client", counts: ReturnType<typeof useCoachC
       {
         label: t("Business"),
         items: [
-          { to: "/dashboard/leads", label: t("Requests"), icon: UserPlus, count: counts.pendingRequests },
+          { to: "/dashboard/requests", label: t("Requests"), icon: UserPlus, count: counts.pendingRequests },
           { to: "/dashboard/profile", label: t("Public profile"), icon: Contact },
           { to: "/dashboard/calendar", label: t("Calendar"), icon: Calendar },
           { to: "/dashboard/payments", label: t("Payments"), icon: CreditCard },
