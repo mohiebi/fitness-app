@@ -82,9 +82,21 @@ Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`,
 - Trainees follow the active plan at `/app/workout` and log each set. Sessions store a copy of the exercise names, so history survives plan edits and deletion, and sessions stay with the trainee after coaching ends.
 - Adherence compares sessions logged in each rolling 7-day window with the number of training days in the active plan. Coaches see it, with recent sessions, in the Training tab of a trainee's page.
 
+### AI assistant (coaches only)
+
+The assistant drafts chat replies, check-in feedback and training plans for a coach's current trainees. Trainees never interact with it, and nothing it writes reaches a trainee until the coach approves it.
+
+- Set `ANTHROPIC_API_KEY` to turn it on. It uses `AI_MODEL` (default `claude-opus-5`) through the official Anthropic PHP SDK, with adaptive thinking, structured JSON output and server-side refusal fallbacks. Without a key the assistant is hidden and the rest of the app works as usual.
+- `AI_BASE_URL` routes requests through a gateway or proxy, for example when the server can't reach the Anthropic API directly. It takes precedence over `ANTHROPIC_BASE_URL`.
+- `AI_DAILY_DRAFTS_PER_COACH` (default 60) caps how many drafts each coach can request per day.
+- Coaches review drafts at `/dashboard/ai`, or use **Draft with AI** in chat, on the check-in review page and on a trainee's Training tab. An inline draft is sent only when the coach presses send, with their edits.
+- An approved plan draft becomes a draft plan the coach still edits and activates. Plan drafts only use exercises from the coach's library.
+- The model sees a briefing with the trainee's first name, intake, active plan, and recent check-ins, workouts and chat, and nothing else (no email or account details). Every draft, including failures, is stored in `ai_drafts` with the model and token counts.
+- The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `ClaudeDraftModel` makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
+
 ### Language
 
-`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments, reports, and the AI assistant) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
+`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments and reports) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
 
 ## Checks
 

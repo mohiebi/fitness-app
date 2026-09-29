@@ -6,6 +6,7 @@ use App\Models\Exercise;
 use App\Models\User;
 use App\Models\WorkoutPlan;
 use App\Services\Ai\AssistantUnavailable;
+use App\Services\Ai\ClaudeDraftModel;
 use App\Services\Ai\CoachAssistant;
 use App\Services\Ai\DraftModel;
 use App\Services\Ai\DraftResult;
@@ -186,6 +187,6 @@ test('a configured API key enables the Claude model', function () {
     app()->forgetInstance(DraftModel::class);
     config(['services.anthropic.api_key' => 'test-key', 'services.anthropic.base_url' => 'https://gateway.example.test']);
 
-    expect(app(DraftModel::class))->toBeInstanceOf(App\Services\Ai\ClaudeDraftModel::class);
+    expect(app(DraftModel::class))->toBeInstanceOf(ClaudeDraftModel::class);
     expect(app(CoachAssistant::class)->enabled())->toBeTrue();
 });
