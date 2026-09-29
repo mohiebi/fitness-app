@@ -26,6 +26,7 @@ import {
     BookOpen,
     Info,
     Contact,
+    Wallet,
     HeartHandshake,
     type LucideIcon,
 } from 'lucide-react';
@@ -191,6 +192,11 @@ function navFor(
                         to: '/dashboard/profile',
                         label: t('Public profile'),
                         icon: Contact,
+                    },
+                    {
+                        to: '/dashboard/billing',
+                        label: t('Subscription'),
+                        icon: Wallet,
                     },
                     {
                         to: '/dashboard/calendar',

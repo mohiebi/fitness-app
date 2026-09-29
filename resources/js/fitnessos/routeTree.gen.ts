@@ -28,6 +28,7 @@ import { Route as CoachesIndexRouteImport } from './routes/coaches.index'
 import { Route as CoachesSlugRouteImport } from './routes/coaches.$slug'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as DashboardAiRouteImport } from './routes/dashboard.ai'
+import { Route as DashboardBillingRouteImport } from './routes/dashboard.billing'
 import { Route as DashboardCalendarRouteImport } from './routes/dashboard.calendar'
 import { Route as DashboardCheckinsRouteImport } from './routes/dashboard.checkins'
 import { Route as DashboardContentRouteImport } from './routes/dashboard.content'
@@ -139,6 +140,11 @@ const DashboardAiRoute = DashboardAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardBillingRoute = DashboardBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardCalendarRoute = DashboardCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/app/workout': typeof AppWorkoutRoute
   '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByTo {
   '/app/workout': typeof AppWorkoutRoute
   '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/app/workout': typeof AppWorkoutRoute
   '/coaches/$slug': typeof CoachesSlugRoute
   '/dashboard/ai': typeof DashboardAiRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/calendar': typeof DashboardCalendarRoute
   '/dashboard/checkins': typeof DashboardCheckinsRoute
   '/dashboard/content': typeof DashboardContentRoute
@@ -341,6 +350,7 @@ export interface FileRouteTypes {
     | '/app/workout'
     | '/coaches/$slug'
     | '/dashboard/ai'
+    | '/dashboard/billing'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/app/workout'
     | '/coaches/$slug'
     | '/dashboard/ai'
+    | '/dashboard/billing'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
@@ -411,6 +422,7 @@ export interface FileRouteTypes {
     | '/app/workout'
     | '/coaches/$slug'
     | '/dashboard/ai'
+    | '/dashboard/billing'
     | '/dashboard/calendar'
     | '/dashboard/checkins'
     | '/dashboard/content'
@@ -577,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAiRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/billing': {
+      id: '/dashboard/billing'
+      path: '/billing'
+      fullPath: '/dashboard/billing'
+      preLoaderRoute: typeof DashboardBillingRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/calendar': {
       id: '/dashboard/calendar'
       path: '/calendar'
@@ -713,6 +732,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface DashboardRouteChildren {
   DashboardAiRoute: typeof DashboardAiRoute
+  DashboardBillingRoute: typeof DashboardBillingRoute
   DashboardCalendarRoute: typeof DashboardCalendarRoute
   DashboardCheckinsRoute: typeof DashboardCheckinsRoute
   DashboardContentRoute: typeof DashboardContentRoute
@@ -733,6 +753,7 @@ interface DashboardRouteChildren {
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAiRoute: DashboardAiRoute,
+  DashboardBillingRoute: DashboardBillingRoute,
   DashboardCalendarRoute: DashboardCalendarRoute,
   DashboardCheckinsRoute: DashboardCheckinsRoute,
   DashboardContentRoute: DashboardContentRoute,
