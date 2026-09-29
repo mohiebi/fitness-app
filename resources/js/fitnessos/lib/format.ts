@@ -65,3 +65,10 @@ export function messageTime(sentAt: string): string {
         minute: '2-digit',
     });
 }
+
+/** Show digits inside free text (e.g. a coach's "8-12" reps) in the page's script. */
+export function localizeDigits(text: string): string {
+    if (locale() !== 'fa') return text;
+
+    return text.replace(/[0-9]/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[Number(digit)]);
+}

@@ -39,9 +39,10 @@ import { Route as DashboardProgressRouteImport } from './routes/dashboard.progre
 import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
 import { Route as DashboardRequestsRouteImport } from './routes/dashboard.requests'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
-import { Route as DashboardWorkoutsRouteImport } from './routes/dashboard.workouts'
 import { Route as DashboardClientsIndexRouteImport } from './routes/dashboard.clients.index'
 import { Route as DashboardClientsIdRouteImport } from './routes/dashboard.clients.$id'
+import { Route as DashboardWorkoutsIndexRouteImport } from './routes/dashboard.workouts.index'
+import { Route as DashboardWorkoutsPlanIdRouteImport } from './routes/dashboard.workouts.$planId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -193,11 +194,6 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardWorkoutsRoute = DashboardWorkoutsRouteImport.update({
-  id: '/workouts',
-  path: '/workouts',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const DashboardClientsIndexRoute = DashboardClientsIndexRouteImport.update({
   id: '/clients/',
   path: '/clients/',
@@ -206,6 +202,16 @@ const DashboardClientsIndexRoute = DashboardClientsIndexRouteImport.update({
 const DashboardClientsIdRoute = DashboardClientsIdRouteImport.update({
   id: '/clients/$id',
   path: '/clients/$id',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWorkoutsIndexRoute = DashboardWorkoutsIndexRouteImport.update({
+  id: '/workouts/',
+  path: '/workouts/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardWorkoutsPlanIdRoute = DashboardWorkoutsPlanIdRouteImport.update({
+  id: '/workouts/$planId',
+  path: '/workouts/$planId',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -237,12 +243,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
   '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
+  '/dashboard/workouts/$planId': typeof DashboardWorkoutsPlanIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
+  '/dashboard/workouts/': typeof DashboardWorkoutsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -270,12 +277,13 @@ export interface FileRoutesByTo {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app': typeof AppIndexRoute
   '/coaches': typeof CoachesIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
+  '/dashboard/workouts/$planId': typeof DashboardWorkoutsPlanIdRoute
   '/dashboard/clients': typeof DashboardClientsIndexRoute
+  '/dashboard/workouts': typeof DashboardWorkoutsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -306,12 +314,13 @@ export interface FileRoutesById {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/workouts': typeof DashboardWorkoutsRoute
   '/app/': typeof AppIndexRoute
   '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/clients/$id': typeof DashboardClientsIdRoute
+  '/dashboard/workouts/$planId': typeof DashboardWorkoutsPlanIdRoute
   '/dashboard/clients/': typeof DashboardClientsIndexRoute
+  '/dashboard/workouts/': typeof DashboardWorkoutsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -343,12 +352,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
-    | '/dashboard/workouts'
     | '/app/'
     | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
+    | '/dashboard/workouts/$planId'
     | '/dashboard/clients/'
+    | '/dashboard/workouts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -376,12 +386,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
-    | '/dashboard/workouts'
     | '/app'
     | '/coaches'
     | '/dashboard'
     | '/dashboard/clients/$id'
+    | '/dashboard/workouts/$planId'
     | '/dashboard/clients'
+    | '/dashboard/workouts'
   id:
     | '__root__'
     | '/'
@@ -411,12 +422,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
-    | '/dashboard/workouts'
     | '/app/'
     | '/coaches/'
     | '/dashboard/'
     | '/dashboard/clients/$id'
+    | '/dashboard/workouts/$planId'
     | '/dashboard/clients/'
+    | '/dashboard/workouts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -642,13 +654,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/workouts': {
-      id: '/dashboard/workouts'
-      path: '/workouts'
-      fullPath: '/dashboard/workouts'
-      preLoaderRoute: typeof DashboardWorkoutsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/dashboard/clients/': {
       id: '/dashboard/clients/'
       path: '/clients'
@@ -661,6 +666,20 @@ declare module '@tanstack/react-router' {
       path: '/clients/$id'
       fullPath: '/dashboard/clients/$id'
       preLoaderRoute: typeof DashboardClientsIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/workouts/': {
+      id: '/dashboard/workouts/'
+      path: '/workouts'
+      fullPath: '/dashboard/workouts/'
+      preLoaderRoute: typeof DashboardWorkoutsIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/workouts/$planId': {
+      id: '/dashboard/workouts/$planId'
+      path: '/workouts/$planId'
+      fullPath: '/dashboard/workouts/$planId'
+      preLoaderRoute: typeof DashboardWorkoutsPlanIdRouteImport
       parentRoute: typeof DashboardRoute
     }
   }
@@ -705,10 +724,11 @@ interface DashboardRouteChildren {
   DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardRequestsRoute: typeof DashboardRequestsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DashboardWorkoutsRoute: typeof DashboardWorkoutsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardClientsIdRoute: typeof DashboardClientsIdRoute
+  DashboardWorkoutsPlanIdRoute: typeof DashboardWorkoutsPlanIdRoute
   DashboardClientsIndexRoute: typeof DashboardClientsIndexRoute
+  DashboardWorkoutsIndexRoute: typeof DashboardWorkoutsIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
@@ -724,10 +744,11 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardReportsRoute: DashboardReportsRoute,
   DashboardRequestsRoute: DashboardRequestsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
-  DashboardWorkoutsRoute: DashboardWorkoutsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardClientsIdRoute: DashboardClientsIdRoute,
+  DashboardWorkoutsPlanIdRoute: DashboardWorkoutsPlanIdRoute,
   DashboardClientsIndexRoute: DashboardClientsIndexRoute,
+  DashboardWorkoutsIndexRoute: DashboardWorkoutsIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(

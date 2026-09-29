@@ -65,3 +65,7 @@ export function postForm(path: string, data: FormData) {
 export function patchJson(path: string, data: Record<string, unknown>) {
     return requestJson(path, 'PATCH', data);
 }
+
+export function deleteJson(path: string) {
+    return requestJson(path, 'DELETE');
+}
