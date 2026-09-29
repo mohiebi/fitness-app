@@ -94,6 +94,26 @@ The assistant drafts chat replies, check-in feedback and training plans for a co
 - The model sees a briefing with the trainee's first name, intake, active plan, and recent check-ins, workouts and chat, and nothing else (no email or account details). Every draft, including failures, is stored in `ai_drafts` with the model and token counts.
 - The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `ClaudeDraftModel` makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
 
+### Coach subscriptions and Telegram payments
+
+- Coaches pay FitnessOS for 30-day periods. Plans, prices (toman) and limits live in `config/fitnessos.php`: Starter (up to 10 active trainees) and Pro (unlimited), with prices set by `FITNESSOS_STARTER_PRICE` and `FITNESSOS_PRO_PRICE`. New coaches get a trial (`FITNESSOS_TRIAL_DAYS`, default 14) on Pro.
+- A coach whose trial or paid period has ended is hidden from the directory and can't accept or add new trainees. Their current trainees keep working with them. Coaches manage this at `/dashboard/billing`, and the dashboard warns five days before the end.
+- Payments go through a Telegram bot, with this app as the bot's backend:
+    1. The coach taps **Pay with Telegram**, and the app creates a pending payment and opens `t.me/<bot>?start=pay_<reference>`.
+    2. The bot replies with the amount and the card to transfer to (`PAYMENT_CARD_NUMBER`, `PAYMENT_CARD_HOLDER`).
+    3. The coach sends a photo or PDF of the receipt, and the bot forwards it to the admin chat (`TELEGRAM_ADMIN_CHAT_ID`) with **Approve** and **Reject** buttons.
+    4. Approving extends the subscription once and tells the coach in Telegram and in the app.
+- Setup: create a bot with @BotFather. Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, a random `TELEGRAM_WEBHOOK_SECRET` and the admin chat id. Then run `php artisan fitnessos:telegram:webhook`, which needs a public HTTPS `APP_URL`. The webhook at `/telegram/webhook` only accepts requests carrying the secret token.
+- Without the bot, billing tells coaches to contact support. `php artisan fitnessos:payments:confirm <reference>` confirms a payment checked by hand, and `php artisan fitnessos:subscription:grant <email> <plan> --days=30` records a manual payment.
+
+### Reviews
+
+Trainees can rate a coach from 1 to 5 stars and leave a comment after training together for at least 14 days (`review_min_days`), one review per coaching. Reviews show the reviewer's first name only. Coaches can reply from their public profile editor, and `php artisan fitnessos:reviews:hide <id>` (with `--restore` to undo) hides a review.
+
+### Notifications
+
+People get in-app notifications, via the bell in the dashboard and app, for coaching requests and decisions, ended coachings, new messages, check-ins, new plans, payments, reviews and subscription reminders. Requests, acceptances, new plans, payment results and subscription reminders are also emailed. The reminder runs from the scheduler (`php artisan schedule:work` locally, or a cron entry for `php artisan schedule:run` in production).
+
 ### Language
 
 `APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments and reports) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
