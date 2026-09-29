@@ -78,7 +78,7 @@ class FitnessOsActivityController extends Controller
 
         $coach = User::query()->find($client->coach_id);
         if ($coach !== null) {
-            $notifier->checkinSubmitted($coach, $client);
+            $notifier->checkinSubmitted($coach, $client, $id, $data['reflection'] ?? null);
         }
 
         return response()->json(['id' => $id, 'message' => __('Check-in submitted.')], 201);
@@ -166,7 +166,7 @@ class FitnessOsActivityController extends Controller
 
         $recipient = $request->user()->id === $client->id ? User::query()->find($client->coach_id) : $client;
         if ($recipient !== null) {
-            $notifier->messageReceived($recipient, $request->user());
+            $notifier->messageReceived($recipient, $request->user(), $data['body']);
         }
 
         return response()->json(['id' => $id, 'message' => __('Message sent.')], 201);

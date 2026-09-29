@@ -106,13 +106,31 @@ The assistant drafts chat replies, check-in feedback and training plans for a co
 - Setup: create a bot with @BotFather. Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, a random `TELEGRAM_WEBHOOK_SECRET` and the admin chat id. Then run `php artisan fitnessos:telegram:webhook`, which needs a public HTTPS `APP_URL`. The webhook at `/telegram/webhook` only accepts requests carrying the secret token.
 - Without the bot, billing tells coaches to contact support. `php artisan fitnessos:payments:confirm <reference>` confirms a payment checked by hand, and `php artisan fitnessos:subscription:grant <email> <plan> --days=30` records a manual payment.
 
+### The Telegram coach bot
+
+The same bot that takes payments is a full assistant for coaches, so they can run their coaching from a phone. Trainees never use it; they use the web app.
+
+- **Connecting:** a coach opens Settings → Integrations and taps **Connect Telegram**. That opens `t.me/<bot>?start=link_<token>`; pressing Start stores the chat against their account. The token is random, stored hashed, works once and expires after 15 minutes. `/unlink` in the bot, or **Disconnect** in the dashboard, undoes it.
+- **Menu and commands:** a pinned menu (and matching slash commands) opens `/today`, `/requests`, `/messages`, `/trainees`, `/checkins`, `/drafts`, `/billing` and `/settings`.
+    - **Requests:** the trainee's intake and message, with Accept and Decline on the message. It uses the same `CoachingLifecycle` as the dashboard, so limits and subscription checks apply.
+    - **Messages and check-ins:** who is waiting for an answer, the recent conversation, and replying by typing. Check-in feedback is sent as a chat message and marks the check-in reviewed. A pending reply is dropped by `/cancel`, any menu command or after 30 minutes.
+    - **Trainees:** a card with goal, plan, sessions this week, latest check-in and message, and the active plan day by day.
+    - **AI drafts:** replies, check-in feedback and plans can be drafted from buttons. The coach sees the draft with **Send**, **Edit**, **Redo with a note** and **Discard** (plans: **Save as draft plan** or **Save and activate**). Nothing reaches a trainee before that tap. Drafting runs after the webhook has answered, so Telegram never retries it.
+    - **Subscription:** plan, trial or paid period and trainee count, and renewing through the card-transfer flow in the same chat.
+    - **Settings:** switch messages, requests, check-ins, billing, reviews and the morning summary on or off, and pick the summary hour. The same switches are in the dashboard.
+- **Push:** notices go to the coach's chat with action buttons: an accept/decline pair on a request, reply and AI-draft buttons on a message (every message is pushed even though the app keeps one unread notice per conversation), read and AI-feedback buttons on a check-in, and the subscription screen on payment and renewal notices.
+- **Morning summary:** `php artisan fitnessos:telegram:digest` runs hourly from the scheduler and messages each coach at the hour they chose, only when something needs them. `TELEGRAM_TIMEZONE` (default `Asia/Tehran`) is the clock those hours mean; `--force` sends to everyone now.
+- **Safety:** every button carries only an id, and each action re-checks that the record belongs to the linked coach, so made-up data reaches nothing. The webhook drops an update Telegram delivers twice, ignores group chats, and users who have not connected are only told how to connect (or to pay).
+- **Setup:** after the payment-bot setup above, run `php artisan fitnessos:telegram:webhook` again to also register the command list. Telegram buttons that open dashboard pages only appear on an HTTPS `APP_URL`.
+- The code lives in `app/Services/Telegram`: `TelegramBot` routes updates, `CoachBot` routes coach messages and button taps to one class per part in `Screens/`, `TelegramLinks` handles connecting, `TelegramPush` and `Notifications/Channels/TelegramChannel` send notices, and `TelegramDigest` sends the summary. `CoachDesk` counts what is waiting.
+
 ### Reviews
 
 Trainees can rate a coach from 1 to 5 stars and leave a comment after training together for at least 14 days (`review_min_days`), one review per coaching. Reviews show the reviewer's first name only. Coaches can reply from their public profile editor, and `php artisan fitnessos:reviews:hide <id>` (with `--restore` to undo) hides a review.
 
 ### Notifications
 
-People get in-app notifications, via the bell in the dashboard and app, for coaching requests and decisions, ended coachings, new messages, check-ins, new plans, payments, reviews and subscription reminders. Requests, acceptances, new plans, payment results and subscription reminders are also emailed. The reminder runs from the scheduler (`php artisan schedule:work` locally, or a cron entry for `php artisan schedule:run` in production).
+People get in-app notifications, via the bell in the dashboard and app, for coaching requests and decisions, ended coachings, new messages, check-ins, new plans, payments, reviews and subscription reminders. Requests, acceptances, new plans, payment results and subscription reminders are also emailed, and coaches who connected Telegram get them there too. The reminder runs from the scheduler (`php artisan schedule:work` locally, or a cron entry for `php artisan schedule:run` in production).
 
 ### Language
 

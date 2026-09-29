@@ -6,7 +6,9 @@ use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Services\Notifier;
 use App\Services\Payments\SubscriptionPayments;
+use App\Services\Telegram\Menu;
 use App\Services\Telegram\TelegramClient;
+use App\Services\Telegram\TelegramDigest;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -48,8 +50,21 @@ Artisan::command('fitnessos:telegram:webhook {url? : Defaults to APP_URL/telegra
 
     $this->info("Webhook set to {$url}");
 
+    if ($telegram->setCommands(Menu::commands())) {
+        $this->info('Command list updated.');
+    } else {
+        $this->warn('Telegram did not accept the command list; the menu buttons still work.');
+    }
+
     return 0;
-})->purpose('Point the Telegram payment bot at this app');
+})->purpose('Point the Telegram bot at this app and register its commands');
+
+Artisan::command('fitnessos:telegram:digest {--force : Send to everyone now, ignoring the chosen hour}', function (TelegramDigest $digest) {
+    $sent = $digest->sendDue(force: (bool) $this->option('force'));
+    $this->info("Sent {$sent} summary message(s).");
+
+    return 0;
+})->purpose('Send the morning summary to coaches whose chosen hour has come');
 
 Artisan::command('fitnessos:payments:confirm {reference}', function (string $reference, SubscriptionPayments $payments) {
     $payment = SubscriptionPayment::query()->where('reference', $reference)->first();
@@ -125,3 +140,4 @@ Artisan::command('fitnessos:subscriptions:remind {--days=3}', function (Notifier
 })->purpose('Remind coaches whose subscription ends soon');
 
 Schedule::command('fitnessos:subscriptions:remind')->dailyAt('09:00');
+Schedule::command('fitnessos:telegram:digest')->hourly();

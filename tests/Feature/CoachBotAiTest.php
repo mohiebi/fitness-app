@@ -29,7 +29,7 @@ test('the assistant drafts a reply and nothing is sent until the coach taps Send
 
     $texts = telegramTexts('4242');
     expect($texts[0])->toContain('Drafting');
-    expect(collect(telegramCalls())->last()[1])->toMatchArray(['message_id' => 900]);
+    expect(collect(telegramCalls())->last(fn ($call) => $call[0] === 'editMessageText')[1])->toMatchArray(['message_id' => 900]);
     expect(end($texts))->toContain('Rest today, Nima')->toContain('Nothing is sent until you approve');
     expect(lastButtons('4242'))->toBe(['ai:send:'.$draft->id, 'ai:edit:'.$draft->id, 'ai:redo:'.$draft->id, 'ai:drop:'.$draft->id]);
 

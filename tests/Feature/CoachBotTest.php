@@ -16,7 +16,10 @@ beforeEach(function () {
 
 function requestCoaching(User $trainee, User $coach, ?string $message = 'I want to lose fat'): Coaching
 {
-    return app(CoachingLifecycle::class)->request($trainee, $coach->coachProfile, $message);
+    $coaching = app(CoachingLifecycle::class)->request($trainee, $coach->coachProfile, $message);
+    forgetTelegramCalls(); // The request itself notifies the coach in Telegram; tests look at what they do next.
+
+    return $coaching;
 }
 
 /** The pop-up text shown for the last button tap. */

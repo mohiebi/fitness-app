@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Services\Ai\DraftModel;
 use App\Services\Ai\DraftResult;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -22,6 +23,7 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
+    ->beforeEach(fn () => $this->withoutDefer())
     ->in('Feature');
 
 /*
@@ -64,6 +66,16 @@ function fakeTelegram(): void
         'fitnessos.payment_card.number' => '6037-9911-1111-2222',
         'fitnessos.payment_card.holder' => 'FitnessOS',
     ]);
+    forgetTelegramCalls();
+}
+
+/**
+ * Start counting Bot API calls from here, e.g. after test setup that
+ * already made the bot send things.
+ */
+function forgetTelegramCalls(): void
+{
+    Http::swap(new HttpFactory);
     Http::fake(['api.telegram.org/*' => Http::response(['ok' => true, 'result' => ['message_id' => 900]])]);
 }
 

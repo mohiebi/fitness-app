@@ -37,7 +37,7 @@ class CoachInbox
 
         $trainee = User::query()->find($traineeId);
         if ($trainee !== null) {
-            $this->notifier->messageReceived($trainee, $coach);
+            $this->notifier->messageReceived($trainee, $coach, $body);
         }
 
         return $id;

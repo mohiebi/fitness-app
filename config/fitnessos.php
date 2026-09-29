@@ -53,6 +53,8 @@ return [
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
         'admin_chat_id' => env('TELEGRAM_ADMIN_CHAT_ID'),
         'api_base_url' => env('TELEGRAM_API_BASE_URL', 'https://api.telegram.org'),
+        // The clock coaches mean when they pick the hour of their morning summary.
+        'timezone' => env('TELEGRAM_TIMEZONE', 'Asia/Tehran'),
     ],
 
     'payment_card' => [
