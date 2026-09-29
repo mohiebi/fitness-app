@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiDraftController;
 use App\Http\Controllers\CoachDirectoryController;
 use App\Http\Controllers\CoachingController;
 use App\Http\Controllers\CoachProfileController;
@@ -51,6 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
+        Route::get('fitnessos/ai/status', [AiDraftController::class, 'status']);
+        Route::get('fitnessos/ai/drafts', [AiDraftController::class, 'index']);
+        Route::post('fitnessos/ai/drafts', [AiDraftController::class, 'store'])->middleware('throttle:20,1');
+        Route::post('fitnessos/ai/drafts/{draft}/approve', [AiDraftController::class, 'approve']);
+        Route::post('fitnessos/ai/drafts/{draft}/discard', [AiDraftController::class, 'discard']);
         Route::get('fitnessos/exercises', [ExerciseController::class, 'index']);
         Route::post('fitnessos/exercises', [ExerciseController::class, 'store']);
         Route::get('fitnessos/plans', [WorkoutPlanController::class, 'index']);

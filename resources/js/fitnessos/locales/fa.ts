@@ -681,4 +681,51 @@ export const fa: Record<string, string> = {
     'Sessions you log show up here.':
         'جلسه‌هایی که ثبت می‌کنی اینجا نمایش داده می‌شوند.',
     'Delete this session?': 'این جلسه حذف شود؟',
+
+    // AI assistant
+    'Chat reply': 'پاسخ گفتگو',
+    'Check-in feedback': 'بازخورد گزارش هفتگی',
+    'Training plan': 'برنامه‌ی تمرینی',
+    'Drafting…': 'در حال نوشتن…',
+    'Draft with AI': 'پیش‌نویس با هوش مصنوعی',
+    'AI draft. Only you can see it. Edit it as needed; it is sent only when you press send.':
+        'پیش‌نویس هوش مصنوعی. فقط شما آن را می‌بینید. هر طور لازم است ویرایشش کنید؛ فقط وقتی ارسال را بزنید فرستاده می‌شود.',
+    'Discard draft': 'کنار گذاشتن پیش‌نویس',
+    'Drafts replies, check-in feedback and plans for your trainees. You review every draft; nothing is sent until you approve it.':
+        'برای شاگردانتان پاسخ، بازخورد گزارش هفتگی و برنامه پیش‌نویس می‌کند. همه‌ی پیش‌نویس‌ها را خودتان بازبینی می‌کنید و تا تأیید نکنید چیزی فرستاده نمی‌شود.',
+    'Trainees never talk to the assistant. It only sees what you already see about your current trainees (first name, intake, plan, check-ins, workouts and chat), and it can make mistakes, so read each draft before sending.':
+        'شاگردها هیچ‌وقت با دستیار صحبت نمی‌کنند. دستیار فقط همان چیزهایی را می‌بیند که شما درباره‌ی شاگردان فعلی‌تان می‌بینید (نام کوچک، پروفایل، برنامه، گزارش‌ها، تمرین‌ها و گفتگو) و ممکن است اشتباه کند؛ پس هر پیش‌نویس را پیش از ارسال بخوانید.',
+    'The AI assistant is not set up on this server yet. The rest of your dashboard works as usual.':
+        'دستیار هوشمند هنوز روی این سرور راه‌اندازی نشده است. بقیه‌ی داشبورد مثل همیشه کار می‌کند.',
+    'To review (:count)': 'برای بازبینی (:count)',
+    'Sent drafts': 'فرستاده‌شده',
+    'No drafts waiting for review.': 'پیش‌نویسی منتظر بازبینی نیست.',
+    'Approved drafts show up here.':
+        'پیش‌نویس‌های تأییدشده اینجا نمایش داده می‌شوند.',
+    'Choose a trainee': 'انتخاب شاگرد',
+    'Instructions (optional)': 'دستورالعمل (اختیاری)',
+    'e.g. 3 days a week, dumbbells only, protect the right knee':
+        'مثلاً ۳ روز در هفته، فقط دمبل، مراقب زانوی راست',
+    'e.g. Congratulate the first week and ask about sleep':
+        'مثلاً هفته‌ی اول را تبریک بگو و درباره‌ی خواب بپرس',
+    ':count drafts left today': ':count پیش‌نویس تا پایان امروز باقی مانده',
+    'Your instructions: :text': 'دستورالعمل شما: :text',
+    'Draft text': 'متن پیش‌نویس',
+    'Open in plan editor': 'باز کردن در ویرایشگر برنامه',
+    'Create draft plan': 'ساخت پیش‌نویس برنامه',
+    'Send feedback': 'ارسال بازخورد',
+    'Send to :name': 'ارسال برای :name',
+    Discard: 'کنار گذاشتن',
+    'Draft a plan with AI': 'پیش‌نویس برنامه با هوش مصنوعی',
+
+    // Check-ins
+    'Feedback sent to your trainee.': 'بازخورد برای شاگرد فرستاده شد.',
+    "Review your trainees' updates and reply with feedback.":
+        'گزارش‌های شاگردان را بررسی کنید و بازخورد بدهید.',
+    Waist: 'دور کمر',
+    'No reflection provided.': 'توضیحی ننوشته است.',
+    'Requested adjustments': 'تغییرات درخواستی',
+    'Coach feedback': 'بازخورد مربی',
+    'Write feedback for this check-in…': 'بازخورد این گزارش را بنویسید…',
+    'Select a check-in to review.': 'برای بررسی، یک گزارش را انتخاب کنید.',
 };

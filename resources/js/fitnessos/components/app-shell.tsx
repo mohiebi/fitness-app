@@ -52,7 +52,6 @@ const previewPaths = new Set([
     '/dashboard/calendar',
     '/dashboard/payments',
     '/dashboard/content',
-    '/dashboard/ai',
     '/dashboard/reports',
     '/dashboard/settings',
     '/app/nutrition',

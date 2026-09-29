@@ -26,5 +26,19 @@
     "Plan deleted.": "برنامه حذف شد.",
     "This workout is not part of your current plan.": "این تمرین بخشی از برنامه‌ی فعلی شما نیست.",
     "Workout saved. Nice work!": "تمرین ثبت شد. آفرین!",
-    "Workout deleted.": "تمرین حذف شد."
+    "Workout deleted.": "تمرین حذف شد.",
+    "The AI assistant is not set up on this server.": "دستیار هوشمند روی این سرور راه‌اندازی نشده است.",
+    "The AI assistant is not set up correctly. Please contact support.": "دستیار هوشمند درست راه‌اندازی نشده است. لطفاً با پشتیبانی تماس بگیرید.",
+    "The AI assistant is busy. Please try again in a minute.": "دستیار هوشمند مشغول است. لطفاً یک دقیقه‌ی دیگر دوباره امتحان کنید.",
+    "The AI assistant could not write this draft.": "دستیار هوشمند نتوانست این پیش‌نویس را بنویسد.",
+    "The AI assistant is temporarily unavailable. Please try again.": "دستیار هوشمند موقتاً در دسترس نیست. لطفاً دوباره امتحان کنید.",
+    "The AI assistant declined to write this draft. Please write it yourself.": "دستیار هوشمند از نوشتن این پیش‌نویس خودداری کرد. لطفاً خودتان بنویسید.",
+    "The draft was too long. Try a narrower instruction.": "پیش‌نویس خیلی طولانی شد. دستور مشخص‌تری بدهید.",
+    "You have used today's AI drafts. The limit resets tomorrow.": "سهمیه‌ی امروز پیش‌نویس‌های هوشمند تمام شده است. فردا دوباره در دسترس است.",
+    "The AI assistant could not build a plan from the exercise library. Please try again.": "دستیار هوشمند نتوانست از کتابخانه‌ی حرکات برنامه بسازد. لطفاً دوباره امتحان کنید.",
+    "The message is empty.": "پیام خالی است.",
+    "This draft was already handled.": "این پیش‌نویس قبلاً بررسی شده است.",
+    "Draft plan created. Review it in the plan editor, then activate it.": "پیش‌نویس برنامه ساخته شد. آن را در ویرایشگر برنامه بازبینی و سپس فعال کنید.",
+    "Sent to your trainee.": "برای شاگرد فرستاده شد.",
+    "Draft discarded.": "پیش‌نویس کنار گذاشته شد."
 }

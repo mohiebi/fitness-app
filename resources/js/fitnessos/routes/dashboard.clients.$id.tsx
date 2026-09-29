@@ -19,6 +19,7 @@ import {
     TabsTrigger,
 } from '@fitnessos/components/ui/tabs';
 import { EndCoachingDialog } from '@fitnessos/components/end-coaching-dialog';
+import { AiDraftButton } from '@fitnessos/components/ai-draft';
 import { IntakeSummary } from '@fitnessos/components/intake-summary';
 import {
     AdherenceCard,
@@ -294,6 +295,7 @@ type Training = {
 };
 
 function TraineeTraining({ traineeId }: { traineeId: string }) {
+    const navigate = useNavigate();
     const { data, isLoading } = useQuery({
         queryKey: ['fitnessos', 'training', traineeId],
         queryFn: () =>
@@ -356,6 +358,13 @@ function TraineeTraining({ traineeId }: { traineeId: string }) {
                             </Button>
                         </>
                     )}
+                    <AiDraftButton
+                        kind="plan"
+                        traineeId={Number(traineeId)}
+                        label={t('Draft a plan with AI')}
+                        className="items-start"
+                        onDraft={() => void navigate({ to: '/dashboard/ai' })}
+                    />
                 </Card>
                 <AdherenceCard adherence={data.adherence} />
             </div>
