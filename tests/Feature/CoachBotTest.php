@@ -183,3 +183,101 @@ test('Persian menu labels open the same screens', function () {
 
     expect(telegramTexts('4242')[0])->toContain('۱');
 });
+
+test('messages waiting for a reply are listed and a typed reply goes to the trainee', function () {
+    app(CoachingLifecycle::class)->startDirect($this->coach, $this->trainee);
+    DB::table('fitnessos_messages')->insert([
+        ['coach_id' => $this->coach->id, 'client_id' => $this->trainee->id, 'sender_id' => $this->coach->id, 'body' => 'How was leg day?', 'created_at' => now()->subHour(), 'updated_at' => now()->subHour()],
+        ['coach_id' => $this->coach->id, 'client_id' => $this->trainee->id, 'sender_id' => $this->trainee->id, 'body' => 'Knee hurts a bit', 'created_at' => now(), 'updated_at' => now()],
+    ]);
+
+    chatText('4242', '💬 Messages');
+    expect(lastButtons('4242'))->toBe(['inb:open:'.$this->trainee->id]);
+
+    chatTap('4242', 'inb:open:'.$this->trainee->id);
+    expect(collect(telegramTexts('4242'))->last())->toContain('How was leg day?')->toContain('Knee hurts a bit');
+    expect(lastButtons('4242'))->toContain('inb:reply:'.$this->trainee->id);
+
+    chatTap('4242', 'inb:reply:'.$this->trainee->id);
+    expect(collect(telegramTexts('4242'))->last())->toContain('Type your reply');
+
+    chatText('4242', 'Rest today and send me a photo of the knee.');
+
+    $sent = DB::table('fitnessos_messages')->latest('id')->first();
+    expect($sent->sender_id)->toBe($this->coach->id);
+    expect($sent->client_id)->toBe($this->trainee->id);
+    expect($sent->body)->toBe('Rest today and send me a photo of the knee.');
+    expect(collect(telegramTexts('4242'))->last())->toContain('Sent to');
+    expect($this->trainee->notifications()->where('data->kind', 'message')->exists())->toBeTrue();
+
+    // The next message is not treated as another reply.
+    chatText('4242', 'random');
+    expect(DB::table('fitnessos_messages')->count())->toBe(3);
+});
+
+test('a pending reply is dropped by cancel, by another command and after a while', function () {
+    app(CoachingLifecycle::class)->startDirect($this->coach, $this->trainee);
+
+    chatTap('4242', 'inb:reply:'.$this->trainee->id);
+    chatText('4242', '/cancel');
+    chatText('4242', 'oops');
+    expect(DB::table('fitnessos_messages')->count())->toBe(0);
+
+    chatTap('4242', 'inb:reply:'.$this->trainee->id);
+    chatText('4242', '📥 Requests');
+    chatText('4242', 'oops');
+    expect(DB::table('fitnessos_messages')->count())->toBe(0);
+
+    chatTap('4242', 'inb:reply:'.$this->trainee->id);
+    $this->travel(31)->minutes();
+    chatText('4242', 'oops');
+    expect(DB::table('fitnessos_messages')->count())->toBe(0);
+});
+
+test('a reply cannot be sent to a trainee who left the coach', function () {
+    $coaching = app(CoachingLifecycle::class)->startDirect($this->coach, $this->trainee);
+
+    chatTap('4242', 'inb:reply:'.$this->trainee->id);
+    app(CoachingLifecycle::class)->end($coaching, $this->coach);
+    chatText('4242', 'hello?');
+
+    expect(DB::table('fitnessos_messages')->count())->toBe(0);
+    expect(collect(telegramTexts('4242'))->last())->toContain('not found');
+});
+
+test('check-ins are listed, read and answered with typed feedback', function () {
+    app(CoachingLifecycle::class)->startDirect($this->coach, $this->trainee);
+    $id = DB::table('fitnessos_checkins')->insertGetId([
+        'client_id' => $this->trainee->id, 'coach_id' => $this->coach->id, 'weight_kg' => 81.5, 'sleep_hours' => 6.5, 'energy' => 7,
+        'reflection' => 'Good week, missed one session', 'adjustments' => 'More cardio', 'status' => 'Pending', 'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    chatText('4242', '✅ Check-ins');
+    expect(lastButtons('4242'))->toBe(['chk:open:'.$id]);
+
+    chatTap('4242', 'chk:open:'.$id);
+    expect(collect(telegramTexts('4242'))->last())->toContain('81.5 kg')->toContain('Energy: 7/10')->toContain('missed one session')->toContain('More cardio');
+    expect(lastButtons('4242'))->toContain('chk:fb:'.$id);
+
+    chatTap('4242', 'chk:fb:'.$id);
+    chatText('4242', 'Nice work. Add two cardio sessions next week.');
+
+    expect(DB::table('fitnessos_checkins')->where('id', $id)->value('status'))->toBe('Reviewed');
+    expect(DB::table('fitnessos_messages')->latest('id')->value('body'))->toBe('Nice work. Add two cardio sessions next week.');
+    expect($this->trainee->notifications()->where('data->kind', 'checkin_reviewed')->exists())->toBeTrue();
+
+    chatTap('4242', 'chk:open:'.$id);
+    expect(lastButtons('4242'))->not->toContain('chk:fb:'.$id);
+});
+
+test('check-ins of another coach are not reachable', function () {
+    $other = User::factory()->publishedCoach()->create();
+    app(CoachingLifecycle::class)->startDirect($other, $this->trainee);
+    $id = DB::table('fitnessos_checkins')->insertGetId(['client_id' => $this->trainee->id, 'coach_id' => $other->id, 'status' => 'Pending', 'created_at' => now(), 'updated_at' => now()]);
+
+    chatTap('4242', 'chk:open:'.$id);
+    chatTap('4242', 'chk:fb:'.$id);
+
+    expect(lastToast())->toContain('not found');
+    expect(DB::table('fitnessos_checkins')->where('id', $id)->value('status'))->toBe('Pending');
+});

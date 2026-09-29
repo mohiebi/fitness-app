@@ -78,7 +78,10 @@ class TraineesScreen extends Screen
     private function open(BotChat $chat, User $trainee): void
     {
         $chat->show($this->card($chat->coach(), $trainee), Tg::keyboard([
-            Tg::row([Tg::button(__('📋 Training plan'), 'trn:plan:'.$trainee->id)]),
+            Tg::row([
+                Tg::button(__('💬 Messages'), 'inb:open:'.$trainee->id),
+                Tg::button(__('📋 Training plan'), 'trn:plan:'.$trainee->id),
+            ]),
             Tg::row([Tg::dashboard(__('🌐 Open in dashboard'), '/dashboard/clients/'.$trainee->id)]),
             Tg::row([Tg::button(__('◀ All trainees'), 'trn:list:0')]),
         ]));

@@ -4,6 +4,8 @@ namespace App\Services\Telegram;
 
 use App\Models\TelegramAccount;
 use App\Models\User;
+use App\Services\Telegram\Screens\CheckinsScreen;
+use App\Services\Telegram\Screens\InboxScreen;
 use App\Services\Telegram\Screens\RequestsScreen;
 use App\Services\Telegram\Screens\Screen;
 use App\Services\Telegram\Screens\TodayScreen;
@@ -30,7 +32,9 @@ class CoachBot
     private const COMMAND_SCREENS = [
         'today' => 'day',
         'requests' => 'req',
+        'messages' => 'inb',
         'trainees' => 'trn',
+        'checkins' => 'chk',
     ];
 
     public function __construct(
@@ -39,6 +43,8 @@ class CoachBot
         private TodayScreen $today,
         private RequestsScreen $requests,
         private TraineesScreen $trainees,
+        private InboxScreen $inbox,
+        private CheckinsScreen $checkins,
     ) {}
 
     /**
@@ -186,6 +192,8 @@ class CoachBot
             'day' => $this->today,
             'req' => $this->requests,
             'trn' => $this->trainees,
+            'inb' => $this->inbox,
+            'chk' => $this->checkins,
             default => null,
         };
     }
@@ -196,6 +204,8 @@ class CoachBot
             __('<b>What I can do</b>'),
             __('📊 /today — what needs you right now'),
             __('📥 /requests — accept or decline new trainees'),
+            __('💬 /messages — trainees waiting for your reply'),
+            __('✅ /checkins — check-ins to review'),
             __('👥 /trainees — your trainees and their plans'),
             __('/menu — show the menu'),
             __('/cancel — cancel what I was doing'),
