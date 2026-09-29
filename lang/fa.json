@@ -41,5 +41,19 @@
     "Draft plan created. Review it in the plan editor, then activate it.": "پیش‌نویس برنامه ساخته شد. آن را در ویرایشگر برنامه بازبینی و سپس فعال کنید.",
     "Sent to your trainee.": "برای شاگرد فرستاده شد.",
     "Draft discarded.": "پیش‌نویس کنار گذاشته شد.",
-    "Your subscription has ended. Renew it to accept new trainees.": "اشتراک شما تمام شده است. برای پذیرفتن شاگرد جدید آن را تمدید کنید."
+    "Your subscription has ended. Renew it to accept new trainees.": "اشتراک شما تمام شده است. برای پذیرفتن شاگرد جدید آن را تمدید کنید.",
+    "To pay for FitnessOS, open Billing in your coach dashboard and tap Pay with Telegram. Then send the transfer receipt here.": "برای پرداخت اشتراک فیتنس‌اواس، در داشبورد مربی بخش «اشتراک و پرداخت» را باز کنید و «پرداخت با تلگرام» را بزنید. سپس رسید واریز را همین‌جا بفرستید.",
+    "FitnessOS subscription: :plan plan, :days days": "اشتراک فیتنس‌اواس: پلن :plan، :days روز",
+    "Amount: :amount toman": "مبلغ: :amount تومان",
+    "Please transfer the amount to this card:": "لطفاً مبلغ را به این کارت واریز کنید:",
+    "Then send a photo of the receipt in this chat. We will confirm it shortly.": "سپس عکس رسید را در همین گفتگو بفرستید. به‌زودی تأیید می‌کنیم.",
+    "Reference: :reference": "کد پیگیری: :reference",
+    "There is no open payment for this chat. Start from Billing in your coach dashboard.": "پرداخت بازی برای این گفتگو وجود ندارد. از بخش «اشتراک و پرداخت» در داشبورد مربی شروع کنید.",
+    "Receipt received. We will check it and confirm here shortly.": "رسید دریافت شد. بررسی می‌کنیم و به‌زودی همین‌جا خبر می‌دهیم.",
+    "Payment confirmed. Your subscription is active until :date.": "پرداخت تأیید شد. اشتراک شما تا :date فعال است.",
+    "We could not confirm this payment. Please check the receipt and contact support.": "نتوانستیم این پرداخت را تأیید کنیم. لطفاً رسید را بررسی کنید و با پشتیبانی تماس بگیرید.",
+    "Online payment is not available yet. Please contact support to renew.": "پرداخت آنلاین هنوز فعال نیست. برای تمدید با پشتیبانی تماس بگیرید.",
+    "Payment canceled.": "پرداخت لغو شد.",
+    "Starter": "پایه",
+    "Pro": "حرفه‌ای"
 }
