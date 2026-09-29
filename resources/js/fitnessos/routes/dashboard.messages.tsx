@@ -6,6 +6,9 @@ import { Card } from '@fitnessos/components/ui/card';
 import { Button } from '@fitnessos/components/ui/button';
 import { Input } from '@fitnessos/components/ui/input';
 import { Avatar, AvatarFallback } from '@fitnessos/components/ui/avatar';
+import { AiDraftButton, AiDraftNotice } from '@fitnessos/components/ai-draft';
+import { Textarea } from '@fitnessos/components/ui/textarea';
+import { approveDraft, discardDraft } from '@fitnessos/lib/ai';
 import { getJson, postJson } from '@fitnessos/lib/api';
 import { formatRelative, messageTime } from '@fitnessos/lib/format';
 import { t } from '@fitnessos/lib/i18n';
@@ -41,6 +44,8 @@ function Messages() {
     const [active, setActive] = useState<string | null>(client ?? null);
     const [search, setSearch] = useState('');
     const [draft, setDraft] = useState('');
+    // Set while the composer holds an AI draft; sending then approves it.
+    const [aiDraftId, setAiDraftId] = useState<number | null>(null);
     const [sending, setSending] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const queryClient = useQueryClient();
@@ -62,10 +67,18 @@ function Messages() {
         setSending(true);
         setError(null);
         try {
-            await postJson('/fitnessos/messages', {
-                client_id: Number(selected),
-                body: draft.trim(),
-            });
+            if (aiDraftId !== null) {
+                await approveDraft(aiDraftId, { content: draft.trim() });
+                setAiDraftId(null);
+                void queryClient.invalidateQueries({
+                    queryKey: ['fitnessos', 'ai'],
+                });
+            } else {
+                await postJson('/fitnessos/messages', {
+                    client_id: Number(selected),
+                    body: draft.trim(),
+                });
+            }
             setDraft('');
             await Promise.all([
                 queryClient.invalidateQueries({
@@ -109,7 +122,11 @@ function Messages() {
                         .map((conversation) => (
                             <button
                                 key={conversation.id}
-                                onClick={() => setActive(conversation.id)}
+                                onClick={() => {
+                                    setActive(conversation.id);
+                                    setDraft('');
+                                    setAiDraftId(null);
+                                }}
                                 className={`flex w-full items-center gap-3 rounded-xl p-3 text-start transition ${selected === conversation.id ? 'bg-secondary' : 'hover:bg-secondary'}`}
                             >
                                 <Avatar className="h-10 w-10">
@@ -188,8 +205,30 @@ function Messages() {
                                     {error}
                                 </p>
                             )}
-                            <div className="flex gap-2">
-                                <Input
+                            {aiDraftId !== null && (
+                                <div className="mb-2">
+                                    <AiDraftNotice
+                                        onDiscard={() => {
+                                            void discardDraft(aiDraftId).then(
+                                                () =>
+                                                    queryClient.invalidateQueries(
+                                                        {
+                                                            queryKey: [
+                                                                'fitnessos',
+                                                                'ai',
+                                                            ],
+                                                        },
+                                                    ),
+                                            );
+                                            setAiDraftId(null);
+                                            setDraft('');
+                                        }}
+                                    />
+                                </div>
+                            )}
+                            <div className="flex items-end gap-2">
+                                <Textarea
+                                    rows={aiDraftId !== null ? 5 : 2}
                                     placeholder={t('Type a message…')}
                                     aria-label={t('Type a message…')}
                                     value={draft}
@@ -197,8 +236,15 @@ function Messages() {
                                         setDraft(event.target.value)
                                     }
                                     onKeyDown={(event) => {
-                                        if (event.key === 'Enter') void send();
+                                        if (
+                                            event.key === 'Enter' &&
+                                            !event.shiftKey
+                                        ) {
+                                            event.preventDefault();
+                                            void send();
+                                        }
                                     }}
+                                    className="min-h-0 resize-none"
                                 />
                                 <Button
                                     size="icon"
@@ -209,6 +255,17 @@ function Messages() {
                                     <Send className="h-4 w-4 rtl:-scale-x-100" />
                                 </Button>
                             </div>
+                            {aiDraftId === null && selected && (
+                                <AiDraftButton
+                                    kind="reply"
+                                    traineeId={Number(selected)}
+                                    className="mt-2 items-start"
+                                    onDraft={(result) => {
+                                        setDraft(result.content ?? '');
+                                        setAiDraftId(result.id);
+                                    }}
+                                />
+                            )}
                         </div>
                     </>
                 ) : (

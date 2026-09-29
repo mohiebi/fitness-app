@@ -3,11 +3,15 @@ import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ClipboardCheck, Moon, Ruler, Weight, Zap } from 'lucide-react';
 import { PageHeader } from '@fitnessos/components/app-shell';
+import { AiDraftButton, AiDraftNotice } from '@fitnessos/components/ai-draft';
 import { Card } from '@fitnessos/components/ui/card';
 import { Badge } from '@fitnessos/components/ui/badge';
 import { Button } from '@fitnessos/components/ui/button';
 import { Textarea } from '@fitnessos/components/ui/textarea';
+import { approveDraft, discardDraft } from '@fitnessos/lib/ai';
 import { getJson, patchJson } from '@fitnessos/lib/api';
+import { formatDate, formatNumber } from '@fitnessos/lib/format';
+import { t } from '@fitnessos/lib/i18n';
 
 export const Route = createFileRoute('/dashboard/checkins')({
     component: Checkins,
@@ -38,6 +42,8 @@ function Checkins() {
     const { checkin } = Route.useSearch();
     const [active, setActive] = useState<number | null>(checkin ?? null);
     const [feedback, setFeedback] = useState('');
+    // Set while the feedback box holds an AI draft; sending approves it.
+    const [aiDraftId, setAiDraftId] = useState<number | null>(null);
     const [saving, setSaving] = useState(false);
     const [result, setResult] = useState<string | null>(null);
     const queryClient = useQueryClient();
@@ -51,16 +57,32 @@ function Checkins() {
     });
     const selected =
         checkins.find((entry) => entry.id === active) ?? checkins[0];
+
+    const select = (id: number) => {
+        setActive(id);
+        setResult(null);
+        setFeedback('');
+        setAiDraftId(null);
+    };
+
     const sendFeedback = async () => {
         if (!selected || !feedback.trim()) return;
         setSaving(true);
         setResult(null);
         try {
-            await patchJson(`/fitnessos/checkins/${selected.id}`, {
-                feedback: feedback.trim(),
-            });
+            if (aiDraftId !== null) {
+                await approveDraft(aiDraftId, { content: feedback.trim() });
+                setAiDraftId(null);
+                void queryClient.invalidateQueries({
+                    queryKey: ['fitnessos', 'ai'],
+                });
+            } else {
+                await patchJson(`/fitnessos/checkins/${selected.id}`, {
+                    feedback: feedback.trim(),
+                });
+            }
             setFeedback('');
-            setResult('Feedback sent to the client.');
+            setResult(t('Feedback sent to your trainee.'));
             await queryClient.invalidateQueries({
                 queryKey: ['fitnessos', 'checkins'],
             });
@@ -68,29 +90,38 @@ function Checkins() {
             setResult(
                 cause instanceof Error
                     ? cause.message
-                    : 'Unable to send feedback.',
+                    : t('The request failed.'),
             );
         } finally {
             setSaving(false);
         }
     };
 
+    const discardAiDraft = () => {
+        if (aiDraftId === null) return;
+        void discardDraft(aiDraftId).then(() =>
+            queryClient.invalidateQueries({ queryKey: ['fitnessos', 'ai'] }),
+        );
+        setAiDraftId(null);
+        setFeedback('');
+    };
+
     return (
         <div>
             <PageHeader
-                title="Weekly check-ins"
-                description="Review client updates and reply with feedback."
+                title={t('Weekly check-ins')}
+                description={t(
+                    "Review your trainees' updates and reply with feedback.",
+                )}
             />
             {isLoading && (
-                <p className="text-muted-foreground text-sm">
-                    Loading check-ins…
-                </p>
+                <p className="text-muted-foreground text-sm">{t('Loading…')}</p>
             )}
             {error && (
                 <p role="alert" className="text-destructive text-sm">
                     {error instanceof Error
                         ? error.message
-                        : 'Unable to load check-ins.'}
+                        : t('The request failed.')}
                 </p>
             )}
             <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
@@ -98,11 +129,8 @@ function Checkins() {
                     {checkins.map((entry) => (
                         <button
                             key={entry.id}
-                            onClick={() => {
-                                setActive(entry.id);
-                                setResult(null);
-                            }}
-                            className={`mb-1 flex w-full items-center gap-3 rounded-xl p-3 text-left ${selected?.id === entry.id ? 'bg-primary/15' : 'hover:bg-secondary'}`}
+                            onClick={() => select(entry.id)}
+                            className={`mb-1 flex w-full items-center gap-3 rounded-xl p-3 text-start ${selected?.id === entry.id ? 'bg-primary/15' : 'hover:bg-secondary'}`}
                         >
                             <ClipboardCheck className="text-primary h-4 w-4" />
                             <span className="min-w-0 flex-1">
@@ -110,9 +138,7 @@ function Checkins() {
                                     {entry.client_name}
                                 </span>
                                 <span className="text-muted-foreground text-xs">
-                                    {new Date(
-                                        entry.created_at,
-                                    ).toLocaleDateString()}
+                                    {formatDate(entry.created_at)}
                                 </span>
                             </span>
                             {entry.status === 'Pending' && (
@@ -122,7 +148,7 @@ function Checkins() {
                     ))}
                     {!isLoading && checkins.length === 0 && (
                         <p className="text-muted-foreground p-4 text-sm">
-                            No check-ins yet.
+                            {t('No check-ins yet.')}
                         </p>
                     )}
                 </Card>
@@ -133,56 +159,72 @@ function Checkins() {
                             <h2 className="text-xl font-semibold">
                                 {selected.client_name}
                             </h2>
-                            <Badge variant="secondary">{selected.status}</Badge>
+                            <Badge variant="secondary">
+                                {selected.status === 'Reviewed'
+                                    ? t('Reviewed')
+                                    : t('Pending')}
+                            </Badge>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                             <Metric
                                 icon={Weight}
-                                label="Weight"
+                                label={t('Weight')}
                                 value={
                                     selected.weight_kg
-                                        ? `${selected.weight_kg} kg`
+                                        ? t(':value kg', {
+                                              value: formatNumber(
+                                                  Number(selected.weight_kg),
+                                              ),
+                                          })
                                         : '—'
                                 }
                             />
                             <Metric
                                 icon={Ruler}
-                                label="Waist"
+                                label={t('Waist')}
                                 value={
                                     selected.waist_cm
-                                        ? `${selected.waist_cm} cm`
+                                        ? t(':value cm', {
+                                              value: formatNumber(
+                                                  Number(selected.waist_cm),
+                                              ),
+                                          })
                                         : '—'
                                 }
                             />
                             <Metric
                                 icon={Moon}
-                                label="Sleep"
+                                label={t('Sleep')}
                                 value={
                                     selected.sleep_hours
-                                        ? `${selected.sleep_hours} h`
+                                        ? t(':value h', {
+                                              value: formatNumber(
+                                                  Number(selected.sleep_hours),
+                                              ),
+                                          })
                                         : '—'
                                 }
                             />
                             <Metric
                                 icon={Zap}
-                                label="Energy"
+                                label={t('Energy')}
                                 value={
                                     selected.energy
-                                        ? `${selected.energy}/10`
+                                        ? `${formatNumber(selected.energy)}/${formatNumber(10)}`
                                         : '—'
                                 }
                             />
                         </div>
                         <Card className="border-border/60 bg-card shadow-card-premium p-6">
-                            <h3 className="font-semibold">Reflection</h3>
+                            <h3 className="font-semibold">{t('Reflection')}</h3>
                             <p className="text-muted-foreground mt-2 text-sm whitespace-pre-wrap">
                                 {selected.reflection ||
-                                    'No reflection provided.'}
+                                    t('No reflection provided.')}
                             </p>
                             {selected.adjustments && (
                                 <>
                                     <h3 className="mt-5 font-semibold">
-                                        Requested adjustments
+                                        {t('Requested adjustments')}
                                     </h3>
                                     <p className="text-muted-foreground mt-2 text-sm whitespace-pre-wrap">
                                         {selected.adjustments}
@@ -190,13 +232,18 @@ function Checkins() {
                                 </>
                             )}
                         </Card>
-                        <Card className="border-border/60 bg-card shadow-card-premium p-6">
-                            <h3 className="mb-3 font-semibold">
-                                Coach feedback
+                        <Card className="border-border/60 bg-card shadow-card-premium flex flex-col gap-3 p-6">
+                            <h3 className="font-semibold">
+                                {t('Coach feedback')}
                             </h3>
+                            {aiDraftId !== null && (
+                                <AiDraftNotice onDiscard={discardAiDraft} />
+                            )}
                             <Textarea
-                                rows={5}
-                                placeholder="Write feedback for this check-in…"
+                                rows={aiDraftId !== null ? 8 : 5}
+                                placeholder={t(
+                                    'Write feedback for this check-in…',
+                                )}
                                 value={feedback}
                                 onChange={(event) =>
                                     setFeedback(event.target.value)
@@ -205,23 +252,40 @@ function Checkins() {
                             {result && (
                                 <p
                                     role="status"
-                                    className="text-primary mt-3 text-sm"
+                                    className="text-primary text-sm"
                                 >
                                     {result}
                                 </p>
                             )}
-                            <Button
-                                disabled={saving || !feedback.trim()}
-                                onClick={sendFeedback}
-                                className="mt-4"
-                            >
-                                {saving ? 'Sending…' : 'Send feedback'}
-                            </Button>
+                            <div className="flex flex-wrap items-start gap-2">
+                                <Button
+                                    disabled={saving || !feedback.trim()}
+                                    onClick={sendFeedback}
+                                >
+                                    {saving
+                                        ? t('Sending…')
+                                        : t('Send feedback')}
+                                </Button>
+                                {aiDraftId === null &&
+                                    selected.status === 'Pending' && (
+                                        <AiDraftButton
+                                            kind="checkin_feedback"
+                                            traineeId={selected.client_id}
+                                            checkinId={selected.id}
+                                            onDraft={(draft) => {
+                                                setFeedback(
+                                                    draft.content ?? '',
+                                                );
+                                                setAiDraftId(draft.id);
+                                            }}
+                                        />
+                                    )}
+                            </div>
                         </Card>
                     </div>
                 ) : (
                     <div className="text-muted-foreground grid min-h-64 place-items-center text-sm">
-                        Select a check-in to review.
+                        {t('Select a check-in to review.')}
                     </div>
                 )}
             </div>
