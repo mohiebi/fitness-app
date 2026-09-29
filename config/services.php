@@ -18,6 +18,15 @@ return [
         'key' => env('POSTMARK_API_KEY'),
     ],
 
+    // Coach AI assistant. Without an API key the assistant is switched off
+    // and the app works as before.
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+        'base_url' => env('ANTHROPIC_BASE_URL'),
+        'model' => env('AI_MODEL', 'claude-opus-5'),
+        'daily_drafts_per_coach' => (int) env('AI_DAILY_DRAFTS_PER_COACH', 60),
+    ],
+
     'resend' => [
         'key' => env('RESEND_API_KEY'),
     ],
