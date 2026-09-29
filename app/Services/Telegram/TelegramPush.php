@@ -14,10 +14,13 @@ final class TelegramPush
     {
         $lines = ['<b>'.Tg::esc($notice->title).'</b>'];
 
+        // A chat message's body only says "open the chat"; the words themselves say more.
+        if ($notice->kind !== 'message') {
+            $lines[] = Tg::esc($notice->body);
+        }
+
         if ($notice->detail !== null && $notice->detail !== '') {
             $lines[] = Tg::quote($notice->detail);
-        } else {
-            $lines[] = Tg::esc($notice->body);
         }
 
         return implode("\n", $lines);

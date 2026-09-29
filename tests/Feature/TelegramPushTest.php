@@ -20,7 +20,7 @@ test('a new coaching request reaches the coach in Telegram and can be accepted f
     $coaching = app(CoachingLifecycle::class)->request($this->trainee, $this->coach->coachProfile, 'I want to lose fat');
 
     $text = telegramTexts('4242')[0];
-    expect($text)->toContain('New coaching request')->toContain('I want to lose fat');
+    expect($text)->toContain('New coaching request')->toContain('Nima Rezaei asked to train with you')->toContain('I want to lose fat');
     expect(lastButtons('4242'))->toBe(['req:acc:'.$coaching->id, 'req:dec:'.$coaching->id]);
     expect($this->coach->notifications()->where('data->kind', 'coaching_requested')->exists())->toBeTrue();
 

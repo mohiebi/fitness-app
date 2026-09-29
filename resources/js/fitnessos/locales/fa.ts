@@ -812,7 +812,7 @@ export const fa: Record<string, string> = {
     // Telegram coach bot
     Telegram: 'تلگرام',
     'Run your coaching from your phone: requests, messages, check-ins and AI drafts.':
-        'مربیگری را از گوشی‌ات انجام بده: درخواست‌ها، پیام‌ها، چک‌این‌ها و پیش‌نویس‌های هوش مصنوعی.',
+        'مربیگری را از گوشی‌ات انجام بده: درخواست‌ها، پیام‌ها، گزارش‌ها و پیش‌نویس‌های هوش مصنوعی.',
     'Connected as @:username': 'متصل با @:username',
     Connected: 'متصل',
     Disconnect: 'قطع اتصال',
@@ -827,7 +827,7 @@ export const fa: Record<string, string> = {
     'Accept or decline new trainees with one tap':
         'شاگرد جدید را با یک لمس بپذیر یا رد کن',
     'Review weekly check-ins as they arrive':
-        'چک‌این‌های هفتگی را همان لحظه‌ای که می‌رسند بررسی کن',
+        'گزارش‌های هفتگی را همان لحظه‌ای که می‌رسند بررسی کن',
     'Subscription and payments': 'اشتراک و پرداخت‌ها',
     'Payment confirmations and renewal reminders':
         'تأیید پرداخت و یادآوری تمدید',
@@ -838,5 +838,5 @@ export const fa: Record<string, string> = {
         'روزی یک پیام با کارهایی که منتظر تو هستند',
     'Coach from your phone with Telegram': 'با تلگرام از گوشی مربیگری کن',
     'Get requests, messages and check-ins in Telegram and answer them there, with AI drafts you approve.':
-        'درخواست‌ها، پیام‌ها و چک‌این‌ها را در تلگرام بگیر و همان‌جا جواب بده، با پیش‌نویس‌های هوش مصنوعی که خودت تأیید می‌کنی.',
+        'درخواست‌ها، پیام‌ها و گزارش‌ها را در تلگرام بگیر و همان‌جا جواب بده، با پیش‌نویس‌های هوش مصنوعی که خودت تأیید می‌کنی.',
 };
