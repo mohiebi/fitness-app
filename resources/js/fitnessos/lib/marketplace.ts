@@ -16,6 +16,7 @@ export type CoachSummary = {
     accepting_clients: boolean;
     avatar_url: string | null;
     verified: boolean;
+    rating: { average: number | null; count: number };
 };
 
 export type CoachOwnProfile = CoachSummary & {

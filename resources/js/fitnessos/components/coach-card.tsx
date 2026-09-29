@@ -5,6 +5,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from '@fitnessos/components/ui/avatar';
+import { RatingBadge } from '@fitnessos/components/stars';
 import { Badge } from '@fitnessos/components/ui/badge';
 import { t } from '@fitnessos/lib/i18n';
 import { formatNumber, formatToman } from '@fitnessos/lib/format';
@@ -91,6 +92,7 @@ export function CoachCard({ coach }: { coach: CoachSummary }) {
                             {coach.name}
                         </h2>
                         {coach.verified && <VerifiedBadge />}
+                        <RatingBadge rating={coach.rating} />
                     </div>
                     {coach.headline && (
                         <p className="text-muted-foreground mt-0.5 line-clamp-2 text-sm">

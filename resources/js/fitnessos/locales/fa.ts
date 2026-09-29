@@ -776,4 +776,30 @@ export const fa: Record<string, string> = {
     "You are hidden from the coach directory and can't take new trainees. Your current trainees are not affected.":
         'در فهرست مربی‌ها نمایش داده نمی‌شوید و شاگرد جدید نمی‌پذیرید. شاگردان فعلی‌تان تحت تأثیر نیستند.',
     Renew: 'تمدید',
+
+    // Reviews
+    ':value out of 5 stars': ':value از ۵ ستاره',
+    ':count reviews': ':count نظر',
+    Rating: 'امتیاز',
+    Reviews: 'نظرها',
+    'Only trainees who trained with this coach for at least two weeks can leave a review.':
+        'فقط شاگردهایی که دست‌کم دو هفته با این مربی تمرین کرده‌اند می‌توانند نظر بدهند.',
+    "Coach's reply": 'پاسخ مربی',
+    'Help other trainees choose. Your review shows your first name only.':
+        'به شاگردهای دیگر در انتخاب کمک کن. کنار نظرت فقط نام کوچکت نمایش داده می‌شود.',
+    'You can review from :date.': 'از :date می‌توانی نظر بدهی.',
+    'Not available for review.': 'امکان ثبت نظر نیست.',
+    'Your review': 'نظر تو',
+    'What was it like to train with this coach?': 'تمرین با این مربی چطور بود؟',
+    'This review was hidden by FitnessOS.':
+        'این نظر توسط فیتنس‌اواس پنهان شده است.',
+    'Update review': 'به‌روزرسانی نظر',
+    'Publish review': 'انتشار نظر',
+    'No reviews yet. Trainees can review you after two weeks of coaching.':
+        'هنوز نظری ندارید. شاگردها پس از دو هفته همکاری می‌توانند نظر بدهند.',
+    'Hidden by FitnessOS': 'پنهان‌شده توسط فیتنس‌اواس',
+    'Your reply': 'پاسخ شما',
+    'Reply publicly (optional)': 'پاسخ عمومی (اختیاری)',
+    'Save reply': 'ذخیره‌ی پاسخ',
+    'Reply saved.': 'پاسخ ذخیره شد.',
 };

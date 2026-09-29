@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { CoachAvatar } from '@fitnessos/components/coach-card';
+import { CoachReviewsManager } from '@fitnessos/components/reviews';
 import { Card } from '@fitnessos/components/ui/card';
 import { Button } from '@fitnessos/components/ui/button';
 import { Input } from '@fitnessos/components/ui/input';
@@ -172,294 +173,315 @@ function ProfileEditor() {
     const publicUrl = `${window.location.origin}/coaches/${profile.slug}`;
 
     return (
-        <form onSubmit={save}>
-            <PageHeader
-                title={t('Public profile')}
-                description={t(
-                    'This is what trainees see before they request coaching with you.',
-                )}
-                actions={
-                    <>
-                        {profile.is_published && (
-                            <Button asChild variant="outline">
-                                <Link
-                                    to="/coaches/$slug"
-                                    params={{ slug: profile.slug }}
-                                    target="_blank"
-                                >
-                                    {t('View public page')}
-                                    <ExternalLink />
-                                </Link>
-                            </Button>
-                        )}
-                        <Button type="submit" disabled={busy}>
-                            {busy ? t('Saving…') : t('Save')}
-                        </Button>
-                    </>
-                }
-            />
-
-            {notice && (
-                <p
-                    role={notice.error ? 'alert' : 'status'}
-                    className={cn(
-                        'mb-4 text-sm',
-                        notice.error ? 'text-destructive' : 'text-volt',
+        <>
+            <form onSubmit={save}>
+                <PageHeader
+                    title={t('Public profile')}
+                    description={t(
+                        'This is what trainees see before they request coaching with you.',
                     )}
-                >
-                    {notice.text}
-                </p>
-            )}
-
-            <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
-                <div className="flex flex-col gap-5">
-                    <Section title={t('Basics')}>
-                        <div className="flex items-center gap-4">
-                            <CoachAvatar
-                                coach={{
-                                    name: profile.name,
-                                    avatar_url: profile.avatar_url,
-                                }}
-                                className="h-20 w-20"
-                            />
-                            <div>
-                                <input
-                                    ref={fileInput}
-                                    type="file"
-                                    accept="image/*"
-                                    className="hidden"
-                                    onChange={(e) => {
-                                        const file = e.target.files?.[0];
-                                        if (file) void uploadAvatar(file);
-                                        e.target.value = '';
-                                    }}
-                                />
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => fileInput.current?.click()}
-                                >
-                                    <Camera />
-                                    {t('Change photo')}
+                    actions={
+                        <>
+                            {profile.is_published && (
+                                <Button asChild variant="outline">
+                                    <Link
+                                        to="/coaches/$slug"
+                                        params={{ slug: profile.slug }}
+                                        target="_blank"
+                                    >
+                                        {t('View public page')}
+                                        <ExternalLink />
+                                    </Link>
                                 </Button>
-                                <p className="text-muted-foreground mt-1.5 text-xs">
-                                    {t('JPG or PNG, up to 2 MB.')}
-                                </p>
-                            </div>
-                        </div>
-                        <Field
-                            id="headline"
-                            label={t('Headline')}
-                            hint={t(
-                                'One line about who you help, e.g. strength coach for busy beginners.',
                             )}
-                        >
-                            <Input
+                            <Button type="submit" disabled={busy}>
+                                {busy ? t('Saving…') : t('Save')}
+                            </Button>
+                        </>
+                    }
+                />
+
+                {notice && (
+                    <p
+                        role={notice.error ? 'alert' : 'status'}
+                        className={cn(
+                            'mb-4 text-sm',
+                            notice.error ? 'text-destructive' : 'text-volt',
+                        )}
+                    >
+                        {notice.text}
+                    </p>
+                )}
+
+                <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
+                    <div className="flex flex-col gap-5">
+                        <Section title={t('Basics')}>
+                            <div className="flex items-center gap-4">
+                                <CoachAvatar
+                                    coach={{
+                                        name: profile.name,
+                                        avatar_url: profile.avatar_url,
+                                    }}
+                                    className="h-20 w-20"
+                                />
+                                <div>
+                                    <input
+                                        ref={fileInput}
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) void uploadAvatar(file);
+                                            e.target.value = '';
+                                        }}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() =>
+                                            fileInput.current?.click()
+                                        }
+                                    >
+                                        <Camera />
+                                        {t('Change photo')}
+                                    </Button>
+                                    <p className="text-muted-foreground mt-1.5 text-xs">
+                                        {t('JPG or PNG, up to 2 MB.')}
+                                    </p>
+                                </div>
+                            </div>
+                            <Field
                                 id="headline"
-                                value={form.headline}
-                                maxLength={120}
-                                onChange={(e) =>
-                                    set('headline', e.target.value)
-                                }
-                            />
-                        </Field>
-                        <Field id="bio" label={t('About me')}>
-                            <Textarea
-                                id="bio"
-                                rows={6}
-                                value={form.bio}
-                                maxLength={5000}
-                                onChange={(e) => set('bio', e.target.value)}
-                            />
-                        </Field>
-                        <Field
-                            id="slug"
-                            label={t('Profile address')}
-                            hint={publicUrl}
-                        >
-                            <Input
+                                label={t('Headline')}
+                                hint={t(
+                                    'One line about who you help, e.g. strength coach for busy beginners.',
+                                )}
+                            >
+                                <Input
+                                    id="headline"
+                                    value={form.headline}
+                                    maxLength={120}
+                                    onChange={(e) =>
+                                        set('headline', e.target.value)
+                                    }
+                                />
+                            </Field>
+                            <Field id="bio" label={t('About me')}>
+                                <Textarea
+                                    id="bio"
+                                    rows={6}
+                                    value={form.bio}
+                                    maxLength={5000}
+                                    onChange={(e) => set('bio', e.target.value)}
+                                />
+                            </Field>
+                            <Field
                                 id="slug"
-                                dir="ltr"
-                                value={form.slug}
-                                onChange={(e) =>
-                                    set('slug', e.target.value.toLowerCase())
-                                }
-                            />
-                        </Field>
-                    </Section>
+                                label={t('Profile address')}
+                                hint={publicUrl}
+                            >
+                                <Input
+                                    id="slug"
+                                    dir="ltr"
+                                    value={form.slug}
+                                    onChange={(e) =>
+                                        set(
+                                            'slug',
+                                            e.target.value.toLowerCase(),
+                                        )
+                                    }
+                                />
+                            </Field>
+                        </Section>
 
-                    <Section title={t('Specialties')}>
-                        <div
-                            className="flex flex-wrap gap-2"
-                            role="group"
-                            aria-label={t('Specialties')}
-                        >
-                            {Object.entries(specialties).map(([key, label]) => (
-                                <button
-                                    key={key}
-                                    type="button"
-                                    aria-pressed={form.specialties.includes(
-                                        key,
-                                    )}
-                                    onClick={() => toggleSpecialty(key)}
-                                    className={cn(
-                                        'rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors',
-                                        form.specialties.includes(key)
-                                            ? 'border-primary bg-primary text-primary-foreground'
-                                            : 'border-border text-muted-foreground hover:text-foreground',
-                                    )}
-                                >
-                                    {t(label)}
-                                </button>
-                            ))}
-                        </div>
-                        <Field
-                            id="certifications"
-                            label={t('Certifications')}
-                            hint={t(
-                                'One per line. Verified coaches get a badge after we check them.',
-                            )}
-                        >
-                            <Textarea
+                        <Section title={t('Specialties')}>
+                            <div
+                                className="flex flex-wrap gap-2"
+                                role="group"
+                                aria-label={t('Specialties')}
+                            >
+                                {Object.entries(specialties).map(
+                                    ([key, label]) => (
+                                        <button
+                                            key={key}
+                                            type="button"
+                                            aria-pressed={form.specialties.includes(
+                                                key,
+                                            )}
+                                            onClick={() => toggleSpecialty(key)}
+                                            className={cn(
+                                                'rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors',
+                                                form.specialties.includes(key)
+                                                    ? 'border-primary bg-primary text-primary-foreground'
+                                                    : 'border-border text-muted-foreground hover:text-foreground',
+                                            )}
+                                        >
+                                            {t(label)}
+                                        </button>
+                                    ),
+                                )}
+                            </div>
+                            <Field
                                 id="certifications"
-                                rows={3}
-                                value={form.certifications}
-                                onChange={(e) =>
-                                    set('certifications', e.target.value)
-                                }
-                            />
-                        </Field>
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <Field id="years" label={t('Years of experience')}>
-                                <Input
+                                label={t('Certifications')}
+                                hint={t(
+                                    'One per line. Verified coaches get a badge after we check them.',
+                                )}
+                            >
+                                <Textarea
+                                    id="certifications"
+                                    rows={3}
+                                    value={form.certifications}
+                                    onChange={(e) =>
+                                        set('certifications', e.target.value)
+                                    }
+                                />
+                            </Field>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <Field
                                     id="years"
-                                    type="number"
-                                    min={0}
-                                    max={60}
-                                    value={form.years_experience}
-                                    onChange={(e) =>
-                                        set('years_experience', e.target.value)
-                                    }
-                                />
-                            </Field>
-                            <Field
-                                id="languages"
-                                label={t('Languages')}
-                                hint={t('Separate with commas.')}
-                            >
-                                <Input
+                                    label={t('Years of experience')}
+                                >
+                                    <Input
+                                        id="years"
+                                        type="number"
+                                        min={0}
+                                        max={60}
+                                        value={form.years_experience}
+                                        onChange={(e) =>
+                                            set(
+                                                'years_experience',
+                                                e.target.value,
+                                            )
+                                        }
+                                    />
+                                </Field>
+                                <Field
                                     id="languages"
-                                    value={form.languages}
-                                    onChange={(e) =>
-                                        set('languages', e.target.value)
-                                    }
-                                />
-                            </Field>
-                        </div>
-                    </Section>
+                                    label={t('Languages')}
+                                    hint={t('Separate with commas.')}
+                                >
+                                    <Input
+                                        id="languages"
+                                        value={form.languages}
+                                        onChange={(e) =>
+                                            set('languages', e.target.value)
+                                        }
+                                    />
+                                </Field>
+                            </div>
+                        </Section>
 
-                    <Section title={t('Where and how much')}>
-                        <div className="grid gap-4 sm:grid-cols-2">
-                            <Field id="city" label={t('City')}>
-                                <Input
-                                    id="city"
-                                    value={form.city}
-                                    onChange={(e) =>
-                                        set('city', e.target.value)
-                                    }
-                                />
-                            </Field>
-                            <Field
-                                id="price"
-                                label={t('Monthly price from (toman)')}
-                            >
-                                <Input
+                        <Section title={t('Where and how much')}>
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <Field id="city" label={t('City')}>
+                                    <Input
+                                        id="city"
+                                        value={form.city}
+                                        onChange={(e) =>
+                                            set('city', e.target.value)
+                                        }
+                                    />
+                                </Field>
+                                <Field
                                     id="price"
-                                    type="number"
-                                    min={0}
-                                    step={10000}
-                                    value={form.price_from}
-                                    onChange={(e) =>
-                                        set('price_from', e.target.value)
-                                    }
-                                />
-                            </Field>
-                        </div>
-                        <Toggle
-                            id="online"
-                            label={t('Online coaching')}
-                            checked={form.online}
-                            onChange={(value) => set('online', value)}
-                        />
-                        <Toggle
-                            id="in-person"
-                            label={t('In-person sessions')}
-                            checked={form.in_person}
-                            onChange={(value) => set('in_person', value)}
-                        />
-                    </Section>
-                </div>
+                                    label={t('Monthly price from (toman)')}
+                                >
+                                    <Input
+                                        id="price"
+                                        type="number"
+                                        min={0}
+                                        step={10000}
+                                        value={form.price_from}
+                                        onChange={(e) =>
+                                            set('price_from', e.target.value)
+                                        }
+                                    />
+                                </Field>
+                            </div>
+                            <Toggle
+                                id="online"
+                                label={t('Online coaching')}
+                                checked={form.online}
+                                onChange={(value) => set('online', value)}
+                            />
+                            <Toggle
+                                id="in-person"
+                                label={t('In-person sessions')}
+                                checked={form.in_person}
+                                onChange={(value) => set('in_person', value)}
+                            />
+                        </Section>
+                    </div>
 
-                <div className="flex flex-col gap-5 xl:sticky xl:top-6">
-                    <Section title={t('Visibility')}>
-                        <Toggle
-                            id="published"
-                            label={t('Show my profile in the coach directory')}
-                            checked={form.is_published}
-                            onChange={(value) => set('is_published', value)}
-                        />
-                        <Toggle
-                            id="accepting"
-                            label={t('Accept new trainees')}
-                            checked={form.accepting_clients}
-                            onChange={(value) =>
-                                set('accepting_clients', value)
-                            }
-                        />
-                        <Field
-                            id="max"
-                            label={t('Maximum trainees')}
-                            hint={t('Leave empty for no limit.')}
-                        >
-                            <Input
-                                id="max"
-                                type="number"
-                                min={1}
-                                value={form.max_clients}
-                                onChange={(e) =>
-                                    set('max_clients', e.target.value)
+                    <div className="flex flex-col gap-5 xl:sticky xl:top-6">
+                        <Section title={t('Visibility')}>
+                            <Toggle
+                                id="published"
+                                label={t(
+                                    'Show my profile in the coach directory',
+                                )}
+                                checked={form.is_published}
+                                onChange={(value) => set('is_published', value)}
+                            />
+                            <Toggle
+                                id="accepting"
+                                label={t('Accept new trainees')}
+                                checked={form.accepting_clients}
+                                onChange={(value) =>
+                                    set('accepting_clients', value)
                                 }
                             />
-                        </Field>
-                    </Section>
-                    <Card className="grid grid-cols-2 gap-4 p-5">
-                        <div>
-                            <div className="text-subtle-foreground text-xs">
-                                {t('Active trainees')}
+                            <Field
+                                id="max"
+                                label={t('Maximum trainees')}
+                                hint={t('Leave empty for no limit.')}
+                            >
+                                <Input
+                                    id="max"
+                                    type="number"
+                                    min={1}
+                                    value={form.max_clients}
+                                    onChange={(e) =>
+                                        set('max_clients', e.target.value)
+                                    }
+                                />
+                            </Field>
+                        </Section>
+                        <Card className="grid grid-cols-2 gap-4 p-5">
+                            <div>
+                                <div className="text-subtle-foreground text-xs">
+                                    {t('Active trainees')}
+                                </div>
+                                <div className="font-display mt-1 text-3xl font-extrabold">
+                                    {formatNumber(profile.active_clients)}
+                                </div>
                             </div>
-                            <div className="font-display mt-1 text-3xl font-extrabold">
-                                {formatNumber(profile.active_clients)}
+                            <div>
+                                <div className="text-subtle-foreground text-xs">
+                                    {t('Pending requests')}
+                                </div>
+                                <div className="font-display mt-1 text-3xl font-extrabold">
+                                    {formatNumber(profile.pending_requests)}
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <div className="text-subtle-foreground text-xs">
-                                {t('Pending requests')}
-                            </div>
-                            <div className="font-display mt-1 text-3xl font-extrabold">
-                                {formatNumber(profile.pending_requests)}
-                            </div>
-                        </div>
-                    </Card>
-                    {!profile.verified && (
-                        <p className="text-muted-foreground text-xs">
-                            {t(
-                                'Your profile is not verified yet. Contact support with your certificates to get the verified badge.',
-                            )}
-                        </p>
-                    )}
+                        </Card>
+                        {!profile.verified && (
+                            <p className="text-muted-foreground text-xs">
+                                {t(
+                                    'Your profile is not verified yet. Contact support with your certificates to get the verified badge.',
+                                )}
+                            </p>
+                        )}
+                    </div>
                 </div>
+            </form>
+            {/* Outside the form so reply buttons don't submit the profile. */}
+            <div className="mt-5">
+                <CoachReviewsManager />
             </div>
-        </form>
+        </>
     );
 }
 

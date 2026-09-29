@@ -10,6 +10,7 @@ import {
 } from '@fitnessos/components/coach-card';
 import { EndCoachingDialog } from '@fitnessos/components/end-coaching-dialog';
 import { NoCoachCard, useMyCoaching } from '@fitnessos/components/no-coach';
+import { MyReviews } from '@fitnessos/components/reviews';
 import { Button } from '@fitnessos/components/ui/button';
 import { Card } from '@fitnessos/components/ui/card';
 import { postJson } from '@fitnessos/lib/api';
@@ -167,6 +168,8 @@ function MyCoach() {
                     </Button>
                 </Card>
             )}
+
+            <MyReviews />
 
             {history.length > 0 && (
                 <Card className="px-5">
