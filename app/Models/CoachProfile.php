@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -63,6 +64,29 @@ class CoachProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** @return HasMany<CoachReview, $this> */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(CoachReview::class, 'coach_id', 'user_id');
+    }
+
+    /**
+     * Average rating and count of visible reviews. Uses rating_avg and
+     * rating_count when the query already loaded them.
+     *
+     * @return array{average: float|null, count: int}
+     */
+    public function ratingSummary(): array
+    {
+        $count = $this->getAttribute('rating_count') ?? $this->reviews()->visible()->count();
+        $average = $this->getAttribute('rating_avg') ?? ($count > 0 ? $this->reviews()->visible()->avg('rating') : null);
+
+        return [
+            'average' => $average !== null ? round((float) $average, 1) : null,
+            'count' => (int) $count,
+        ];
     }
 
     /** @param Builder<CoachProfile> $query */
@@ -134,6 +158,7 @@ class CoachProfile extends Model
             'accepting_clients' => $this->hasCapacity(),
             'avatar_url' => $this->avatar_path ? Storage::disk('public')->url($this->avatar_path) : null,
             'verified' => $this->verified_at !== null,
+            'rating' => $this->ratingSummary(),
         ];
     }
 }

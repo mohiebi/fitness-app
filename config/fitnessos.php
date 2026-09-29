@@ -30,6 +30,9 @@ return [
         ],
     ],
 
+    // Trainees can review a coach after training together this long.
+    'review_min_days' => 14,
+
     // Plan used during the free trial.
     'trial_plan' => 'pro',
 

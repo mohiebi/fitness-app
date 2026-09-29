@@ -5,6 +5,7 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CoachDirectoryController;
 use App\Http\Controllers\CoachingController;
 use App\Http\Controllers\CoachProfileController;
+use App\Http\Controllers\CoachReviewController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FitnessOsActivityController;
 use App\Http\Controllers\FitnessOsClientController;
@@ -30,6 +31,7 @@ foreach (['apply', 'coaching', 'transformations'] as $page) {
 
 Route::get('fitnessos/coaches', [CoachDirectoryController::class, 'index']);
 Route::get('fitnessos/coaches/{slug}', [CoachDirectoryController::class, 'show']);
+Route::get('fitnessos/coaches/{slug}/reviews', [CoachReviewController::class, 'index']);
 Route::post('telegram/webhook', TelegramWebhookController::class)->middleware('throttle:120,1');
 Route::post('fitnessos/contact', [FitnessOsInquiryController::class, 'contact'])->middleware('throttle:5,1');
 
@@ -55,6 +57,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
+        Route::get('fitnessos/coach-reviews', [CoachReviewController::class, 'coachIndex']);
+        Route::post('fitnessos/coach-reviews/{review}/reply', [CoachReviewController::class, 'reply']);
         Route::get('fitnessos/billing', [BillingController::class, 'show']);
         Route::post('fitnessos/billing/payments', [BillingController::class, 'store'])->middleware('throttle:10,1');
         Route::post('fitnessos/billing/payments/{payment}/cancel', [BillingController::class, 'cancel']);
@@ -83,6 +87,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/my-coaching', [CoachingController::class, 'mine']);
         Route::post('fitnessos/coachings', [CoachingController::class, 'store'])->middleware('throttle:10,1');
         Route::post('fitnessos/coachings/{coaching}/withdraw', [CoachingController::class, 'withdraw']);
+        Route::get('fitnessos/my-reviews', [CoachReviewController::class, 'mine']);
+        Route::post('fitnessos/coachings/{coaching}/review', [CoachReviewController::class, 'store'])->middleware('throttle:10,1');
         Route::get('fitnessos/my-plan', [WorkoutLogController::class, 'myPlan']);
         Route::get('fitnessos/workout-logs', [WorkoutLogController::class, 'index']);
         Route::post('fitnessos/workout-logs', [WorkoutLogController::class, 'store'])->middleware('throttle:30,1');

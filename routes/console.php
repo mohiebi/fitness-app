@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CoachReview;
 use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Services\Payments\SubscriptionPayments;
@@ -85,3 +86,17 @@ Artisan::command('fitnessos:subscription:grant {email} {plan} {--days=30}', func
 
     return 0;
 })->purpose('Record a manual payment and extend a coach subscription');
+
+Artisan::command('fitnessos:reviews:hide {id} {--restore}', function (int $id) {
+    $review = CoachReview::query()->find($id);
+    if ($review === null) {
+        $this->error("No review with id {$id}.");
+
+        return 1;
+    }
+
+    $review->forceFill(['hidden_at' => $this->option('restore') ? null : now()])->save();
+    $this->info($this->option('restore') ? 'Review restored.' : 'Review hidden.');
+
+    return 0;
+})->purpose('Hide (or restore) a coach review that breaks the rules');
