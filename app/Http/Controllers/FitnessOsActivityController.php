@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\CoachInbox;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -77,33 +78,14 @@ class FitnessOsActivityController extends Controller
         return response()->json(['id' => $id, 'message' => 'Check-in submitted.'], 201);
     }
 
-    public function reviewCheckin(Request $request, int $checkin): JsonResponse
+    public function reviewCheckin(Request $request, int $checkin, CoachInbox $inbox): JsonResponse
     {
         abort_unless(in_array($request->user()->role, ['coach', 'admin'], true), 403);
         $data = $request->validate(['feedback' => ['required', 'string', 'max:5000']]);
-        $entry = DB::table('fitnessos_checkins')
-            ->join('users', 'fitnessos_checkins.client_id', '=', 'users.id')
-            ->select('fitnessos_checkins.*')
-            ->where('fitnessos_checkins.id', $checkin)
-            ->where('fitnessos_checkins.coach_id', $request->user()->id)
-            ->where('users.coach_id', $request->user()->id)
-            ->first();
+        $entry = $inbox->currentCheckin($request->user(), $checkin);
         abort_unless($entry !== null, 404);
 
-        DB::transaction(function () use ($entry, $request, $data): void {
-            DB::table('fitnessos_checkins')->where('id', $entry->id)->update([
-                'status' => 'Reviewed',
-                'updated_at' => now(),
-            ]);
-            DB::table('fitnessos_messages')->insert([
-                'coach_id' => $request->user()->id,
-                'client_id' => $entry->client_id,
-                'sender_id' => $request->user()->id,
-                'body' => $data['feedback'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        });
+        $inbox->reviewCheckin($request->user(), $entry, $data['feedback']);
 
         return response()->json(['message' => 'Feedback sent.']);
     }
