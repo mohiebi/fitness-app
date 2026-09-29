@@ -12,6 +12,7 @@ use App\Http\Controllers\FitnessOsClientController;
 use App\Http\Controllers\FitnessOsInquiryController;
 use App\Http\Controllers\FitnessOsPortalController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\TraineeProfileController;
 use App\Http\Controllers\WorkoutLogController;
@@ -33,7 +34,7 @@ foreach (['apply', 'coaching', 'transformations'] as $page) {
 Route::get('fitnessos/coaches', [CoachDirectoryController::class, 'index']);
 Route::get('fitnessos/coaches/{slug}', [CoachDirectoryController::class, 'show']);
 Route::get('fitnessos/coaches/{slug}/reviews', [CoachReviewController::class, 'index']);
-Route::post('telegram/webhook', TelegramWebhookController::class)->middleware('throttle:120,1');
+Route::post('telegram/webhook', TelegramWebhookController::class)->middleware('throttle:600,1');
 Route::post('fitnessos/contact', [FitnessOsInquiryController::class, 'contact'])->middleware('throttle:5,1');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -65,6 +66,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/billing', [BillingController::class, 'show']);
         Route::post('fitnessos/billing/payments', [BillingController::class, 'store'])->middleware('throttle:10,1');
         Route::post('fitnessos/billing/payments/{payment}/cancel', [BillingController::class, 'cancel']);
+        Route::get('fitnessos/telegram', [TelegramController::class, 'show']);
+        Route::post('fitnessos/telegram/link', [TelegramController::class, 'link'])->middleware('throttle:10,1');
+        Route::put('fitnessos/telegram', [TelegramController::class, 'update']);
+        Route::delete('fitnessos/telegram', [TelegramController::class, 'destroy']);
         Route::get('fitnessos/ai/status', [AiDraftController::class, 'status']);
         Route::get('fitnessos/ai/drafts', [AiDraftController::class, 'index']);
         Route::post('fitnessos/ai/drafts', [AiDraftController::class, 'store'])->middleware('throttle:20,1');

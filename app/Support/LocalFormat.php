@@ -48,6 +48,15 @@ class LocalFormat
         return $date->format('Y-m-d');
     }
 
+    /**
+     * Swap Western digits in ready-made text (like "3 days ago") for
+     * Persian digits when the app language is Persian.
+     */
+    public static function digits(string $text): string
+    {
+        return self::persian() ? strtr($text, ['0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹']) : $text;
+    }
+
     private static function persian(): bool
     {
         return app()->getLocale() === 'fa' && extension_loaded('intl');

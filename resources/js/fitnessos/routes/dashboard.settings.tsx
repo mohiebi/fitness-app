@@ -18,7 +18,8 @@ import {
     TabsTrigger,
 } from '@fitnessos/components/ui/tabs';
 import { coach } from '@fitnessos/lib/mock-data';
-import { Send, Palette, CreditCard, Users } from 'lucide-react';
+import { Palette, CreditCard, Users } from 'lucide-react';
+import { TelegramCard } from '@fitnessos/components/telegram-connect';
 
 export const Route = createFileRoute('/dashboard/settings')({
     component: Settings,
@@ -136,13 +137,8 @@ function Settings() {
                 <TabsContent value="integrations">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
                         <h3 className="mb-4 font-semibold">Integrations</h3>
+                        <TelegramCard />
                         {[
-                            {
-                                name: 'Telegram',
-                                desc: 'Get client notifications in Telegram',
-                                icon: Send,
-                                connected: true,
-                            },
                             {
                                 name: 'Stripe',
                                 desc: 'Process subscription payments',

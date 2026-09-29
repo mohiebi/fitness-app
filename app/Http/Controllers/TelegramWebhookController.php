@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Telegram\PaymentBot;
+use App\Services\Telegram\TelegramBot;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +14,7 @@ class TelegramWebhookController extends Controller
      * Telegram sends every bot update here. The secret token set with
      * setWebhook proves the request came from Telegram.
      */
-    public function __invoke(Request $request, PaymentBot $bot): JsonResponse
+    public function __invoke(Request $request, TelegramBot $bot): JsonResponse
     {
         $secret = (string) config('fitnessos.telegram.webhook_secret');
         $given = (string) $request->header('X-Telegram-Bot-Api-Secret-Token', '');

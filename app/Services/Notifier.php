@@ -8,6 +8,7 @@ use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Models\WorkoutPlan;
 use App\Notifications\AppNotice;
+use App\Services\Telegram\Tg;
 use App\Support\LocalFormat;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -23,7 +24,8 @@ class Notifier
         $this->send($coaching->coach, 'coaching_requested',
             __('New coaching request'),
             __(':name asked to train with you.', ['name' => $coaching->trainee->name]),
-            '/dashboard/requests', mail: true);
+            '/dashboard/requests', mail: true,
+            extra: ['coaching_id' => $coaching->id], detail: $coaching->request_message);
     }
 
     public function coachingAccepted(Coaching $coaching): void
@@ -51,30 +53,29 @@ class Notifier
             $other->isCoach() ? '/dashboard/clients' : '/app/coach');
     }
 
-    public function messageReceived(User $recipient, User $sender): void
+    public function messageReceived(User $recipient, User $sender, ?string $body = null): void
     {
-        // One unread notice per conversation is enough.
+        // One unread notice per conversation is enough in the app; Telegram
+        // has no unread badge, so every message still reaches a linked coach.
         $alreadyUnread = $recipient->unreadNotifications()
             ->where('data->kind', 'message')
             ->where('data->sender_id', $sender->id)
             ->exists();
-        if ($alreadyUnread) {
-            return;
-        }
 
         $this->send($recipient, 'message',
             __('New message from :name', ['name' => $sender->name]),
             __('Open the chat to reply.'),
             $recipient->isCoach() ? '/dashboard/messages?client='.$sender->id : '/app/messages',
-            extra: ['sender_id' => $sender->id]);
+            extra: ['sender_id' => $sender->id], detail: $body, store: ! $alreadyUnread);
     }
 
-    public function checkinSubmitted(User $coach, User $trainee): void
+    public function checkinSubmitted(User $coach, User $trainee, ?int $checkinId = null, ?string $reflection = null): void
     {
         $this->send($coach, 'checkin_submitted',
             __(':name sent a check-in', ['name' => $trainee->name]),
             __('Review it and send feedback.'),
-            '/dashboard/checkins');
+            '/dashboard/checkins',
+            extra: $checkinId === null ? [] : ['checkin_id' => $checkinId], detail: $reflection);
     }
 
     public function checkinReviewed(User $trainee, User $coach): void
@@ -137,10 +138,10 @@ class Notifier
     /**
      * @param  array<string, mixed>  $extra
      */
-    private function send(User $user, string $kind, string $title, string $body, string $url, bool $mail = false, array $extra = []): void
+    private function send(User $user, string $kind, string $title, string $body, string $url, bool $mail = false, array $extra = [], ?string $detail = null, bool $store = true): void
     {
         try {
-            $user->notify(new AppNotice($kind, $title, $body, $url, $mail, $extra));
+            $user->notify(new AppNotice($kind, $title, $body, $url, $mail, $extra, Tg::clip($detail, 500) ?: null, $store));
         } catch (Throwable $e) {
             Log::warning('Notification failed', ['kind' => $kind, 'user' => $user->id, 'error' => $e->getMessage()]);
         }

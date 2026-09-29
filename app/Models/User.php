@@ -32,6 +32,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $updated_at
  * @property-read CoachProfile|null $coachProfile
  * @property-read TraineeProfile|null $traineeProfile
+ * @property-read TelegramAccount|null $telegramAccount
  */
 #[Fillable(['name', 'email', 'password', 'role', 'coach_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -74,6 +75,12 @@ class User extends Authenticatable implements PasskeyUser
     public function subscription(): HasOne
     {
         return $this->hasOne(CoachSubscription::class, 'coach_id');
+    }
+
+    /** @return HasOne<TelegramAccount, $this> */
+    public function telegramAccount(): HasOne
+    {
+        return $this->hasOne(TelegramAccount::class);
     }
 
     /** @return HasOne<TraineeProfile, $this> */

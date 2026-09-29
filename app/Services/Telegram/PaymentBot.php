@@ -17,7 +17,8 @@ use App\Support\LocalFormat;
  * 3. An admin taps a button; approving extends the subscription.
  *
  * Only the admin chat can approve. Everything the bot says to coaches goes
- * through __() so it follows the app language.
+ * through __() so it follows the app language. TelegramBot routes updates
+ * here; this class never looks at the raw update itself.
  */
 class PaymentBot
 {
@@ -28,45 +29,9 @@ class PaymentBot
     ) {}
 
     /**
-     * @param  array<string, mixed>  $update  a Telegram Update object
+     * /start pay_<reference>: the coach opened the bot from Billing.
      */
-    public function handle(array $update): void
-    {
-        if (isset($update['callback_query']) && is_array($update['callback_query'])) {
-            $this->handleCallback($update['callback_query']);
-
-            return;
-        }
-
-        $message = $update['message'] ?? null;
-        if (! is_array($message) || ! isset($message['chat']['id'])) {
-            return;
-        }
-
-        $chatId = (string) $message['chat']['id'];
-
-        if ($chatId === $this->adminChatId()) {
-            return; // The admin chat only receives receipts and buttons.
-        }
-
-        $text = trim((string) ($message['text'] ?? ''));
-        if (str_starts_with($text, '/start')) {
-            $this->handleStart($chatId, trim(substr($text, 6)));
-
-            return;
-        }
-
-        $receipt = $this->receipt($message);
-        if ($receipt !== null) {
-            $this->handleReceipt($chatId, $receipt);
-
-            return;
-        }
-
-        $this->telegram->sendMessage($chatId, __('To pay for FitnessOS, open Billing in your coach dashboard and tap Pay with Telegram. Then send the transfer receipt here.'));
-    }
-
-    private function handleStart(string $chatId, string $payload): void
+    public function start(string $chatId, string $payload): void
     {
         $payment = str_starts_with($payload, 'pay_')
             ? SubscriptionPayment::query()->where('reference', substr($payload, 4))->first()
@@ -78,10 +43,20 @@ class PaymentBot
             return;
         }
 
+        $this->instructions($payment, $chatId);
+    }
+
+    /**
+     * Tell the coach how much to pay and where, and remember the chat so
+     * the receipt they send next lands on this payment.
+     */
+    public function instructions(SubscriptionPayment $payment, string $chatId): void
+    {
         $payment->update(['telegram_chat_id' => $chatId]);
         $plan = $this->subscriptions->plans()[$payment->plan];
 
-        $this->telegram->sendMessage($chatId, implode("\n", [
+        $this->telegram->sendMessage($chatId, implode('
+', [
             __('FitnessOS subscription: :plan plan, :days days', ['plan' => __($plan['name']), 'days' => LocalFormat::number($payment->period_days)]),
             __('Amount: :amount toman', ['amount' => LocalFormat::number($payment->amount)]),
             '',
@@ -92,6 +67,24 @@ class PaymentBot
             __('Then send a photo of the receipt in this chat. We will confirm it shortly.'),
             __('Reference: :reference', ['reference' => '<code>'.$payment->reference.'</code>']),
         ]));
+    }
+
+    /**
+     * Handle a photo, or an image/PDF file, as a transfer receipt.
+     *
+     * @param  array<string, mixed>  $message
+     * @return bool whether the message was a receipt
+     */
+    public function receipt(string $chatId, array $message): bool
+    {
+        $receipt = $this->receiptFile($message);
+        if ($receipt === null) {
+            return false;
+        }
+
+        $this->handleReceipt($chatId, $receipt);
+
+        return true;
     }
 
     /**
@@ -131,7 +124,7 @@ class PaymentBot
     /**
      * @param  array<string, mixed>  $callback
      */
-    private function handleCallback(array $callback): void
+    public function callback(array $callback): void
     {
         $callbackId = (string) ($callback['id'] ?? '');
         $chatId = (string) ($callback['message']['chat']['id'] ?? '');
@@ -187,7 +180,7 @@ class PaymentBot
      * @param  array<string, mixed>  $message
      * @return array{type: 'photo'|'document', file_id: string}|null
      */
-    private function receipt(array $message): ?array
+    private function receiptFile(array $message): ?array
     {
         if (isset($message['photo']) && is_array($message['photo']) && $message['photo'] !== []) {
             $largest = end($message['photo']);
@@ -201,6 +194,11 @@ class PaymentBot
         }
 
         return null;
+    }
+
+    public function isAdminChat(string $chatId): bool
+    {
+        return $chatId !== '' && $chatId === $this->adminChatId();
     }
 
     private function adminChatId(): string

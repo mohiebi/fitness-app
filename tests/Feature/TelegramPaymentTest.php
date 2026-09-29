@@ -4,7 +4,6 @@ use App\Models\SubscriptionPayment;
 use App\Models\User;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Testing\TestResponse;
 
 beforeEach(function () {
     app()->setLocale('en');
@@ -21,11 +20,6 @@ beforeEach(function () {
 
     $this->coach = User::factory()->publishedCoach()->create(['name' => 'Sara', 'email' => 'sara@example.com']);
 });
-
-function telegramUpdate(array $update): TestResponse
-{
-    return test()->withHeader('X-Telegram-Bot-Api-Secret-Token', 'hook-secret')->postJson('/telegram/webhook', $update);
-}
 
 function startPayment(User $coach, string $plan = 'starter'): array
 {
@@ -146,4 +140,14 @@ test('Persian bot messages use Persian digits and the Jalali calendar', function
     Http::assertSent(fn (Request $request) => str_ends_with($request->url(), '/sendMessage')
         && str_contains($request['text'], '۴۹۰٬۰۰۰')
         && str_contains($request['text'], '۳۰'));
+});
+
+test('an update Telegram delivers twice is only handled once', function () {
+    $payment = startPayment($this->coach);
+    $update = ['update_id' => 77, 'message' => ['chat' => ['id' => 555], 'text' => '/start pay_'.$payment['reference']]];
+
+    telegramUpdate($update)->assertOk();
+    telegramUpdate($update)->assertOk();
+
+    Http::assertSentCount(1);
 });

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Trans;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,32 @@ class TraineeProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    private const GOALS = [
+        'fat-loss' => 'Lose fat',
+        'muscle-gain' => 'Build muscle',
+        'strength' => 'Get stronger',
+        'health' => 'General health',
+        'performance' => 'Sports performance',
+        'rehab' => 'Recover from injury',
+    ];
+
+    private const EXPERIENCE = [
+        'beginner' => 'Beginner',
+        'intermediate' => 'Intermediate',
+        'advanced' => 'Advanced',
+    ];
+
+    /** The goal in words, in the app language. */
+    public function goalLabel(): ?string
+    {
+        return $this->goal === null ? null : Trans::text(self::GOALS[$this->goal] ?? $this->goal);
+    }
+
+    public function experienceLabel(): ?string
+    {
+        return $this->experience === null ? null : Trans::text(self::EXPERIENCE[$this->experience] ?? $this->experience);
     }
 
     /** @return array<string, mixed> */
