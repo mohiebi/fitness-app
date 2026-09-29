@@ -70,6 +70,12 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasOne(CoachProfile::class);
     }
 
+    /** @return HasOne<CoachSubscription, $this> */
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(CoachSubscription::class, 'coach_id');
+    }
+
     /** @return HasOne<TraineeProfile, $this> */
     public function traineeProfile(): HasOne
     {

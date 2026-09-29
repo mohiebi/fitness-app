@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coaching;
+use App\Models\CoachProfile;
 use App\Models\User;
 use App\Services\CoachingLifecycle;
 use Illuminate\Http\JsonResponse;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class FitnessOsClientController extends Controller
 {
@@ -51,6 +53,14 @@ class FitnessOsClientController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')],
         ]);
+
+        $profile = $request->user()->coachProfile()->firstOrCreate([], ['slug' => CoachProfile::uniqueSlugFor($request->user()->name)]);
+        $limit = $profile->traineeLimit();
+        if ($limit !== null && $profile->activeClientCount() >= $limit) {
+            throw ValidationException::withMessages(['email' => $limit === 0
+                ? __('Your subscription has ended. Renew it to accept new trainees.')
+                : __('You have reached your maximum number of trainees.')]);
+        }
 
         $client = User::create([
             ...$data,

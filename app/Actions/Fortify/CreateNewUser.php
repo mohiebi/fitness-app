@@ -6,6 +6,7 @@ use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Models\CoachProfile;
 use App\Models\User;
+use App\Services\CoachSubscriptions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -39,6 +40,7 @@ class CreateNewUser implements CreatesNewUsers
 
             if ($user->isCoach()) {
                 $user->coachProfile()->create(['slug' => CoachProfile::uniqueSlugFor($user->name)]);
+                app(CoachSubscriptions::class)->for($user);
             }
 
             return $user;

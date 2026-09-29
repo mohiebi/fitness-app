@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import { Contact, Plus } from 'lucide-react';
+import { Contact, Plus, Wallet } from 'lucide-react';
+import { daysLeft, type Billing } from '@fitnessos/lib/billing';
 import type { ReactNode } from 'react';
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { ActionTile } from '@fitnessos/components/stat-card';
@@ -101,6 +102,13 @@ function DashboardIndex() {
         queryKey: ['fitnessos', 'coach-profile'],
         queryFn: () => getJson<CoachOwnProfile>('/fitnessos/coach-profile'),
     });
+    const { data: billing } = useQuery({
+        queryKey: ['fitnessos', 'billing'],
+        queryFn: () => getJson<Billing>('/fitnessos/billing'),
+    });
+    const subscriptionDaysLeft = daysLeft(
+        billing?.subscription.ends_at ?? null,
+    );
     const { data: checkins = [] } = useQuery({
         queryKey: ['fitnessos', 'checkins'],
         queryFn: () => getJson<Checkin[]>('/fitnessos/checkins'),
@@ -179,6 +187,53 @@ function DashboardIndex() {
                     </>
                 }
             />
+
+            {billing &&
+                (!billing.subscription.active || subscriptionDaysLeft <= 5) && (
+                    <Card
+                        className={cn(
+                            'mb-6 flex flex-wrap items-center gap-4 p-5',
+                            billing.subscription.active
+                                ? 'border-sun/50'
+                                : 'border-destructive/50',
+                        )}
+                    >
+                        <Wallet
+                            className={cn(
+                                'h-6 w-6',
+                                billing.subscription.active
+                                    ? 'text-sun'
+                                    : 'text-destructive',
+                            )}
+                        />
+                        <div className="min-w-0 flex-1">
+                            <div className="font-semibold">
+                                {billing.subscription.active
+                                    ? t(
+                                          'Your subscription ends in :days days',
+                                          {
+                                              days: formatNumber(
+                                                  subscriptionDaysLeft,
+                                              ),
+                                          },
+                                      )
+                                    : t('Your subscription has ended')}
+                            </div>
+                            <p className="text-muted-foreground text-sm">
+                                {billing.subscription.active
+                                    ? t(
+                                          'Renew now so trainees can keep finding you in the coach directory.',
+                                      )
+                                    : t(
+                                          "You are hidden from the coach directory and can't take new trainees. Your current trainees are not affected.",
+                                      )}
+                            </p>
+                        </div>
+                        <Button asChild>
+                            <Link to="/dashboard/billing">{t('Renew')}</Link>
+                        </Button>
+                    </Card>
+                )}
 
             {profile && !profile.is_published && (
                 <Card className="border-primary/40 bg-hero-gradient mb-6 flex flex-wrap items-center gap-4 p-5">

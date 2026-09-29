@@ -19,7 +19,10 @@ class CoachDirectoryController extends Controller
 
         $coaches = CoachProfile::query()
             ->published()
+            ->whereHas('user.subscription', fn ($subscription) => $subscription->running())
             ->with('user')
+            ->withAvg(['reviews as rating_avg' => fn ($reviews) => $reviews->visible()], 'rating')
+            ->withCount(['reviews as rating_count' => fn ($reviews) => $reviews->visible()])
             ->when($filters['q'] ?? null, function ($query, string $q): void {
                 $query->where(function ($query) use ($q): void {
                     $query->where('headline', 'like', "%{$q}%")

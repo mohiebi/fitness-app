@@ -2,12 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Coaching;
 use App\Models\CoachProfile;
+use App\Models\CoachReview;
 use App\Models\Exercise;
 use App\Models\User;
 use App\Models\WorkoutLog;
 use App\Models\WorkoutPlan;
 use App\Services\CoachingLifecycle;
+use App\Services\CoachReviews;
 use App\Services\TrainingPlans;
 use Illuminate\Database\Seeder;
 
@@ -17,8 +20,8 @@ use Illuminate\Database\Seeder;
  *
  * Every account uses the password "password".
  * Coaches: sara@fitnessos.test, reza@fitnessos.test, maryam@fitnessos.test, ali@fitnessos.test
- * Trainees: nima@fitnessos.test (coached by Sara, with an active plan and two
- * logged sessions), leila@fitnessos.test (no coach yet)
+ * Trainees: nima@fitnessos.test (coached by Sara, with an active plan, two
+ * logged sessions and a review), leila@fitnessos.test (no coach yet)
  */
 class MarketplaceDemoSeeder extends Seeder
 {
@@ -76,6 +79,21 @@ class MarketplaceDemoSeeder extends Seeder
         );
 
         $this->seedTraining($sara, $nima->fresh());
+        $this->seedReview($nima->fresh());
+    }
+
+    /**
+     * Nima has trained with Sara long enough to leave a review.
+     */
+    private function seedReview(User $nima): void
+    {
+        $coaching = Coaching::query()->where('trainee_id', $nima->id)->where('status', Coaching::ACTIVE)->first();
+        if ($coaching === null || CoachReview::query()->where('coaching_id', $coaching->id)->exists()) {
+            return;
+        }
+
+        $coaching->update(['started_at' => now()->subDays(20)]);
+        app(CoachReviews::class)->save($nima, $coaching->fresh(), 5, 'برنامه‌ها دقیق است و سارا خیلی سریع جواب می‌دهد. زانوام هم دیگر درد نمی‌کند.');
     }
 
     /**

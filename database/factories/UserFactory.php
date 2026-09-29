@@ -62,6 +62,10 @@ class UserFactory extends Factory
                 'is_published' => true,
                 ...$profile,
             ]);
+            $user->subscription()->create([
+                'plan' => 'pro',
+                'trial_ends_at' => now()->addDays(14),
+            ]);
         });
     }
 

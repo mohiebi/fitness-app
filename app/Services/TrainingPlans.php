@@ -18,6 +18,8 @@ use Illuminate\Validation\ValidationException;
  */
 class TrainingPlans
 {
+    public function __construct(private Notifier $notifier) {}
+
     /**
      * A trainee the coach currently coaches, or 404.
      */
@@ -145,7 +147,7 @@ class TrainingPlans
             throw ValidationException::withMessages(['plan' => __('Add at least one exercise before activating the plan.')]);
         }
 
-        return DB::transaction(function () use ($plan): WorkoutPlan {
+        $activated = DB::transaction(function () use ($plan): WorkoutPlan {
             WorkoutPlan::query()
                 ->where('trainee_id', $plan->trainee_id)
                 ->where('status', WorkoutPlan::ACTIVE)
@@ -156,6 +158,9 @@ class TrainingPlans
 
             return $plan;
         });
+        $this->notifier->planActivated($activated);
+
+        return $activated;
     }
 
     public function archive(WorkoutPlan $plan): WorkoutPlan

@@ -26,10 +26,13 @@ import {
     BookOpen,
     Info,
     Contact,
+    Wallet,
     HeartHandshake,
     type LucideIcon,
 } from 'lucide-react';
 import { Input } from '@fitnessos/components/ui/input';
+import { NotificationBell } from '@fitnessos/components/notification-bell';
+import { useIsDesktop } from '@fitnessos/hooks/use-mobile';
 import { LogoMark } from '@fitnessos/components/logo-mark';
 import { cn } from '@fitnessos/lib/utils';
 import { currentUser } from '@fitnessos/lib/auth';
@@ -193,6 +196,11 @@ function navFor(
                         icon: Contact,
                     },
                     {
+                        to: '/dashboard/billing',
+                        label: t('Subscription'),
+                        icon: Wallet,
+                    },
+                    {
                         to: '/dashboard/calendar',
                         label: t('Calendar'),
                         icon: Calendar,
@@ -231,6 +239,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
     const counts = useCoachCounts(variant === 'coach');
     const { groups, footer } = navFor(variant, counts);
     const [collapsed, setCollapsed] = useState(false);
+    const isDesktop = useIsDesktop();
     const [mobileOpen, setMobileOpen] = useState(false);
     const pathname = useRouterState({ select: (s) => s.location.pathname });
     const userInitials = initials(userName);
@@ -295,24 +304,33 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                     'lg:translate-x-0 rtl:lg:translate-x-0',
                 )}
             >
-                <Link
-                    to={variant === 'coach' ? '/dashboard' : '/app'}
+                <div
                     className={cn(
-                        'flex items-center gap-2.5 px-2',
-                        collapsed && 'lg:justify-center lg:px-0',
+                        'flex items-center gap-2 pe-1',
+                        collapsed && 'lg:flex-col',
                     )}
                 >
-                    <LogoMark />
-                    <span
-                        dir="ltr"
+                    <Link
+                        to={variant === 'coach' ? '/dashboard' : '/app'}
                         className={cn(
-                            'font-display text-[19px] font-extrabold uppercase',
-                            collapsed && 'lg:hidden',
+                            'flex min-w-0 flex-1 items-center gap-2.5 px-2',
+                            collapsed && 'lg:justify-center lg:px-0',
                         )}
                     >
-                        Fitness<span className="text-volt">OS</span>
-                    </span>
-                </Link>
+                        <LogoMark />
+                        <span
+                            dir="ltr"
+                            className={cn(
+                                'font-display text-[19px] font-extrabold uppercase',
+                                collapsed && 'lg:hidden',
+                            )}
+                        >
+                            Fitness<span className="text-volt">OS</span>
+                        </span>
+                    </Link>
+                    {/* One bell only: two Radix popovers mis-anchor each other. */}
+                    {isDesktop && <NotificationBell />}
+                </div>
 
                 <div className={cn('relative', collapsed && 'lg:hidden')}>
                     <Search className="text-subtle-foreground pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2" />
@@ -453,6 +471,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                     >
                         Fitness<span className="text-volt">OS</span>
                     </span>
+                    {!isDesktop && <NotificationBell className="ms-auto" />}
                 </header>
 
                 <main

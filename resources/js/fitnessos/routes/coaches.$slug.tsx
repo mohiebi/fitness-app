@@ -12,6 +12,11 @@ import {
 import { useState } from 'react';
 import { PublicNav, Footer } from '@fitnessos/components/public-nav';
 import { CoachAvatar, VerifiedBadge } from '@fitnessos/components/coach-card';
+import {
+    RatingBadge,
+    Stars,
+    type RatingSummary,
+} from '@fitnessos/components/stars';
 import { Badge } from '@fitnessos/components/ui/badge';
 import { Button } from '@fitnessos/components/ui/button';
 import {
@@ -27,7 +32,7 @@ import { Textarea } from '@fitnessos/components/ui/textarea';
 import { getJson, postJson } from '@fitnessos/lib/api';
 import { currentRole } from '@fitnessos/lib/auth';
 import { sep, t } from '@fitnessos/lib/i18n';
-import { formatNumber, formatToman } from '@fitnessos/lib/format';
+import { formatDate, formatNumber, formatToman } from '@fitnessos/lib/format';
 import {
     specialtyLabel,
     type CoachSummary,
@@ -112,6 +117,10 @@ function CoachProfilePage() {
                                     {coach.name}
                                 </h1>
                                 {coach.verified && <VerifiedBadge />}
+                                <RatingBadge
+                                    rating={coach.rating}
+                                    className="text-sm"
+                                />
                             </div>
                             {coach.headline && (
                                 <p className="text-muted-foreground mt-2 text-lg">
@@ -164,6 +173,8 @@ function CoachProfilePage() {
                             </ul>
                         </section>
                     )}
+
+                    <Reviews slug={coach.slug} />
                 </div>
 
                 <aside className="sport-card h-fit p-6 lg:sticky lg:top-28">
@@ -390,5 +401,75 @@ function Shell({ children }: { children: React.ReactNode }) {
             </section>
             <Footer />
         </div>
+    );
+}
+
+type PublicReview = {
+    id: number;
+    rating: number;
+    comment: string | null;
+    reviewer: string;
+    coach_reply: string | null;
+    created_at: string | null;
+};
+
+function Reviews({ slug }: { slug: string }) {
+    const { data } = useQuery({
+        queryKey: ['fitnessos', 'coach', slug, 'reviews'],
+        queryFn: () =>
+            getJson<{ summary: RatingSummary; reviews: PublicReview[] }>(
+                `/fitnessos/coaches/${slug}/reviews`,
+            ),
+    });
+
+    if (!data || data.reviews.length === 0) return null;
+
+    return (
+        <section className="mt-10">
+            <div className="flex flex-wrap items-baseline gap-3">
+                <h2 className="text-xl font-bold">{t('Reviews')}</h2>
+                <RatingBadge rating={data.summary} className="text-sm" />
+            </div>
+            <p className="text-muted-foreground mt-1 text-xs">
+                {t(
+                    'Only trainees who trained with this coach for at least two weeks can leave a review.',
+                )}
+            </p>
+            <ul className="mt-4 flex flex-col gap-3">
+                {data.reviews.map((review) => (
+                    <li
+                        key={review.id}
+                        className="border-border rounded-xl border p-4"
+                    >
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <Stars value={review.rating} />
+                            <span className="font-semibold">
+                                {review.reviewer}
+                            </span>
+                            {review.created_at && (
+                                <span className="text-muted-foreground text-xs">
+                                    {formatDate(review.created_at)}
+                                </span>
+                            )}
+                        </div>
+                        {review.comment && (
+                            <p className="mt-2 text-sm whitespace-pre-line">
+                                {review.comment}
+                            </p>
+                        )}
+                        {review.coach_reply && (
+                            <div className="bg-secondary mt-3 rounded-lg p-3 text-sm">
+                                <div className="text-muted-foreground mb-1 text-xs font-semibold">
+                                    {t("Coach's reply")}
+                                </div>
+                                <p className="whitespace-pre-line">
+                                    {review.coach_reply}
+                                </p>
+                            </div>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </section>
     );
 }
