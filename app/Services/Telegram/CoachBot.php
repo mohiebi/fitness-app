@@ -4,11 +4,13 @@ namespace App\Services\Telegram;
 
 use App\Models\TelegramAccount;
 use App\Models\User;
+use App\Services\Telegram\Screens\BillingScreen;
 use App\Services\Telegram\Screens\CheckinsScreen;
 use App\Services\Telegram\Screens\DraftsScreen;
 use App\Services\Telegram\Screens\InboxScreen;
 use App\Services\Telegram\Screens\RequestsScreen;
 use App\Services\Telegram\Screens\Screen;
+use App\Services\Telegram\Screens\SettingsScreen;
 use App\Services\Telegram\Screens\TodayScreen;
 use App\Services\Telegram\Screens\TraineesScreen;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,6 +39,8 @@ class CoachBot
         'trainees' => 'trn',
         'checkins' => 'chk',
         'drafts' => 'ai',
+        'billing' => 'bill',
+        'settings' => 'set',
     ];
 
     public function __construct(
@@ -48,6 +52,8 @@ class CoachBot
         private InboxScreen $inbox,
         private CheckinsScreen $checkins,
         private DraftsScreen $drafts,
+        private BillingScreen $billing,
+        private SettingsScreen $settings,
     ) {}
 
     /**
@@ -198,6 +204,8 @@ class CoachBot
             'inb' => $this->inbox,
             'chk' => $this->checkins,
             'ai' => $this->drafts,
+            'bill' => $this->billing,
+            'set' => $this->settings,
             default => null,
         };
     }
@@ -212,6 +220,8 @@ class CoachBot
             __('✅ /checkins — check-ins to review'),
             __('🤖 /drafts — AI drafts waiting for your approval'),
             __('👥 /trainees — your trainees and their plans'),
+            __('💳 /billing — your subscription and renewing it'),
+            __('⚙️ /settings — choose what I tell you'),
             __('/menu — show the menu'),
             __('/cancel — cancel what I was doing'),
             __('/unlink — disconnect Telegram'),
