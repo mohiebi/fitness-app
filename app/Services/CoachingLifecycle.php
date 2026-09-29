@@ -18,6 +18,8 @@ class CoachingLifecycle
 {
     public const REASON_SWITCHED = 'switched';
 
+    public function __construct(private CoachSubscriptions $subscriptions) {}
+
     public function request(User $trainee, CoachProfile $profile, ?string $message = null): Coaching
     {
         abort_unless($trainee->isTrainee(), 403);
@@ -58,8 +60,13 @@ class CoachingLifecycle
                 $this->fail(__('This request is no longer pending.'));
             }
 
+            if (! $this->subscriptions->isActive($coach)) {
+                $this->fail(__('Your subscription has ended. Renew it to accept new trainees.'));
+            }
+
             $profile = $coach->coachProfile;
-            if ($profile?->max_clients !== null && $profile->activeClientCount() >= $profile->max_clients) {
+            $limit = $profile?->traineeLimit();
+            if ($profile !== null && $limit !== null && $profile->activeClientCount() >= $limit) {
                 $this->fail(__('You have reached your maximum number of trainees.'));
             }
 

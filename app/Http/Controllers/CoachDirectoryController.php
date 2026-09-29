@@ -19,6 +19,7 @@ class CoachDirectoryController extends Controller
 
         $coaches = CoachProfile::query()
             ->published()
+            ->whereHas('user.subscription', fn ($subscription) => $subscription->running())
             ->with('user')
             ->when($filters['q'] ?? null, function ($query, string $q): void {
                 $query->where(function ($query) use ($q): void {

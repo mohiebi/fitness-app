@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\CoachSubscriptions;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -90,8 +91,28 @@ class CoachProfile extends Model
 
     public function hasCapacity(): bool
     {
-        return $this->accepting_clients
-            && ($this->max_clients === null || $this->activeClientCount() < $this->max_clients);
+        if (! $this->accepting_clients) {
+            return false;
+        }
+
+        $limit = $this->traineeLimit();
+
+        return $limit === null || $this->activeClientCount() < $limit;
+    }
+
+    /**
+     * The lower of the coach's own cap and their plan's limit (null = none).
+     * A lapsed subscription allows no new trainees.
+     */
+    public function traineeLimit(): ?int
+    {
+        $planLimit = app(CoachSubscriptions::class)->traineeLimit($this->user);
+
+        return match (true) {
+            $planLimit === null => $this->max_clients,
+            $this->max_clients === null => $planLimit,
+            default => min($planLimit, $this->max_clients),
+        };
     }
 
     /** @return array<string, mixed> */
