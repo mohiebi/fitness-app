@@ -91,7 +91,13 @@ class TelegramBot
      */
     private function callback(array $callback): void
     {
-        $this->payments->callback($callback);
+        if (str_starts_with((string) ($callback['data'] ?? ''), 'pay:')) {
+            $this->payments->callback($callback);
+
+            return;
+        }
+
+        $this->coach->callback($callback);
     }
 
     /**
