@@ -22,7 +22,8 @@ return [
     // and the app works as before.
     'anthropic' => [
         'api_key' => env('ANTHROPIC_API_KEY'),
-        'base_url' => env('ANTHROPIC_BASE_URL'),
+        // Set AI_BASE_URL to route through a gateway or proxy.
+        'base_url' => env('AI_BASE_URL', env('ANTHROPIC_BASE_URL')),
         'model' => env('AI_MODEL', 'claude-opus-5'),
         'daily_drafts_per_coach' => (int) env('AI_DAILY_DRAFTS_PER_COACH', 60),
     ],

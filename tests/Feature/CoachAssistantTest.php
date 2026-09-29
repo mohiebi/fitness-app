@@ -181,3 +181,11 @@ test('without an API key the assistant is disabled', function () {
     expect(app(CoachAssistant::class)->enabled())->toBeFalse();
     expect(fn () => app(CoachAssistant::class)->draft($this->coach, AiDraft::REPLY, $this->trainee->id))->toThrow(AssistantUnavailable::class);
 });
+
+test('a configured API key enables the Claude model', function () {
+    app()->forgetInstance(DraftModel::class);
+    config(['services.anthropic.api_key' => 'test-key', 'services.anthropic.base_url' => 'https://gateway.example.test']);
+
+    expect(app(DraftModel::class))->toBeInstanceOf(App\Services\Ai\ClaudeDraftModel::class);
+    expect(app(CoachAssistant::class)->enabled())->toBeTrue();
+});
