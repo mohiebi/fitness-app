@@ -85,5 +85,12 @@
     "A trainee reviewed you. You can reply from your public profile.": "یک شاگرد برای شما نظر نوشت. می‌توانید از پروفایل عمومی‌تان پاسخ دهید.",
     "Open FitnessOS": "باز کردن فیتنس‌اواس",
     "Check-in submitted.": "گزارش فرستاده شد.",
-    "Message sent.": "پیام فرستاده شد."
+    "Message sent.": "پیام فرستاده شد.",
+    "The Telegram bot is not available yet.": "ربات تلگرام هنوز راه‌اندازی نشده است.",
+    "This connection link has expired. Open your FitnessOS dashboard and tap Connect Telegram again.": "این لینک اتصال منقضی شده است. داشبورد فیتنس‌اواس را باز کن و دوباره «اتصال تلگرام» را بزن.",
+    "Hi :name, your Telegram is connected to FitnessOS. 🎉": "سلام :name، تلگرامت به فیتنس‌اواس وصل شد. 🎉",
+    "You will get requests, messages and check-ins here.": "درخواست‌ها، پیام‌ها و چک‌این‌ها از این‌پس اینجا برایت می‌آید.",
+    "This is the FitnessOS coach bot.": "این ربات مربیان فیتنس‌اواس است.",
+    "To connect it, open Settings → Integrations in your coach dashboard and tap Connect Telegram.": "برای اتصال، در داشبورد مربی به تنظیمات ← اتصال‌ها برو و «اتصال تلگرام» را بزن.",
+    "Telegram is disconnected from your FitnessOS account.": "اتصال تلگرام از حساب فیتنس‌اواس تو قطع شد."
 }

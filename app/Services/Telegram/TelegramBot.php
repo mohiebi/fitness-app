@@ -2,6 +2,7 @@
 
 namespace App\Services\Telegram;
 
+use App\Models\TelegramAccount;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -12,8 +13,9 @@ use Illuminate\Support\Facades\Cache;
 class TelegramBot
 {
     public function __construct(
-        private TelegramClient $telegram,
         private PaymentBot $payments,
+        private CoachBot $coach,
+        private TelegramLinks $links,
     ) {}
 
     /**
@@ -37,14 +39,26 @@ class TelegramBot
         }
 
         $chatId = (string) $message['chat']['id'];
+        if (($message['chat']['type'] ?? 'private') !== 'private') {
+            return; // Coaches use the bot in a private chat only.
+        }
 
-        if ($this->payments->isAdminChat($chatId)) {
+        $account = $this->links->coachForChat($chatId);
+        if ($account === null && $this->payments->isAdminChat($chatId)) {
             return; // The admin chat only receives receipts and buttons.
         }
 
         $text = trim((string) ($message['text'] ?? ''));
         if (str_starts_with($text, '/start')) {
-            $this->payments->start($chatId, trim(substr($text, 6)));
+            $this->start($chatId, trim(substr($text, 6)), $message, $account);
+
+            return;
+        }
+
+        if ($account === null) {
+            if (! $this->payments->receipt($chatId, $message)) {
+                $this->coach->introduce($chatId);
+            }
 
             return;
         }
@@ -53,7 +67,23 @@ class TelegramBot
             return;
         }
 
-        $this->telegram->sendMessage($chatId, __('To pay for FitnessOS, open Billing in your coach dashboard and tap Pay with Telegram. Then send the transfer receipt here.'));
+        $this->coach->message($account, $message);
+    }
+
+    /**
+     * @param  array<string, mixed>  $message
+     */
+    private function start(string $chatId, string $payload, array $message, ?TelegramAccount $account): void
+    {
+        if (str_starts_with($payload, 'link_')) {
+            $this->coach->link($chatId, substr($payload, 5), isset($message['from']['username']) ? (string) $message['from']['username'] : null);
+        } elseif (str_starts_with($payload, 'pay_')) {
+            $this->payments->start($chatId, $payload);
+        } elseif ($account !== null) {
+            $this->coach->welcome($chatId, $account->user);
+        } else {
+            $this->coach->introduce($chatId);
+        }
     }
 
     /**

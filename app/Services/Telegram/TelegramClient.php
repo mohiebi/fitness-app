@@ -69,14 +69,14 @@ class TelegramClient
      */
     public function editMessage(string $chatId, int $messageId, string $text, ?array $keyboard = null): void
     {
-        $this->withPlainFallback('editMessageText', array_filter([
+        $this->withPlainFallback('editMessageText', [
             'chat_id' => $chatId,
             'message_id' => $messageId,
             'text' => $text,
             'parse_mode' => 'HTML',
             'link_preview_options' => ['is_disabled' => true],
             'reply_markup' => ['inline_keyboard' => $keyboard ?? []],
-        ], fn ($value) => $value !== null), 'text');
+        ], 'text');
     }
 
     /**

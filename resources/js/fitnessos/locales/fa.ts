@@ -808,4 +808,35 @@ export const fa: Record<string, string> = {
     'Notifications, :count unread': 'اعلان‌ها، :count خوانده‌نشده',
     'Mark all as read': 'علامت همه به‌عنوان خوانده‌شده',
     'No notifications yet.': 'هنوز اعلانی ندارید.',
+
+    // Telegram coach bot
+    Telegram: 'تلگرام',
+    'Run your coaching from your phone: requests, messages, check-ins and AI drafts.':
+        'مربیگری را از گوشی‌ات انجام بده: درخواست‌ها، پیام‌ها، چک‌این‌ها و پیش‌نویس‌های هوش مصنوعی.',
+    'Connected as @:username': 'متصل با @:username',
+    Connected: 'متصل',
+    Disconnect: 'قطع اتصال',
+    'Connect Telegram': 'اتصال تلگرام',
+    'The Telegram bot is not available yet.':
+        'ربات تلگرام هنوز راه‌اندازی نشده است.',
+    'Press Start in Telegram to finish connecting…':
+        'برای تکمیل اتصال، در تلگرام دکمه‌ی Start را بزن…',
+    'Trainee messages': 'پیام‌های شاگردان',
+    'Read and reply to your trainees from Telegram':
+        'پیام شاگردانت را در تلگرام بخوان و جواب بده',
+    'Accept or decline new trainees with one tap':
+        'شاگرد جدید را با یک لمس بپذیر یا رد کن',
+    'Review weekly check-ins as they arrive':
+        'چک‌این‌های هفتگی را همان لحظه‌ای که می‌رسند بررسی کن',
+    'Subscription and payments': 'اشتراک و پرداخت‌ها',
+    'Payment confirmations and renewal reminders':
+        'تأیید پرداخت و یادآوری تمدید',
+    'New reviews': 'نظرهای جدید',
+    'When a trainee reviews you': 'وقتی شاگردی برایت نظر می‌گذارد',
+    'Morning summary': 'خلاصه‌ی صبحگاهی',
+    'One message a day with what needs you':
+        'روزی یک پیام با کارهایی که منتظر تو هستند',
+    'Coach from your phone with Telegram': 'با تلگرام از گوشی مربیگری کن',
+    'Get requests, messages and check-ins in Telegram and answer them there, with AI drafts you approve.':
+        'درخواست‌ها، پیام‌ها و چک‌این‌ها را در تلگرام بگیر و همان‌جا جواب بده، با پیش‌نویس‌های هوش مصنوعی که خودت تأیید می‌کنی.',
 };

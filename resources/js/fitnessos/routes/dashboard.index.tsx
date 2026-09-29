@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { ActionTile } from '@fitnessos/components/stat-card';
 import { Card } from '@fitnessos/components/ui/card';
+import { TelegramPrompt } from '@fitnessos/components/telegram-connect';
 import { Button } from '@fitnessos/components/ui/button';
 import { getJson } from '@fitnessos/lib/api';
 import { currentUser } from '@fitnessos/lib/auth';
@@ -187,6 +188,8 @@ function DashboardIndex() {
                     </>
                 }
             />
+
+            <TelegramPrompt />
 
             {billing &&
                 (!billing.subscription.active || subscriptionDaysLeft <= 5) && (
