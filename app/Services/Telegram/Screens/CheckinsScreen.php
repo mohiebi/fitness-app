@@ -107,7 +107,10 @@ class CheckinsScreen extends Screen
         $head = '✅ <b>'.Tg::esc($this->traineeName($checkin)).'</b> · '.Tg::ago(Carbon::parse($checkin->created_at));
 
         $chat->show($head."\n\n".$this->describe($checkin).($pending ? '' : "\n\n".__('This check-in was already reviewed.')), Tg::keyboard([
-            $pending ? Tg::row([Tg::button(__('✍️ Write feedback'), 'chk:fb:'.$checkin->id)]) : [],
+            $pending ? Tg::row([
+                Tg::button(__('✍️ Write feedback'), 'chk:fb:'.$checkin->id),
+                Tg::button(__('🤖 AI feedback'), 'ai:fb:'.$checkin->id),
+            ]) : [],
             Tg::row([
                 Tg::button(__('👤 Trainee'), 'trn:open:'.$checkin->client_id),
                 Tg::button(__('✅ All check-ins'), 'chk:list'),

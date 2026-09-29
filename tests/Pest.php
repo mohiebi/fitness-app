@@ -2,6 +2,8 @@
 
 use App\Models\TelegramAccount;
 use App\Models\User;
+use App\Services\Ai\DraftModel;
+use App\Services\Ai\DraftResult;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
@@ -143,4 +145,31 @@ function lastButtons(string $chatId): array
         ->map(fn (array $button) => (string) ($button['callback_data'] ?? $button['url'] ?? ''))
         ->values()
         ->all();
+}
+
+/**
+ * A stand-in for Claude that records what it was asked and returns fixed output.
+ */
+function fakeDraftModel(array $data = ['message' => 'Great week, Nima!'], ?Throwable $error = null): object
+{
+    $fake = new class($data, $error) implements DraftModel
+    {
+        /** @var list<array{system: string, prompt: string, schema: array<string, mixed>}> */
+        public array $calls = [];
+
+        public function __construct(public array $data, public ?Throwable $error) {}
+
+        public function generate(string $system, string $prompt, array $schema): DraftResult
+        {
+            $this->calls[] = compact('system', 'prompt', 'schema');
+            if ($this->error) {
+                throw $this->error;
+            }
+
+            return new DraftResult($this->data, 'claude-opus-5', 1200, 150);
+        }
+    };
+    app()->instance(DraftModel::class, $fake);
+
+    return $fake;
 }

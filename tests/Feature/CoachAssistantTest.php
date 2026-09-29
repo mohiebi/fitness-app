@@ -9,39 +9,11 @@ use App\Services\Ai\AssistantUnavailable;
 use App\Services\Ai\ClaudeDraftModel;
 use App\Services\Ai\CoachAssistant;
 use App\Services\Ai\DraftModel;
-use App\Services\Ai\DraftResult;
 use App\Services\CoachingLifecycle;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-
-/**
- * A stand-in for Claude that records what it was asked and returns fixed output.
- */
-function fakeDraftModel(array $data = ['message' => 'Great week, Nima!'], ?Throwable $error = null): object
-{
-    $fake = new class($data, $error) implements DraftModel
-    {
-        /** @var list<array{system: string, prompt: string, schema: array<string, mixed>}> */
-        public array $calls = [];
-
-        public function __construct(public array $data, public ?Throwable $error) {}
-
-        public function generate(string $system, string $prompt, array $schema): DraftResult
-        {
-            $this->calls[] = compact('system', 'prompt', 'schema');
-            if ($this->error) {
-                throw $this->error;
-            }
-
-            return new DraftResult($this->data, 'claude-opus-5', 1200, 150);
-        }
-    };
-    app()->instance(DraftModel::class, $fake);
-
-    return $fake;
-}
 
 beforeEach(function () {
     $this->coach = User::factory()->publishedCoach()->create(['name' => 'Sara Ahmadi']);

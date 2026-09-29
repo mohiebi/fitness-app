@@ -5,6 +5,7 @@ namespace App\Services\Telegram;
 use App\Models\TelegramAccount;
 use App\Models\User;
 use App\Services\Telegram\Screens\CheckinsScreen;
+use App\Services\Telegram\Screens\DraftsScreen;
 use App\Services\Telegram\Screens\InboxScreen;
 use App\Services\Telegram\Screens\RequestsScreen;
 use App\Services\Telegram\Screens\Screen;
@@ -35,6 +36,7 @@ class CoachBot
         'messages' => 'inb',
         'trainees' => 'trn',
         'checkins' => 'chk',
+        'drafts' => 'ai',
     ];
 
     public function __construct(
@@ -45,6 +47,7 @@ class CoachBot
         private TraineesScreen $trainees,
         private InboxScreen $inbox,
         private CheckinsScreen $checkins,
+        private DraftsScreen $drafts,
     ) {}
 
     /**
@@ -194,6 +197,7 @@ class CoachBot
             'trn' => $this->trainees,
             'inb' => $this->inbox,
             'chk' => $this->checkins,
+            'ai' => $this->drafts,
             default => null,
         };
     }
@@ -206,6 +210,7 @@ class CoachBot
             __('📥 /requests — accept or decline new trainees'),
             __('💬 /messages — trainees waiting for your reply'),
             __('✅ /checkins — check-ins to review'),
+            __('🤖 /drafts — AI drafts waiting for your approval'),
             __('👥 /trainees — your trainees and their plans'),
             __('/menu — show the menu'),
             __('/cancel — cancel what I was doing'),

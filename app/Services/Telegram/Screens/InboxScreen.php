@@ -110,8 +110,9 @@ class InboxScreen extends Screen
         $chat->show('💬 <b>'.Tg::esc($trainee->name).'</b>'."\n\n".$this->conversation($chat->coach(), $trainee), Tg::keyboard([
             Tg::row([
                 Tg::button(__('✍️ Reply'), 'inb:reply:'.$trainee->id),
-                Tg::button(__('👤 Trainee'), 'trn:open:'.$trainee->id),
+                Tg::button(__('🤖 AI draft'), 'ai:reply:'.$trainee->id),
             ]),
+            Tg::row([Tg::button(__('👤 Trainee'), 'trn:open:'.$trainee->id)]),
             Tg::row([Tg::dashboard(__('🌐 Open chat in dashboard'), '/dashboard/messages?client='.$trainee->id)]),
         ]));
     }

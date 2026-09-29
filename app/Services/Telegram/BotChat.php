@@ -63,6 +63,23 @@ final class BotChat
         $this->telegram->editMessage($this->id(), $messageId, $text, $keyboard);
     }
 
+    /**
+     * Fill in a message sent earlier ("Drafting…"), or send a new one when
+     * that message could not be sent.
+     *
+     * @param  list<list<array<string, string>>>|null  $keyboard
+     */
+    public function replace(?int $messageId, string $text, ?array $keyboard = null): void
+    {
+        if ($messageId === null) {
+            $this->send($text, $keyboard);
+
+            return;
+        }
+
+        $this->edit($messageId, $text, $keyboard);
+    }
+
     public function typing(): void
     {
         $this->telegram->typing($this->id());

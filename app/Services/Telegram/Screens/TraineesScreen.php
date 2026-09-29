@@ -93,12 +93,16 @@ class TraineesScreen extends Screen
         $back = Tg::row([Tg::button(__('◀ Back'), 'trn:open:'.$trainee->id)]);
 
         if ($plan === null) {
-            $chat->show(__(':name has no active plan yet.', ['name' => '<b>'.Tg::esc($trainee->name).'</b>']), Tg::keyboard([$back]));
+            $chat->show(__(':name has no active plan yet.', ['name' => '<b>'.Tg::esc($trainee->name).'</b>']), Tg::keyboard([
+                Tg::row([Tg::button(__('🤖 Draft a new plan'), 'ai:plan:'.$trainee->id)]),
+                $back,
+            ]));
 
             return;
         }
 
         $chat->show($this->planText($plan), Tg::keyboard([
+            Tg::row([Tg::button(__('🤖 Draft a new plan'), 'ai:plan:'.$trainee->id)]),
             Tg::row([Tg::dashboard(__('🌐 Open plan editor'), '/dashboard/workouts/'.$plan->id)]),
             $back,
         ]));
