@@ -5,6 +5,7 @@ namespace App\Services\Telegram;
 use App\Models\SubscriptionPayment;
 use App\Services\CoachSubscriptions;
 use App\Services\Payments\SubscriptionPayments;
+use App\Support\LocalFormat;
 
 /**
  * The Telegram side of subscription payments:
@@ -81,8 +82,8 @@ class PaymentBot
         $plan = $this->subscriptions->plans()[$payment->plan];
 
         $this->telegram->sendMessage($chatId, implode("\n", [
-            __('FitnessOS subscription: :plan plan, :days days', ['plan' => __($plan['name']), 'days' => $payment->period_days]),
-            __('Amount: :amount toman', ['amount' => number_format($payment->amount)]),
+            __('FitnessOS subscription: :plan plan, :days days', ['plan' => __($plan['name']), 'days' => LocalFormat::number($payment->period_days)]),
+            __('Amount: :amount toman', ['amount' => LocalFormat::number($payment->amount)]),
             '',
             __('Please transfer the amount to this card:'),
             '<code>'.e((string) config('fitnessos.payment_card.number')).'</code>',
@@ -175,7 +176,7 @@ class PaymentBot
 
         if ($payment->telegram_chat_id !== null) {
             $this->telegram->sendMessage($payment->telegram_chat_id, $approve
-                ? __('Payment confirmed. Your subscription is active until :date.', ['date' => $this->subscriptions->for($payment->coach)->endsAt()?->toDateString()])
+                ? __('Payment confirmed. Your subscription is active until :date.', ['date' => LocalFormat::date($this->subscriptions->for($payment->coach)->endsAt())])
                 : __('We could not confirm this payment. Please check the receipt and contact support.'));
         }
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 
 beforeEach(function () {
+    app()->setLocale('en');
     config([
         'fitnessos.telegram.bot_token' => 'test-token',
         'fitnessos.telegram.bot_username' => 'FitnessOSPayBot',
@@ -131,4 +132,18 @@ test('without the bot configured, coaches are told to contact support', function
 
     $trainee = User::factory()->trainee()->create();
     $this->actingAs($trainee)->getJson('/fitnessos/billing')->assertForbidden();
+});
+
+test('Persian bot messages use Persian digits and the Jalali calendar', function () {
+    if (! extension_loaded('intl')) {
+        $this->markTestSkipped('intl extension not installed');
+    }
+    app()->setLocale('fa');
+    $payment = startPayment($this->coach);
+
+    telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 42], 'text' => '/start pay_'.$payment['reference']]]);
+
+    Http::assertSent(fn (Request $request) => str_ends_with($request->url(), '/sendMessage')
+        && str_contains($request['text'], '۴۹۰٬۰۰۰')
+        && str_contains($request['text'], '۳۰'));
 });

@@ -8,6 +8,7 @@ use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Models\WorkoutPlan;
 use App\Notifications\AppNotice;
+use App\Support\LocalFormat;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -100,7 +101,7 @@ class Notifier
     {
         $this->send($payment->coach, 'payment_confirmed',
             __('Payment confirmed'),
-            __('Your subscription is active until :date.', ['date' => $payment->coach->subscription()->first()?->endsAt()?->toDateString()]),
+            __('Your subscription is active until :date.', ['date' => LocalFormat::date($payment->coach->subscription()->first()?->endsAt())]),
             '/dashboard/billing', mail: true);
     }
 
@@ -115,7 +116,7 @@ class Notifier
     public function subscriptionEnding(User $coach, int $days): void
     {
         $this->send($coach, 'subscription_ending',
-            __('Your subscription ends in :days days', ['days' => $days]),
+            __('Your subscription ends in :days days', ['days' => LocalFormat::number($days)]),
             __('Renew so trainees can keep finding you in the coach directory.'),
             '/dashboard/billing', mail: true);
     }
@@ -128,7 +129,7 @@ class Notifier
         }
 
         $this->send($coach, 'review_received',
-            __('New review: :rating stars', ['rating' => $review->rating]),
+            __('New review: :rating stars', ['rating' => LocalFormat::number($review->rating)]),
             __('A trainee reviewed you. You can reply from your public profile.'),
             '/dashboard/profile');
     }
