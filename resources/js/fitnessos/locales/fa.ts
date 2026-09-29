@@ -802,4 +802,10 @@ export const fa: Record<string, string> = {
     'Reply publicly (optional)': 'پاسخ عمومی (اختیاری)',
     'Save reply': 'ذخیره‌ی پاسخ',
     'Reply saved.': 'پاسخ ذخیره شد.',
+
+    // Notifications
+    Notifications: 'اعلان‌ها',
+    'Notifications, :count unread': 'اعلان‌ها، :count خوانده‌نشده',
+    'Mark all as read': 'علامت همه به‌عنوان خوانده‌شده',
+    'No notifications yet.': 'هنوز اعلانی ندارید.',
 };
