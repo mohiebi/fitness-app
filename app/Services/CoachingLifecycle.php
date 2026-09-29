@@ -18,13 +18,16 @@ class CoachingLifecycle
 {
     public const REASON_SWITCHED = 'switched';
 
-    public function __construct(private CoachSubscriptions $subscriptions) {}
+    public function __construct(
+        private CoachSubscriptions $subscriptions,
+        private Notifier $notifier,
+    ) {}
 
     public function request(User $trainee, CoachProfile $profile, ?string $message = null): Coaching
     {
         abort_unless($trainee->isTrainee(), 403);
 
-        return DB::transaction(function () use ($trainee, $profile, $message): Coaching {
+        $coaching = DB::transaction(function () use ($trainee, $profile, $message): Coaching {
             $trainee = $this->lockTrainee($trainee);
 
             if (! $profile->is_published || ! $profile->hasCapacity()) {
@@ -46,13 +49,16 @@ class CoachingLifecycle
                 'request_message' => $message,
             ]);
         });
+        $this->notifier->coachingRequested($coaching);
+
+        return $coaching;
     }
 
     public function accept(Coaching $coaching, User $coach): Coaching
     {
         $this->ensureCoachOwns($coaching, $coach);
 
-        return DB::transaction(function () use ($coaching, $coach): Coaching {
+        DB::transaction(function () use ($coaching, $coach): void {
             $trainee = $this->lockTrainee($coaching->trainee);
             $coaching->refresh();
 
@@ -77,16 +83,20 @@ class CoachingLifecycle
 
             $coaching->update(['status' => Coaching::ACTIVE, 'started_at' => now()]);
             $trainee->forceFill(['coach_id' => $coach->id])->save();
-
-            return $coaching;
         });
+        $this->notifier->coachingAccepted($coaching);
+
+        return $coaching;
     }
 
     public function decline(Coaching $coaching, User $coach): Coaching
     {
         $this->ensureCoachOwns($coaching, $coach);
 
-        return $this->closePending($coaching, Coaching::DECLINED, $coach->id);
+        $this->closePending($coaching, Coaching::DECLINED, $coach->id);
+        $this->notifier->coachingDeclined($coaching);
+
+        return $coaching;
     }
 
     public function withdraw(Coaching $coaching, User $trainee): Coaching
@@ -100,7 +110,7 @@ class CoachingLifecycle
     {
         abort_unless($by->id === $coaching->coach_id || $by->id === $coaching->trainee_id, 404);
 
-        return DB::transaction(function () use ($coaching, $by, $reason): Coaching {
+        DB::transaction(function () use ($coaching, $by, $reason): void {
             $trainee = $this->lockTrainee($coaching->trainee);
             $coaching->refresh();
 
@@ -113,9 +123,10 @@ class CoachingLifecycle
             if ($trainee->coach_id === $coaching->coach_id) {
                 $trainee->forceFill(['coach_id' => null])->save();
             }
-
-            return $coaching;
         });
+        $this->notifier->coachingEnded($coaching, $by);
+
+        return $coaching;
     }
 
     /**

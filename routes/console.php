@@ -1,12 +1,15 @@
 <?php
 
 use App\Models\CoachReview;
+use App\Models\CoachSubscription;
 use App\Models\SubscriptionPayment;
 use App\Models\User;
+use App\Services\Notifier;
 use App\Services\Payments\SubscriptionPayments;
 use App\Services\Telegram\TelegramClient;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -100,3 +103,25 @@ Artisan::command('fitnessos:reviews:hide {id} {--restore}', function (int $id) {
 
     return 0;
 })->purpose('Hide (or restore) a coach review that breaks the rules');
+
+Artisan::command('fitnessos:subscriptions:remind {--days=3}', function (Notifier $notifier) {
+    $days = (int) $this->option('days');
+    $sent = 0;
+
+    // Subscriptions ending within the window that haven't been reminded
+    // for their current end date yet.
+    CoachSubscription::query()->running()->with('coach')->get()
+        ->filter(fn (CoachSubscription $subscription) => $subscription->endsAt()?->lte(now()->addDays($days))
+            && ($subscription->reminded_at === null || $subscription->reminded_at->lt($subscription->endsAt()->subDays($days))))
+        ->each(function (CoachSubscription $subscription) use ($notifier, &$sent): void {
+            $notifier->subscriptionEnding($subscription->coach, max(1, (int) ceil(now()->diffInDays($subscription->endsAt()))));
+            $subscription->forceFill(['reminded_at' => now()])->save();
+            $sent++;
+        });
+
+    $this->info("Sent {$sent} reminder(s).");
+
+    return 0;
+})->purpose('Remind coaches whose subscription ends soon');
+
+Schedule::command('fitnessos:subscriptions:remind')->dailyAt('09:00');

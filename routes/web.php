@@ -11,6 +11,7 @@ use App\Http\Controllers\FitnessOsActivityController;
 use App\Http\Controllers\FitnessOsClientController;
 use App\Http\Controllers\FitnessOsInquiryController;
 use App\Http\Controllers\FitnessOsPortalController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\TraineeProfileController;
 use App\Http\Controllers\WorkoutLogController;
@@ -42,6 +43,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('fitnessos/messages/{client?}', [FitnessOsActivityController::class, 'messages']);
     Route::post('fitnessos/messages', [FitnessOsActivityController::class, 'sendMessage']);
     Route::post('fitnessos/coachings/{coaching}/end', [CoachingController::class, 'end']);
+    Route::get('fitnessos/notifications', [NotificationController::class, 'index']);
+    Route::post('fitnessos/notifications/read', [NotificationController::class, 'read']);
 
     Route::get('fitnessos/contact-messages', [FitnessOsInquiryController::class, 'contactMessages'])->middleware('fitness.role:admin');
 

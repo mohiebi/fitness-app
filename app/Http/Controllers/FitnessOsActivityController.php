@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\CoachInbox;
+use App\Services\Notifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -50,7 +51,7 @@ class FitnessOsActivityController extends Controller
         return response()->json($query->orderByDesc('fitnessos_checkins.created_at')->limit(100)->get());
     }
 
-    public function storeCheckin(Request $request): JsonResponse
+    public function storeCheckin(Request $request, Notifier $notifier): JsonResponse
     {
         abort_unless($request->user()->role === 'client', 403);
         $client = $this->clientFor($request, null);
@@ -75,7 +76,12 @@ class FitnessOsActivityController extends Controller
             'updated_at' => now(),
         ]);
 
-        return response()->json(['id' => $id, 'message' => 'Check-in submitted.'], 201);
+        $coach = User::query()->find($client->coach_id);
+        if ($coach !== null) {
+            $notifier->checkinSubmitted($coach, $client);
+        }
+
+        return response()->json(['id' => $id, 'message' => __('Check-in submitted.')], 201);
     }
 
     public function reviewCheckin(Request $request, int $checkin, CoachInbox $inbox): JsonResponse
@@ -141,7 +147,7 @@ class FitnessOsActivityController extends Controller
         return response()->json($messages);
     }
 
-    public function sendMessage(Request $request): JsonResponse
+    public function sendMessage(Request $request, Notifier $notifier): JsonResponse
     {
         $data = $request->validate([
             'client_id' => ['nullable', 'integer'],
@@ -158,6 +164,11 @@ class FitnessOsActivityController extends Controller
             'updated_at' => now(),
         ]);
 
-        return response()->json(['id' => $id, 'message' => 'Message sent.'], 201);
+        $recipient = $request->user()->id === $client->id ? User::query()->find($client->coach_id) : $client;
+        if ($recipient !== null) {
+            $notifier->messageReceived($recipient, $request->user());
+        }
+
+        return response()->json(['id' => $id, 'message' => __('Message sent.')], 201);
     }
 }

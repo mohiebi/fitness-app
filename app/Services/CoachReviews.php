@@ -13,6 +13,8 @@ use Illuminate\Validation\ValidationException;
  */
 class CoachReviews
 {
+    public function __construct(private Notifier $notifier) {}
+
     public function minimumDays(): int
     {
         return (int) config('fitnessos.review_min_days', 14);
@@ -40,12 +42,18 @@ class CoachReviews
             throw ValidationException::withMessages(['rating' => __('You can review a coach after training together for :days days.', ['days' => $this->minimumDays()])]);
         }
 
-        return CoachReview::query()->updateOrCreate(['coaching_id' => $coaching->id], [
+        $review = CoachReview::query()->updateOrCreate(['coaching_id' => $coaching->id], [
             'coach_id' => $coaching->coach_id,
             'trainee_id' => $trainee->id,
             'rating' => $rating,
             'comment' => $comment,
         ]);
+
+        if ($review->wasRecentlyCreated) {
+            $this->notifier->reviewReceived($review);
+        }
+
+        return $review;
     }
 
     public function reply(User $coach, CoachReview $review, ?string $reply): CoachReview

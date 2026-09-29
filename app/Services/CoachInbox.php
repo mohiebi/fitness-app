@@ -12,6 +12,8 @@ use stdClass;
  */
 class CoachInbox
 {
+    public function __construct(private Notifier $notifier) {}
+
     /**
      * A check-in from a trainee the coach currently coaches.
      */
@@ -31,6 +33,18 @@ class CoachInbox
      */
     public function sendMessage(User $coach, int $traineeId, string $body): int
     {
+        $id = $this->insertMessage($coach, $traineeId, $body);
+
+        $trainee = User::query()->find($traineeId);
+        if ($trainee !== null) {
+            $this->notifier->messageReceived($trainee, $coach);
+        }
+
+        return $id;
+    }
+
+    private function insertMessage(User $coach, int $traineeId, string $body): int
+    {
         return DB::table('fitnessos_messages')->insertGetId([
             'coach_id' => $coach->id,
             'client_id' => $traineeId,
@@ -48,13 +62,20 @@ class CoachInbox
      */
     public function reviewCheckin(User $coach, stdClass $checkin, string $feedback): int
     {
-        return DB::transaction(function () use ($coach, $checkin, $feedback): int {
+        $messageId = DB::transaction(function () use ($coach, $checkin, $feedback): int {
             DB::table('fitnessos_checkins')->where('id', $checkin->id)->update([
                 'status' => 'Reviewed',
                 'updated_at' => now(),
             ]);
 
-            return $this->sendMessage($coach, $checkin->client_id, $feedback);
+            return $this->insertMessage($coach, $checkin->client_id, $feedback);
         });
+
+        $trainee = User::query()->whereKey((int) $checkin->client_id)->first();
+        if ($trainee !== null) {
+            $this->notifier->checkinReviewed($trainee, $coach);
+        }
+
+        return $messageId;
     }
 }

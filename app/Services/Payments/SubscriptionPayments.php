@@ -5,6 +5,7 @@ namespace App\Services\Payments;
 use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Services\CoachSubscriptions;
+use App\Services\Notifier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,10 @@ use Illuminate\Support\Str;
  */
 class SubscriptionPayments
 {
-    public function __construct(private CoachSubscriptions $subscriptions) {}
+    public function __construct(
+        private CoachSubscriptions $subscriptions,
+        private Notifier $notifier,
+    ) {}
 
     /**
      * Start (or reuse) an open Telegram payment for a plan.
@@ -78,7 +82,7 @@ class SubscriptionPayments
      */
     public function approve(SubscriptionPayment $payment, string $reviewer): bool
     {
-        return DB::transaction(function () use ($payment, $reviewer): bool {
+        $approved = DB::transaction(function () use ($payment, $reviewer): bool {
             $locked = SubscriptionPayment::query()->whereKey($payment->id)->lockForUpdate()->firstOrFail();
             if (! $locked->isOpen()) {
                 return false;
@@ -90,11 +94,17 @@ class SubscriptionPayments
 
             return true;
         });
+
+        if ($approved) {
+            $this->notifier->paymentConfirmed($payment);
+        }
+
+        return $approved;
     }
 
     public function reject(SubscriptionPayment $payment, string $reviewer): bool
     {
-        return DB::transaction(function () use ($payment, $reviewer): bool {
+        $rejected = DB::transaction(function () use ($payment, $reviewer): bool {
             $locked = SubscriptionPayment::query()->whereKey($payment->id)->lockForUpdate()->firstOrFail();
             if (! $locked->isOpen()) {
                 return false;
@@ -105,6 +115,12 @@ class SubscriptionPayments
 
             return true;
         });
+
+        if ($rejected) {
+            $this->notifier->paymentRejected($payment);
+        }
+
+        return $rejected;
     }
 
     public function cancel(SubscriptionPayment $payment): void
