@@ -21,3 +21,20 @@ export function useIsMobile() {
 
     return !!isMobile;
 }
+
+/** True at Tailwind's lg breakpoint and up, where the sidebar is always visible. */
+export function useIsDesktop() {
+    const query = '(min-width: 1024px)';
+    const [isDesktop, setIsDesktop] = React.useState(
+        () => window.matchMedia(query).matches,
+    );
+
+    React.useEffect(() => {
+        const mql = window.matchMedia(query);
+        const onChange = () => setIsDesktop(mql.matches);
+        mql.addEventListener('change', onChange);
+        return () => mql.removeEventListener('change', onChange);
+    }, []);
+
+    return isDesktop;
+}

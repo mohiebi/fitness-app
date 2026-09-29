@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@fitnessos/components/ui/input';
 import { NotificationBell } from '@fitnessos/components/notification-bell';
+import { useIsDesktop } from '@fitnessos/hooks/use-mobile';
 import { LogoMark } from '@fitnessos/components/logo-mark';
 import { cn } from '@fitnessos/lib/utils';
 import { currentUser } from '@fitnessos/lib/auth';
@@ -238,6 +239,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
     const counts = useCoachCounts(variant === 'coach');
     const { groups, footer } = navFor(variant, counts);
     const [collapsed, setCollapsed] = useState(false);
+    const isDesktop = useIsDesktop();
     const [mobileOpen, setMobileOpen] = useState(false);
     const pathname = useRouterState({ select: (s) => s.location.pathname });
     const userInitials = initials(userName);
@@ -326,7 +328,8 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                             Fitness<span className="text-volt">OS</span>
                         </span>
                     </Link>
-                    <NotificationBell className="hidden lg:grid" />
+                    {/* One bell only: two Radix popovers mis-anchor each other. */}
+                    {isDesktop && <NotificationBell />}
                 </div>
 
                 <div className={cn('relative', collapsed && 'lg:hidden')}>
@@ -468,7 +471,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                     >
                         Fitness<span className="text-volt">OS</span>
                     </span>
-                    <NotificationBell className="ms-auto" />
+                    {!isDesktop && <NotificationBell className="ms-auto" />}
                 </header>
 
                 <main
