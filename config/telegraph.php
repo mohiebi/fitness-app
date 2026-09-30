@@ -26,7 +26,8 @@ return [
          * Sets a custom webhook domain to be used,
          * if null defaults to the app.url
          */
-        'domain' => env('TELEGRAM_WEBHOOK_DOMAIN'),
+        // An empty value means "use APP_URL", which Telegraph only understands as null.
+        'domain' => env('TELEGRAM_WEBHOOK_DOMAIN') ?: null,
 
         /*
          * Sets the webhook URL that will be exposed by the server,
