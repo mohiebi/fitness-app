@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { Card } from '@fitnessos/components/ui/card';
 import { Button } from '@fitnessos/components/ui/button';
@@ -18,6 +18,7 @@ import {
     TabsTrigger,
 } from '@fitnessos/components/ui/tabs';
 import { coach } from '@fitnessos/lib/mock-data';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { Palette, CreditCard, Users } from 'lucide-react';
 import { TelegramCard } from '@fitnessos/components/telegram-connect';
 
@@ -25,27 +26,30 @@ export const Route = createFileRoute('/dashboard/settings')({
     component: Settings,
 });
 
+// The tab value stays the same in every language; the label is translated.
+const tabs = [
+    ['business', 'Business'],
+    ['branding', 'Branding'],
+    ['ai', 'AI'],
+    ['integrations', 'Integrations'],
+    ['notifications', 'Notifications'],
+    ['subscription', 'Subscription'],
+    ['team', 'Team'],
+] as const;
+
 function Settings() {
     return (
         <div>
             <PageHeader
-                title="Settings"
-                description="Manage your business, branding and team."
+                title={t('Settings')}
+                description={t('Manage your business, branding and team.')}
             />
 
             <Tabs defaultValue="business">
                 <TabsList className="mb-6 flex-wrap">
-                    {[
-                        'business',
-                        'branding',
-                        'ai',
-                        'integrations',
-                        'notifications',
-                        'subscription',
-                        'team',
-                    ].map((t) => (
-                        <TabsTrigger key={t} value={t} className="capitalize">
-                            {t}
+                    {tabs.map(([value, label]) => (
+                        <TabsTrigger key={value} value={value}>
+                            {t(label)}
                         </TabsTrigger>
                     ))}
                 </TabsList>
@@ -53,18 +57,22 @@ function Settings() {
                 <TabsContent value="business">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
                         <h3 className="mb-4 font-semibold">
-                            Business information
+                            {t('Business information')}
                         </h3>
                         <div className="grid gap-4 md:grid-cols-2">
-                            <Field label="Business name" v="Rivera Coaching" />
-                            <Field label="Website" v="riveracoaching.com" />
                             <Field
-                                label="Support email"
-                                v="hello@riveracoaching.com"
+                                label={t('Business name')}
+                                v={t('Sara Coaching')}
                             />
-                            <Field label="Timezone" v="America/Los_Angeles" />
+                            <Field label={t('Website')} v="sara-coach.ir" />
+                            <Field
+                                label={t('Support email')}
+                                v="hello@sara-coach.ir"
+                                ltr
+                            />
+                            <Field label={t('Timezone')} v="Asia/Tehran" ltr />
                         </div>
-                        <Button className="mt-6">Save changes</Button>
+                        <Button className="mt-6">{t('Save changes')}</Button>
                     </Card>
                 </TabsContent>
 
@@ -72,32 +80,34 @@ function Settings() {
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
                         <div className="mb-4 flex items-center gap-2">
                             <Palette className="text-primary h-4 w-4" />
-                            <h3 className="font-semibold">Branding</h3>
+                            <h3 className="font-semibold">{t('Branding')}</h3>
                         </div>
                         <div className="flex items-center gap-4">
                             <Avatar className="h-16 w-16">
                                 <AvatarImage src={coach.avatar} />
-                                <AvatarFallback>R</AvatarFallback>
+                                <AvatarFallback>{t('S')}</AvatarFallback>
                             </Avatar>
                             <div>
                                 <Button variant="outline" size="sm">
-                                    Upload logo
+                                    {t('Upload logo')}
                                 </Button>
                                 <div className="text-muted-foreground mt-1 text-xs">
-                                    PNG or SVG, up to 2MB
+                                    {t('PNG or SVG, up to 2MB')}
                                 </div>
                             </div>
                         </div>
                         <div className="mt-6 grid gap-4 md:grid-cols-2">
-                            <Field label="Primary color" v="#10B981" />
-                            <Field label="Accent color" v="#3B82F6" />
+                            <Field label={t('Primary color')} v="#10B981" ltr />
+                            <Field label={t('Accent color')} v="#3B82F6" ltr />
                         </div>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="ai">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
-                        <h3 className="mb-4 font-semibold">AI preferences</h3>
+                        <h3 className="mb-4 font-semibold">
+                            {t('AI preferences')}
+                        </h3>
                         {[
                             [
                                 'Tone matching',
@@ -115,17 +125,17 @@ function Settings() {
                                 'Content drafts',
                                 'Weekly Instagram post drafts based on client wins',
                             ],
-                        ].map(([t, d]) => (
+                        ].map(([title, description]) => (
                             <div
-                                key={t}
+                                key={title}
                                 className="border-border/60 flex items-center justify-between border-t py-3 first:border-t-0"
                             >
                                 <div>
                                     <div className="text-sm font-medium">
-                                        {t}
+                                        {t(title)}
                                     </div>
                                     <div className="text-muted-foreground text-xs">
-                                        {d}
+                                        {t(description)}
                                     </div>
                                 </div>
                                 <Switch defaultChecked />
@@ -136,20 +146,20 @@ function Settings() {
 
                 <TabsContent value="integrations">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
-                        <h3 className="mb-4 font-semibold">Integrations</h3>
+                        <h3 className="mb-4 font-semibold">
+                            {t('Integrations')}
+                        </h3>
                         <TelegramCard />
                         {[
                             {
-                                name: 'Stripe',
-                                desc: 'Process subscription payments',
+                                name: 'Online payment gateway',
+                                desc: 'Let trainees pay you inside FitnessOS',
                                 icon: CreditCard,
-                                connected: true,
                             },
                             {
-                                name: 'MyFitnessPal',
+                                name: 'Nutrition apps',
                                 desc: 'Sync client nutrition logs',
                                 icon: Users,
-                                connected: false,
                             },
                         ].map((i) => (
                             <div
@@ -160,20 +170,16 @@ function Settings() {
                                     <i.icon className="h-4 w-4" />
                                 </div>
                                 <div className="flex-1">
-                                    <div className="font-medium">{i.name}</div>
+                                    <div className="font-medium">
+                                        {t(i.name)}
+                                    </div>
                                     <div className="text-muted-foreground text-xs">
-                                        {i.desc}
+                                        {t(i.desc)}
                                     </div>
                                 </div>
-                                {i.connected ? (
-                                    <Badge className="bg-primary/15 text-primary">
-                                        Connected
-                                    </Badge>
-                                ) : (
-                                    <Button variant="outline" size="sm">
-                                        Connect
-                                    </Button>
-                                )}
+                                <Badge variant="secondary">
+                                    {t('Coming soon')}
+                                </Badge>
                             </div>
                         ))}
                     </Card>
@@ -181,7 +187,14 @@ function Settings() {
 
                 <TabsContent value="notifications">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
-                        <h3 className="mb-4 font-semibold">Notifications</h3>
+                        <h3 className="mb-4 font-semibold">
+                            {t('Notifications')}
+                        </h3>
+                        <p className="text-muted-foreground mb-2 text-sm">
+                            {t(
+                                'Telegram notifications are managed in the Integrations tab.',
+                            )}
+                        </p>
                         {[
                             'New check-in',
                             'Missed workout',
@@ -193,11 +206,13 @@ function Settings() {
                                 key={n}
                                 className="border-border/60 flex items-center justify-between border-t py-3 first:border-t-0"
                             >
-                                <span className="text-sm">{n}</span>
+                                <span className="text-sm">{t(n)}</span>
                                 <div className="flex gap-3">
                                     <Switch defaultChecked />
                                     <span className="text-muted-foreground text-xs">
-                                        Email · Push
+                                        {t('Email')}
+                                        {sep()}
+                                        {t('Push')}
                                     </span>
                                 </div>
                             </div>
@@ -208,16 +223,19 @@ function Settings() {
                 <TabsContent value="subscription">
                     <Card className="border-primary/30 bg-hero-gradient shadow-glow p-8">
                         <Badge className="bg-primary/15 text-primary">
-                            Pro plan
+                            {t('Subscription')}
                         </Badge>
-                        <h3 className="mt-3 text-2xl font-semibold">$199/mo</h3>
-                        <p className="text-muted-foreground mt-2 text-sm">
-                            75 clients, AI Assistant, Content Studio and
-                            priority support.
+                        <p className="text-muted-foreground mt-3 text-sm">
+                            {t(
+                                'Your plan, its limits and renewals are on the Billing page.',
+                            )}
                         </p>
                         <div className="mt-6 flex gap-2">
-                            <Button variant="outline">Manage plan</Button>
-                            <Button>Upgrade to Elite</Button>
+                            <Button asChild>
+                                <Link to="/dashboard/billing">
+                                    {t('Open billing')}
+                                </Link>
+                            </Button>
                         </div>
                     </Card>
                 </TabsContent>
@@ -225,22 +243,24 @@ function Settings() {
                 <TabsContent value="team">
                     <Card className="border-border/60 bg-card shadow-card-premium p-6">
                         <div className="mb-4 flex items-center justify-between">
-                            <h3 className="font-semibold">Team members</h3>
-                            <Button size="sm">Invite</Button>
+                            <h3 className="font-semibold">
+                                {t('Team members')}
+                            </h3>
+                            <Button size="sm">{t('Invite')}</Button>
                         </div>
                         {[
                             {
-                                name: coach.name,
+                                name: t('Sara Ahmadi'),
                                 role: 'Owner',
                                 img: coach.avatar,
                             },
                             {
-                                name: 'Emma Riley',
+                                name: t('Elham Karimi'),
                                 role: 'Coach',
                                 img: 'https://i.pravatar.cc/80?img=45',
                             },
                             {
-                                name: 'Jonas Weber',
+                                name: t('Reza Moradi'),
                                 role: 'Admin',
                                 img: 'https://i.pravatar.cc/80?img=52',
                             },
@@ -251,17 +271,19 @@ function Settings() {
                             >
                                 <Avatar>
                                     <AvatarImage src={m.img} />
-                                    <AvatarFallback>{m.name[0]}</AvatarFallback>
+                                    <AvatarFallback>
+                                        {Array.from(m.name)[0]}
+                                    </AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1">
                                     <div className="text-sm font-medium">
                                         {m.name}
                                     </div>
                                     <div className="text-muted-foreground text-xs">
-                                        {m.role}
+                                        {t(m.role)}
                                     </div>
                                 </div>
-                                <Badge variant="secondary">Active</Badge>
+                                <Badge variant="secondary">{t('Active')}</Badge>
                             </div>
                         ))}
                     </Card>
@@ -271,11 +293,19 @@ function Settings() {
     );
 }
 
-function Field({ label, v }: { label: string; v: string }) {
+function Field({
+    label,
+    v,
+    ltr = false,
+}: {
+    label: string;
+    v: string;
+    ltr?: boolean;
+}) {
     return (
         <div>
             <Label className="mb-2 block">{label}</Label>
-            <Input defaultValue={v} />
+            <Input defaultValue={v} dir={ltr ? 'ltr' : undefined} />
         </div>
     );
 }

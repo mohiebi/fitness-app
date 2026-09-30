@@ -72,3 +72,12 @@ export function localizeDigits(text: string): string {
 
     return text.replace(/[0-9]/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'[Number(digit)]);
 }
+
+/** Sample figures written as text (like "+18%"): digits and percent sign in the page's script. */
+export function localizeNumbers(text: string): string {
+    if (locale() !== 'fa') return text;
+
+    return localizeDigits(text)
+        .replaceAll('%', '٪')
+        .replace(/([۰-۹])\.([۰-۹])/g, '$1٫$2');
+}

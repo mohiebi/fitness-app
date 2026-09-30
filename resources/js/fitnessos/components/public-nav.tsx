@@ -7,6 +7,7 @@ import { isAuthenticated } from '@fitnessos/lib/auth';
 import { t } from '@fitnessos/lib/i18n';
 import { formatDate } from '@fitnessos/lib/format';
 
+import { Wordmark } from '@fitnessos/components/wordmark';
 const links = [
     { to: '/', label: t('Home') },
     { to: '/coaches', label: t('Coaches') },
@@ -26,7 +27,7 @@ export function PublicNav() {
                         dir="ltr"
                         className="font-display text-lg font-extrabold uppercase"
                     >
-                        Fitness<span className="text-volt">OS</span>
+                        <Wordmark />
                     </span>
                 </Link>
                 <nav
@@ -140,7 +141,7 @@ export function Footer() {
                                 dir="ltr"
                                 className="font-display text-lg font-extrabold uppercase"
                             >
-                                Fitness<span className="text-volt">OS</span>
+                                <Wordmark />
                             </span>
                         </div>
                         <p className="text-muted-foreground mt-4 max-w-sm text-sm leading-relaxed">

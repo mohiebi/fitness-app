@@ -12,7 +12,9 @@ import {
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { Card } from '@fitnessos/components/ui/card';
 import { getJson } from '@fitnessos/lib/api';
+import { formatDate, formatNumber } from '@fitnessos/lib/format';
 
+import { t } from '@fitnessos/lib/i18n';
 export const Route = createFileRoute('/app/progress')({ component: Progress });
 
 type Checkin = {
@@ -35,7 +37,10 @@ function Progress() {
         .reverse()
         .filter((entry) => entry.weight_kg !== null)
         .map((entry) => ({
-            date: new Date(entry.created_at).toLocaleDateString(),
+            date: formatDate(entry.created_at, {
+                month: 'short',
+                day: 'numeric',
+            }),
             weight: Number(entry.weight_kg),
         }));
     const first = weights[0]?.weight;
@@ -44,38 +49,49 @@ function Progress() {
     return (
         <div>
             <PageHeader
-                title="Progress"
-                description="Your logged check-in measurements."
+                title={t('Progress')}
+                description={t('Your logged check-in measurements.')}
             />
             {isLoading && (
                 <p className="text-muted-foreground text-sm">
-                    Loading progress…
+                    {t('Loading progress…')}
                 </p>
             )}
             {error && (
                 <p role="alert" className="text-destructive text-sm">
                     {error instanceof Error
                         ? error.message
-                        : 'Unable to load progress.'}
+                        : t('Unable to load progress.')}
                 </p>
             )}
             <div className="grid gap-4 md:grid-cols-3">
-                <Summary label="Check-ins" value={String(checkins.length)} />
                 <Summary
-                    label="Latest weight"
-                    value={latest === undefined ? '—' : `${latest} kg`}
+                    label={t('Check-ins')}
+                    value={formatNumber(checkins.length)}
                 />
                 <Summary
-                    label="Weight change"
+                    label={t('Latest weight')}
+                    value={
+                        latest === undefined
+                            ? '—'
+                            : t(':value kg', { value: formatNumber(latest) })
+                    }
+                />
+                <Summary
+                    label={t('Weight change')}
                     value={
                         first === undefined || latest === undefined
                             ? '—'
-                            : `${(latest - first).toFixed(1)} kg`
+                            : t(':value kg', {
+                                  value: formatNumber(
+                                      Number((latest - first).toFixed(1)),
+                                  ),
+                              })
                     }
                 />
             </div>
             <Card className="border-border/60 bg-card shadow-card-premium mt-6 p-6">
-                <h2 className="mb-4 font-semibold">Weight history</h2>
+                <h2 className="mb-4 font-semibold">{t('Weight history')}</h2>
                 {weights.length > 0 ? (
                     <div className="h-72">
                         <ResponsiveContainer>
@@ -93,9 +109,13 @@ function Progress() {
                                 <YAxis
                                     stroke="var(--color-muted-foreground)"
                                     fontSize={12}
+                                    tickFormatter={(v: number) =>
+                                        formatNumber(v)
+                                    }
                                     domain={['dataMin - 1', 'dataMax + 1']}
                                 />
                                 <Tooltip
+                                    formatter={(v) => formatNumber(Number(v))}
                                     contentStyle={{
                                         background: 'var(--color-popover)',
                                         border: '1px solid var(--color-border)',
@@ -104,6 +124,7 @@ function Progress() {
                                 />
                                 <Line
                                     dataKey="weight"
+                                    name={t('Weight')}
                                     stroke="var(--color-chart-1)"
                                     strokeWidth={2.5}
                                     dot={{ r: 3 }}
@@ -113,7 +134,9 @@ function Progress() {
                     </div>
                 ) : (
                     <p className="text-muted-foreground text-sm">
-                        Submit a check-in with your weight to see a trend.
+                        {t(
+                            'Submit a check-in with your weight to see a trend.',
+                        )}
                     </p>
                 )}
             </Card>

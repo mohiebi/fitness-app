@@ -5,6 +5,8 @@ import { Badge } from '@fitnessos/components/ui/badge';
 import { Button } from '@fitnessos/components/ui/button';
 import { Progress } from '@fitnessos/components/ui/progress';
 import { meals } from '@fitnessos/lib/mock-data';
+import { formatNumber, localizeNumbers } from '@fitnessos/lib/format';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { Check, Plus, Utensils } from 'lucide-react';
 
 export const Route = createFileRoute('/app/nutrition')({
@@ -15,15 +17,35 @@ function Nutrition() {
     return (
         <div>
             <PageHeader
-                title="Nutrition"
-                description="Today's plan · 2,700 kcal target"
+                title={t('Nutrition')}
+                description={`${t("Today's plan")}${sep()}${t(':kcal kcal target', { kcal: formatNumber(2700) })}`}
             />
             <div className="grid gap-4 md:grid-cols-4">
                 {[
-                    { l: 'Calories', v: '1,840', t: '/ 2,700', p: 68 },
-                    { l: 'Protein', v: '152g', t: '/ 220g', p: 69 },
-                    { l: 'Carbs', v: '180g', t: '/ 260g', p: 69 },
-                    { l: 'Fat', v: '62g', t: '/ 80g', p: 77 },
+                    {
+                        l: t('Calories'),
+                        v: formatNumber(1840),
+                        t: `/ ${formatNumber(2700)}`,
+                        p: 68,
+                    },
+                    {
+                        l: t('Protein'),
+                        v: t(':value g', { value: formatNumber(152) }),
+                        t: `/ ${t(':value g', { value: formatNumber(220) })}`,
+                        p: 69,
+                    },
+                    {
+                        l: t('Carbs'),
+                        v: t(':value g', { value: formatNumber(180) }),
+                        t: `/ ${t(':value g', { value: formatNumber(260) })}`,
+                        p: 69,
+                    },
+                    {
+                        l: t('Fat'),
+                        v: t(':value g', { value: formatNumber(62) }),
+                        t: `/ ${t(':value g', { value: formatNumber(80) })}`,
+                        p: 77,
+                    },
                 ].map((m) => (
                     <Card
                         key={m.l}
@@ -58,10 +80,14 @@ function Nutrition() {
                                 </div>
                                 <div>
                                     <div className="font-semibold">
-                                        {m.name}
+                                        {t(m.name)}
                                     </div>
                                     <div className="text-muted-foreground text-xs">
-                                        {m.time} · {m.kcal} kcal
+                                        {localizeNumbers(m.time)}
+                                        {sep()}
+                                        {t(':kcal kcal', {
+                                            kcal: formatNumber(m.kcal),
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -72,26 +98,32 @@ function Nutrition() {
                             >
                                 {i < 2 ? (
                                     <>
-                                        <Check className="mr-1 h-3 w-3" />
-                                        Eaten
+                                        <Check className="me-1 h-3 w-3" />
+                                        {t('Eaten')}
                                     </>
                                 ) : (
                                     <>
-                                        <Plus className="mr-1 h-3 w-3" />
-                                        Log
+                                        <Plus className="me-1 h-3 w-3" />
+                                        {t('Log')}
                                     </>
                                 )}
                             </Button>
                         </div>
                         <ul className="text-muted-foreground mt-3 space-y-1 text-sm">
                             {m.items.map((x) => (
-                                <li key={x}>• {x}</li>
+                                <li key={x}>• {localizeNumbers(t(x))}</li>
                             ))}
                         </ul>
                         <div className="mt-3 flex flex-wrap gap-1 text-[10px]">
-                            <Badge variant="secondary">{m.p}g P</Badge>
-                            <Badge variant="secondary">{m.c}g C</Badge>
-                            <Badge variant="secondary">{m.f}g F</Badge>
+                            <Badge variant="secondary">
+                                {t(':p g protein', { p: formatNumber(m.p) })}
+                            </Badge>
+                            <Badge variant="secondary">
+                                {t(':c g carbs', { c: formatNumber(m.c) })}
+                            </Badge>
+                            <Badge variant="secondary">
+                                {t(':f g fat', { f: formatNumber(m.f) })}
+                            </Badge>
                         </div>
                     </Card>
                 ))}
