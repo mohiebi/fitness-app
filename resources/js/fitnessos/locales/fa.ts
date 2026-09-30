@@ -908,4 +908,143 @@ export const fa: Record<string, string> = {
     'Phone call': 'تماس تلفنی',
     'Video call': 'تماس تصویری',
     'Something else': 'مورد دیگر',
+
+    // Account, security and sign-in pages
+    'My dashboard': 'داشبورد من',
+    Menu: 'منو',
+    Dark: 'تیره',
+    Light: 'روشن',
+    System: 'سیستم',
+    Appearance: 'ظاهر',
+    'Appearance settings': 'تنظیمات ظاهر',
+    'Update the appearance settings for your account':
+        'ظاهر حساب کاربری‌ات را تنظیم کن',
+    'Manage your profile and account settings':
+        'پروفایل و تنظیمات حساب کاربری‌ات را مدیریت کن',
+    'Delete account': 'حذف حساب کاربری',
+    'Delete your account and all of its resources':
+        'حساب کاربری و همه‌ی اطلاعات آن را حذف کن',
+    Warning: 'هشدار',
+    'Please proceed with caution, this cannot be undone.':
+        'با احتیاط ادامه بده؛ این کار قابل بازگشت نیست.',
+    'Are you sure you want to delete your account?':
+        'مطمئنی می‌خواهی حساب کاربری‌ات را حذف کنی؟',
+    'Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.':
+        'با حذف حساب کاربری، همه‌ی اطلاعات و داده‌های آن هم برای همیشه پاک می‌شود. برای تأیید حذف دائمی حساب، رمز عبورت را وارد کن.',
+    Passkeys: 'کلیدهای عبور',
+    'Manage your passkeys for passwordless sign-in':
+        'کلیدهای عبور ورود بدون رمز را مدیریت کن',
+    'No passkeys yet': 'هنوز کلید عبوری نداری',
+    'Add a passkey to sign in without a password':
+        'برای ورود بدون رمز عبور یک کلید عبور اضافه کن',
+    'Two-factor authentication': 'احراز هویت دومرحله‌ای',
+    'Manage your two-factor authentication settings':
+        'تنظیمات احراز هویت دومرحله‌ای را مدیریت کن',
+    'You will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.':
+        'هنگام ورود، یک کد امن و تصادفی از تو خواسته می‌شود که آن را از برنامه‌ی احراز هویت روی گوشی‌ات می‌گیری.',
+    'When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.':
+        'با فعال کردن احراز هویت دومرحله‌ای، هنگام ورود یک کد امن از تو خواسته می‌شود. این کد را از برنامه‌ی احراز هویت روی گوشی‌ات می‌گیری.',
+    'Disable 2FA': 'غیرفعال کردن دومرحله‌ای',
+    'Enable 2FA': 'فعال کردن دومرحله‌ای',
+    'Continue setup': 'ادامه‌ی راه‌اندازی',
+    'Added :when': 'اضافه‌شده :when',
+    'Last used :when': 'آخرین استفاده :when',
+    Remove: 'حذف',
+    'Remove passkey': 'حذف کلید عبور',
+    'Removing...': 'در حال حذف…',
+    'Are you sure you want to remove the passkey ":name"? You will no longer be able to use it to sign in.':
+        'مطمئنی می‌خواهی کلید عبور «:name» را حذف کنی؟ دیگر نمی‌توانی با آن وارد شوی.',
+    'Passkeys are not supported in this browser.':
+        'این مرورگر از کلید عبور پشتیبانی نمی‌کند.',
+    'Add passkey': 'افزودن کلید عبور',
+    'Passkey name': 'نام کلید عبور',
+    'A name helps you identify this passkey later.':
+        'با یک نام، بعداً راحت‌تر این کلید عبور را پیدا می‌کنی.',
+    'e.g., MacBook Pro, iPhone': 'مثلاً مک‌بوک، آیفون',
+    'Register passkey': 'ثبت کلید عبور',
+    'Registering...': 'در حال ثبت…',
+    'Authenticating...': 'در حال ورود…',
+    'Sign in with a passkey': 'ورود با کلید عبور',
+    'Or continue with email': 'یا با ایمیل ادامه بده',
+    'Confirm with passkey': 'تأیید با کلید عبور',
+    'Confirming...': 'در حال تأیید…',
+    'Or confirm with password': 'یا با رمز عبور تأیید کن',
+    'This is a secure area of the application. Please confirm your password before continuing.':
+        'این بخش امن است. پیش از ادامه، رمز عبورت را تأیید کن.',
+    '2FA recovery codes': 'کدهای بازیابی دومرحله‌ای',
+    'Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.':
+        'اگر دستگاه احراز هویتت را گم کردی، با کدهای بازیابی دوباره وارد می‌شوی. آن‌ها را در یک مدیر رمز عبور امن نگه دار.',
+    'Hide recovery codes': 'پنهان کردن کدهای بازیابی',
+    'View recovery codes': 'نمایش کدهای بازیابی',
+    'Regenerate codes': 'ساخت دوباره‌ی کدها',
+    'Recovery codes': 'کدهای بازیابی',
+    'Loading recovery codes': 'در حال بارگذاری کدهای بازیابی',
+    'Each recovery code can be used once to access your account and will be removed after use. If you need more, use "Regenerate codes" above.':
+        'هر کد بازیابی فقط یک بار برای ورود قابل استفاده است و بعد از آن حذف می‌شود. اگر بیشتر لازم داری، از «ساخت دوباره‌ی کدها» بالا استفاده کن.',
+    'or, enter the code manually': 'یا کد را دستی وارد کن',
+    Confirm: 'تأیید',
+    Continue: 'ادامه',
+    'Enable two-factor authentication': 'فعال‌سازی احراز هویت دومرحله‌ای',
+    'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app':
+        'برای تکمیل فعال‌سازی، کد QR را اسکن کن یا کلید راه‌اندازی را در برنامه‌ی احراز هویت وارد کن',
+    'Two-factor authentication enabled': 'احراز هویت دومرحله‌ای فعال شد',
+    'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.':
+        'احراز هویت دومرحله‌ای فعال شد. کد QR را اسکن کن یا کلید راه‌اندازی را در برنامه‌ی احراز هویت وارد کن.',
+    'Verify authentication code': 'تأیید کد احراز هویت',
+    'Enter the 6-digit code from your authenticator app':
+        'کد ۶ رقمی برنامه‌ی احراز هویت را وارد کن',
+    'Profile settings': 'تنظیمات پروفایل',
+    'Update your name and email address': 'نام و ایمیلت را به‌روز کن',
+    'Your email address is unverified.': 'ایمیلت هنوز تأیید نشده است.',
+    'Click here to re-send the verification email.':
+        'برای ارسال دوباره‌ی ایمیل تأیید اینجا را بزن.',
+    'A new verification link has been sent to your email address.':
+        'لینک تأیید تازه‌ای به ایمیلت فرستاده شد.',
+    'Security settings': 'تنظیمات امنیتی',
+    'Update password': 'تغییر رمز عبور',
+    'Ensure your account is using a long, random password to stay secure':
+        'برای امنیت بیشتر، از یک رمز عبور طولانی و تصادفی استفاده کن',
+    'Current password': 'رمز عبور فعلی',
+    'New password': 'رمز عبور جدید',
+
+    'Forgot password': 'فراموشی رمز عبور',
+    'Enter your email to receive a password reset link':
+        'ایمیلت را وارد کن تا لینک بازنشانی رمز عبور برایت فرستاده شود',
+    'Email password reset link': 'ارسال لینک بازنشانی رمز عبور',
+    'Or, return to': 'یا برگرد به',
+    'log in': 'ورود',
+    'Reset password': 'بازنشانی رمز عبور',
+    'Please enter your new password below': 'رمز عبور جدیدت را در زیر وارد کن',
+    'Authentication code': 'کد احراز هویت',
+    'Recovery code': 'کد بازیابی',
+    'Enter recovery code': 'کد بازیابی را وارد کن',
+    'Enter the authentication code provided by your authenticator application.':
+        'کد احراز هویتی را که برنامه‌ی احراز هویتت نشان می‌دهد وارد کن.',
+    'Please confirm access to your account by entering one of your emergency recovery codes.':
+        'برای تأیید دسترسی به حسابت، یکی از کدهای بازیابی اضطراری‌ات را وارد کن.',
+    'login using a recovery code': 'ورود با کد بازیابی',
+    'login using an authentication code': 'ورود با کد احراز هویت',
+    'or you can': 'یا می‌توانی',
+    'Email verification': 'تأیید ایمیل',
+    'Please verify your email address by clicking on the link we just emailed to you.':
+        'لطفاً با زدن روی لینکی که همین حالا به ایمیلت فرستادیم، ایمیلت را تأیید کن.',
+    'A new verification link has been sent to the email address you provided during registration.':
+        'لینک تأیید تازه‌ای به ایمیلی که هنگام ثبت‌نام وارد کردی فرستاده شد.',
+    'Resend verification email': 'ارسال دوباره‌ی ایمیل تأیید',
+
+    'Toggle sidebar': 'باز و بسته کردن منو',
+    Sidebar: 'منو',
+    'Displays the mobile sidebar.': 'منوی موبایل را نشان می‌دهد.',
+    More: 'بیشتر',
+
+    breadcrumb: 'مسیر صفحه',
+    'Previous slide': 'اسلاید قبلی',
+    'Next slide': 'اسلاید بعدی',
+    pagination: 'صفحه‌بندی',
+    'Go to previous page': 'رفتن به صفحه‌ی قبل',
+    'Go to next page': 'رفتن به صفحه‌ی بعد',
+    Previous: 'قبلی',
+    Next: 'بعدی',
+    'More pages': 'صفحه‌های بیشتر',
+    Loading: 'در حال بارگذاری',
 };

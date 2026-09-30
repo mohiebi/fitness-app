@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { cn } from '@fitnessos/lib/utils';
 import { Button } from '@fitnessos/components/ui/button';
 
+import { t } from '@fitnessos/lib/i18n';
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
@@ -216,7 +217,7 @@ const CarouselPrevious = React.forwardRef<
             {...props}
         >
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Previous slide</span>
+            <span className="sr-only">{t('Previous slide')}</span>
         </Button>
     );
 });
@@ -245,7 +246,7 @@ const CarouselNext = React.forwardRef<
             {...props}
         >
             <ArrowRight className="h-4 w-4" />
-            <span className="sr-only">Next slide</span>
+            <span className="sr-only">{t('Next slide')}</span>
         </Button>
     );
 });
