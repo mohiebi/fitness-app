@@ -158,10 +158,11 @@ test('the morning summary follows the coach local clock', function () {
 });
 
 test('setting up the bot registers the webhook and the command list', function () {
-    $this->artisan('fitnessos:telegram:webhook', ['url' => 'https://example.com/telegram/webhook'])->assertSuccessful();
+    $this->artisan('fitnessos:telegram:webhook', ['domain' => 'https://example.com'])->assertSuccessful();
 
     $calls = collect(telegramCalls());
     expect($calls->pluck(0)->all())->toBe(['setWebhook', 'setMyCommands']);
+    expect($calls[0][1])->toMatchArray(['url' => 'https://example.com/telegraph/test-token/webhook', 'secret_token' => 'hook-secret', 'allowed_updates' => ['message', 'callback_query']]);
     expect(collect($calls[1][1]['commands'])->pluck('command')->all())->toContain('today', 'requests', 'messages', 'checkins', 'drafts', 'billing', 'settings', 'menu', 'help', 'cancel', 'unlink');
     expect(TelegramAccount::count())->toBe(1);
 });

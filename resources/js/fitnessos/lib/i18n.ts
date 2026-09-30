@@ -17,11 +17,29 @@ export function isRtl(): boolean {
     return document.documentElement.dir === 'rtl';
 }
 
+/**
+ * English text that was asked for in Persian but has no entry in fa.ts.
+ * Exposed on window so a crawl of the site can list what still needs
+ * translating (window.__missingTranslations).
+ */
+export const missingTranslations = new Set<string>();
+
+if (typeof window !== 'undefined') {
+    (
+        window as unknown as { __missingTranslations: Set<string> }
+    ).__missingTranslations = missingTranslations;
+}
+
 export function t(
     text: string,
     replace: Record<string, string | number> = {},
 ): string {
-    const translated = dictionaries[locale()][text] ?? text;
+    const known = dictionaries[locale()][text];
+    if (known === undefined && locale() === 'fa' && /[A-Za-z]{2}/.test(text)) {
+        missingTranslations.add(text);
+    }
+
+    const translated = known ?? text;
 
     return Object.entries(replace).reduce(
         (result, [key, value]) => result.replaceAll(`:${key}`, String(value)),

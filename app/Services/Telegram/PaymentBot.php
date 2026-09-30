@@ -6,6 +6,7 @@ use App\Models\SubscriptionPayment;
 use App\Services\CoachSubscriptions;
 use App\Services\Payments\SubscriptionPayments;
 use App\Support\LocalFormat;
+use App\Support\Trans;
 
 /**
  * The Telegram side of subscription payments:
@@ -110,12 +111,12 @@ class PaymentBot
         $forward = $receipt['type'] === 'photo' ? $this->telegram->sendPhoto(...) : $this->telegram->sendDocument(...);
         $forward($this->adminChatId(), $receipt['file_id'], implode("\n", [
             '💳 '.e($coach->name).' ('.e($coach->email).')',
-            'Plan: '.$payment->plan.' / '.$payment->period_days.' days',
-            'Amount: '.number_format($payment->amount).' toman',
-            'Ref: <code>'.$payment->reference.'</code>',
+            __('Plan: :plan for :days days', ['plan' => $this->planName($payment), 'days' => LocalFormat::number($payment->period_days)]),
+            __('Amount: :amount toman', ['amount' => LocalFormat::number($payment->amount)]),
+            __('Reference: :reference', ['reference' => '<code>'.$payment->reference.'</code>']),
         ]), [[
-            ['text' => '✅ Approve', 'callback_data' => 'pay:approve:'.$payment->id],
-            ['text' => '❌ Reject', 'callback_data' => 'pay:reject:'.$payment->id],
+            ['text' => __('✅ Approve'), 'callback_data' => 'pay:approve:'.$payment->id],
+            ['text' => __('❌ Reject'), 'callback_data' => 'pay:reject:'.$payment->id],
         ]]);
 
         $this->telegram->sendMessage($chatId, __('Receipt received. We will check it and confirm here shortly.'));
@@ -130,20 +131,20 @@ class PaymentBot
         $chatId = (string) ($callback['message']['chat']['id'] ?? '');
 
         if ($chatId === '' || $chatId !== $this->adminChatId()) {
-            $this->telegram->answerCallback($callbackId, 'Not allowed');
+            $this->telegram->answerCallback($callbackId, __('You are not allowed to do this.'));
 
             return;
         }
 
         if (! preg_match('/^pay:(approve|reject):(\d+)$/', (string) ($callback['data'] ?? ''), $match)) {
-            $this->telegram->answerCallback($callbackId, 'Unknown action');
+            $this->telegram->answerCallback($callbackId, __('Unknown action.'));
 
             return;
         }
 
         $payment = SubscriptionPayment::query()->find((int) $match[2]);
         if ($payment === null) {
-            $this->telegram->answerCallback($callbackId, 'Payment not found');
+            $this->telegram->answerCallback($callbackId, __('That payment was not found.'));
 
             return;
         }
@@ -153,17 +154,17 @@ class PaymentBot
         $changed = $approve ? $this->payments->approve($payment, $reviewer) : $this->payments->reject($payment, $reviewer);
 
         if (! $changed) {
-            $this->telegram->answerCallback($callbackId, 'Already '.$payment->status);
+            $this->telegram->answerCallback($callbackId, __('This payment is already :status.', ['status' => $this->statusLabel($payment->status)]));
 
             return;
         }
 
-        $this->telegram->answerCallback($callbackId, $approve ? 'Approved' : 'Rejected');
+        $this->telegram->answerCallback($callbackId, $approve ? __('Payment approved.') : __('Payment rejected.'));
         if (isset($callback['message']['message_id'])) {
             $this->telegram->editCaption($chatId, (int) $callback['message']['message_id'], implode("\n", [
-                ($approve ? '✅ Approved' : '❌ Rejected').' by '.e($reviewer),
-                e($payment->coach->name).' / '.$payment->plan.' / '.number_format($payment->amount).' toman',
-                'Ref: <code>'.$payment->reference.'</code>',
+                ($approve ? __('✅ Approved by :who', ['who' => e($reviewer)]) : __('❌ Rejected by :who', ['who' => e($reviewer)])),
+                __(':name / :plan / :amount toman', ['name' => e($payment->coach->name), 'plan' => $this->planName($payment), 'amount' => LocalFormat::number($payment->amount)]),
+                __('Reference: :reference', ['reference' => '<code>'.$payment->reference.'</code>']),
             ]));
         }
 
@@ -194,6 +195,23 @@ class PaymentBot
         }
 
         return null;
+    }
+
+    private function planName(SubscriptionPayment $payment): string
+    {
+        $plan = $this->subscriptions->plans()[$payment->plan]['name'] ?? $payment->plan;
+
+        return Trans::text($plan);
+    }
+
+    private function statusLabel(string $status): string
+    {
+        return match ($status) {
+            SubscriptionPayment::PAID => __('paid'),
+            SubscriptionPayment::REJECTED => __('rejected'),
+            SubscriptionPayment::CANCELED => __('canceled'),
+            default => $status,
+        };
     }
 
     public function isAdminChat(string $chatId): bool

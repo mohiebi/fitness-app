@@ -93,7 +93,7 @@ class FitnessOsActivityController extends Controller
 
         $inbox->reviewCheckin($request->user(), $entry, $data['feedback']);
 
-        return response()->json(['message' => 'Feedback sent.']);
+        return response()->json(['message' => __('Feedback sent.')]);
     }
 
     public function conversations(Request $request): JsonResponse

@@ -4,6 +4,8 @@ import { Card } from '@fitnessos/components/ui/card';
 import { Button } from '@fitnessos/components/ui/button';
 import { Badge } from '@fitnessos/components/ui/badge';
 import { Instagram, Youtube, Twitter, Sparkles } from 'lucide-react';
+import { localizeNumbers } from '@fitnessos/lib/format';
+import { sep, t } from '@fitnessos/lib/i18n';
 
 export const Route = createFileRoute('/dashboard/content')({
     component: ContentStudio,
@@ -50,25 +52,32 @@ function ContentStudio() {
     return (
         <div>
             <PageHeader
-                title="Content studio"
-                description="Plan, generate and schedule your content across platforms."
+                title={t('Content studio')}
+                description={t(
+                    'Plan, generate and schedule your content across platforms.',
+                )}
                 actions={
                     <>
                         <Button variant="outline">
-                            <Sparkles className="mr-2 h-4 w-4" />
-                            Generate with AI
+                            <Sparkles className="me-2 h-4 w-4" />
+                            {t('Generate with AI')}
                         </Button>
-                        <Button>New post</Button>
+                        <Button>{t('New post')}</Button>
                     </>
                 }
             />
 
             <div className="mb-6 grid gap-4 md:grid-cols-4">
                 {[
-                    { l: 'Scheduled', v: '12' },
-                    { l: 'Drafts', v: '5' },
-                    { l: 'Published (30d)', v: '24' },
-                    { l: 'Reach (30d)', v: '182k' },
+                    { l: t('Scheduled'), v: localizeNumbers('12') },
+                    { l: t('Drafts'), v: localizeNumbers('5') },
+                    { l: t('Published (30d)'), v: localizeNumbers('24') },
+                    {
+                        l: t('Reach (30d)'),
+                        v: t(':count thousand', {
+                            count: localizeNumbers('182'),
+                        }),
+                    },
                 ].map((s) => (
                     <Card
                         key={s.l}
@@ -94,18 +103,20 @@ function ContentStudio() {
                                 <img
                                     src={p.img}
                                     className="h-full w-full object-cover"
-                                    alt={p.title}
+                                    alt={t(p.title)}
                                 />
                             </div>
                             <div className="p-4">
                                 <div className="text-muted-foreground flex items-center gap-2 text-xs">
                                     <Icon className="h-3.5 w-3.5" />
                                     <span>
-                                        {p.platform} · {p.type}
+                                        {t(p.platform)}
+                                        {sep()}
+                                        {t(p.type)}
                                     </span>
                                 </div>
                                 <h4 className="mt-2 line-clamp-2 text-sm font-medium">
-                                    {p.title}
+                                    {t(p.title)}
                                 </h4>
                                 <div className="mt-3 flex items-center justify-between">
                                     <Badge
@@ -117,10 +128,10 @@ function ContentStudio() {
                                                   : 'bg-muted text-muted-foreground'
                                         }
                                     >
-                                        {p.status}
+                                        {t(p.status)}
                                     </Badge>
                                     <span className="text-muted-foreground text-xs">
-                                        {p.date}
+                                        {localizeNumbers(t(p.date))}
                                     </span>
                                 </div>
                             </div>
@@ -132,11 +143,14 @@ function ContentStudio() {
             <Card className="border-primary/30 bg-hero-gradient shadow-glow mt-6 p-8">
                 <div className="flex items-center gap-3">
                     <Sparkles className="text-primary h-5 w-5" />
-                    <h3 className="font-semibold">AI content generator</h3>
+                    <h3 className="font-semibold">
+                        {t('AI content generator')}
+                    </h3>
                 </div>
                 <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
-                    Generate a full week of on-brand posts in seconds. Pulls
-                    from your client wins, blog articles and program library.
+                    {t(
+                        'Generate a full week of on-brand posts in seconds. Pulls from your client wins, blog articles and program library.',
+                    )}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                     {[
@@ -145,13 +159,13 @@ function ContentStudio() {
                         'Twitter thread',
                         'Email newsletter',
                         'Client win post',
-                    ].map((t) => (
+                    ].map((idea) => (
                         <Badge
-                            key={t}
+                            key={idea}
                             variant="outline"
                             className="border-primary/30 bg-primary/10 cursor-pointer"
                         >
-                            {t}
+                            {t(idea)}
                         </Badge>
                     ))}
                 </div>

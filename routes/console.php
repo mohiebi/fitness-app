@@ -32,7 +32,7 @@ Artisan::command('fitnessos:verify-coach {email} {--revoke}', function (string $
     return 0;
 })->purpose('Mark a coach profile as verified after checking their certifications');
 
-Artisan::command('fitnessos:telegram:webhook {url? : Defaults to APP_URL/telegram/webhook}', function (TelegramClient $telegram) {
+Artisan::command('fitnessos:telegram:webhook {domain? : Public site address, e.g. https://example.com (defaults to TELEGRAM_WEBHOOK_DOMAIN or APP_URL)}', function (TelegramClient $telegram) {
     $secret = (string) config('fitnessos.telegram.webhook_secret');
     if (! $telegram->enabled() || $secret === '') {
         $this->error('Set TELEGRAM_BOT_TOKEN and TELEGRAM_WEBHOOK_SECRET first.');
@@ -40,15 +40,18 @@ Artisan::command('fitnessos:telegram:webhook {url? : Defaults to APP_URL/telegra
         return 1;
     }
 
-    $given = $this->argument('url');
-    $url = is_string($given) && $given !== '' ? $given : rtrim((string) config('app.url'), '/').'/telegram/webhook';
-    if (! $telegram->setWebhook($url, $secret)) {
-        $this->error('Telegram did not accept the webhook. Check the URL is public HTTPS and the token is right.');
+    $domain = $this->argument('domain');
+    if (is_string($domain) && $domain !== '') {
+        config(['telegraph.webhook.domain' => rtrim($domain, '/')]);
+    }
+
+    if (! $telegram->registerWebhook($secret)) {
+        $this->error('Telegram did not accept the webhook. Check the address is public HTTPS and the token is right.');
 
         return 1;
     }
 
-    $this->info("Webhook set to {$url}");
+    $this->info('Webhook registered.');
 
     if ($telegram->setCommands(Menu::commands())) {
         $this->info('Command list updated.');

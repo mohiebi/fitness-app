@@ -4,6 +4,7 @@ use App\Models\TelegramAccount;
 use App\Models\User;
 use App\Services\Ai\DraftModel;
 use App\Services\Ai\DraftResult;
+use App\Services\Telegram\TelegramClient;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Support\Facades\Http;
@@ -63,10 +64,13 @@ function fakeTelegram(): void
         'fitnessos.telegram.bot_username' => 'FitnessOSBot',
         'fitnessos.telegram.webhook_secret' => 'hook-secret',
         'fitnessos.telegram.admin_chat_id' => '-1001',
+        // The bot speaks Persian by default; most tests read English.
+        'fitnessos.telegram.locale' => 'en',
         'fitnessos.payment_card.number' => '6037-9911-1111-2222',
         'fitnessos.payment_card.holder' => 'FitnessOS',
     ]);
     forgetTelegramCalls();
+    app(TelegramClient::class)->ensureBot();
 }
 
 /**
@@ -89,7 +93,7 @@ function telegramUpdate(array $update): TestResponse
     static $next = 1000;
     $update += ['update_id' => $next++];
 
-    return test()->withHeader('X-Telegram-Bot-Api-Secret-Token', 'hook-secret')->postJson('/telegram/webhook', $update);
+    return test()->withHeader('X-Telegram-Bot-Api-Secret-Token', 'hook-secret')->postJson('/telegraph/test-token/webhook', $update);
 }
 
 /**

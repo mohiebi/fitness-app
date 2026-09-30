@@ -86,13 +86,13 @@ Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`,
 
 The assistant drafts chat replies, check-in feedback and training plans for a coach's current trainees. Trainees never interact with it, and nothing it writes reaches a trainee until the coach approves it.
 
-- Set `ANTHROPIC_API_KEY` to turn it on. It uses `AI_MODEL` (default `claude-opus-5`) through the official Anthropic PHP SDK, with adaptive thinking, structured JSON output and server-side refusal fallbacks. Without a key the assistant is hidden and the rest of the app works as usual.
-- `AI_BASE_URL` routes requests through a gateway or proxy, for example when the server can't reach the Anthropic API directly. It takes precedence over `ANTHROPIC_BASE_URL`.
+- It talks to any **OpenAI-compatible endpoint** (the default, `AI_PROVIDER=openai`). Set `OPENAI_API_KEY` to turn it on, `OPENAI_MODEL` (default `gpt-4o`), and `OPENAI_BASE_URL` (default `https://api.openai.com/v1`) or `AI_BASE_URL` to point at a gateway, for example when the server can't reach OpenAI directly. Replies are constrained with a JSON schema (structured outputs). For a gateway that only supports plain JSON mode set `OPENAI_RESPONSE_FORMAT=json_object`. Without a key the assistant is hidden and the rest of the app works as usual.
+- `AI_PROVIDER=anthropic` with `ANTHROPIC_API_KEY` uses Claude through the official Anthropic PHP SDK instead (`AI_MODEL`, default `claude-opus-5`).
 - `AI_DAILY_DRAFTS_PER_COACH` (default 60) caps how many drafts each coach can request per day.
 - Coaches review drafts at `/dashboard/ai`, or use **Draft with AI** in chat, on the check-in review page and on a trainee's Training tab. An inline draft is sent only when the coach presses send, with their edits.
 - An approved plan draft becomes a draft plan the coach still edits and activates. Plan drafts only use exercises from the coach's library.
 - The model sees a briefing with the trainee's first name, intake, active plan, and recent check-ins, workouts and chat, and nothing else (no email or account details). Every draft, including failures, is stored in `ai_drafts` with the model and token counts.
-- The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `ClaudeDraftModel` makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
+- The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `OpenAiDraftModel` (or `ClaudeDraftModel`) makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
 
 ### Coach subscriptions and Telegram payments
 
@@ -103,7 +103,7 @@ The assistant drafts chat replies, check-in feedback and training plans for a co
     2. The bot replies with the amount and the card to transfer to (`PAYMENT_CARD_NUMBER`, `PAYMENT_CARD_HOLDER`).
     3. The coach sends a photo or PDF of the receipt, and the bot forwards it to the admin chat (`TELEGRAM_ADMIN_CHAT_ID`) with **Approve** and **Reject** buttons.
     4. Approving extends the subscription once and tells the coach in Telegram and in the app.
-- Setup: create a bot with @BotFather. Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, a random `TELEGRAM_WEBHOOK_SECRET` and the admin chat id. Then run `php artisan fitnessos:telegram:webhook`, which needs a public HTTPS `APP_URL`. The webhook at `/telegram/webhook` only accepts requests carrying the secret token.
+- Setup: create a bot with @BotFather. Set `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME`, a random `TELEGRAM_WEBHOOK_SECRET` and the admin chat id. Then run `php artisan migrate` and `php artisan fitnessos:telegram:webhook`, which needs a public HTTPS `APP_URL` (or pass the site address, or set `TELEGRAM_WEBHOOK_DOMAIN`). The bot runs on [defstudio/telegraph](https://docs.defstudio.it/telegraph), which owns the webhook at `/telegraph/{bot token}/webhook`, the Bot API client and the keyboards; the handler in `app/Telegram/CoachWebhookHandler.php` passes each update to the app's own bot. The webhook only accepts requests carrying the secret token (Telegraph doesn't check it, so `VerifyTelegramSecret` does).
 - Without the bot, billing tells coaches to contact support. `php artisan fitnessos:payments:confirm <reference>` confirms a payment checked by hand, and `php artisan fitnessos:subscription:grant <email> <plan> --days=30` records a manual payment.
 
 ### The Telegram coach bot
@@ -121,7 +121,7 @@ The same bot that takes payments is a full assistant for coaches, so they can ru
 - **Push:** notices go to the coach's chat with action buttons: an accept/decline pair on a request, reply and AI-draft buttons on a message (every message is pushed even though the app keeps one unread notice per conversation), read and AI-feedback buttons on a check-in, and the subscription screen on payment and renewal notices.
 - **Morning summary:** `php artisan fitnessos:telegram:digest` runs hourly from the scheduler and messages each coach at the hour they chose, only when something needs them. `TELEGRAM_TIMEZONE` (default `Asia/Tehran`) is the clock those hours mean; `--force` sends to everyone now.
 - **Safety:** every button carries only an id, and each action re-checks that the record belongs to the linked coach, so made-up data reaches nothing. The webhook drops an update Telegram delivers twice, ignores group chats, and users who have not connected are only told how to connect (or to pay).
-- **Setup:** after the payment-bot setup above, run `php artisan fitnessos:telegram:webhook` again to also register the command list. Telegram buttons that open dashboard pages only appear on an HTTPS `APP_URL`.
+- **Setup:** after the payment-bot setup above, run `php artisan fitnessos:telegram:webhook` again to also register the command list. The bot always speaks Persian (`TELEGRAM_LOCALE`, default `fa`), whatever language the website is set to; notices the website pushes to Telegram use the website's language, so keep `APP_LOCALE=fa`. Telegram buttons that open dashboard pages only appear on an HTTPS `APP_URL`.
 - The code lives in `app/Services/Telegram`: `TelegramBot` routes updates, `CoachBot` routes coach messages and button taps to one class per part in `Screens/`, `TelegramLinks` handles connecting, `TelegramPush` and `Notifications/Channels/TelegramChannel` send notices, and `TelegramDigest` sends the summary. `CoachDesk` counts what is waiting.
 
 ### Reviews
@@ -132,9 +132,19 @@ Trainees can rate a coach from 1 to 5 stars and leave a comment after training t
 
 People get in-app notifications, via the bell in the dashboard and app, for coaching requests and decisions, ended coachings, new messages, check-ins, new plans, payments, reviews and subscription reminders. Requests, acceptances, new plans, payment results and subscription reminders are also emailed, and coaches who connected Telegram get them there too. The reminder runs from the scheduler (`php artisan schedule:work` locally, or a cron entry for `php artisan schedule:run` in production).
 
+### Reports and calendar
+
+- **Reports** (`/dashboard/reports`) are computed from the coach's own data by `CoachReports`: active and new trainees, retention (coachings that lasted 30 days), request acceptance, workout completion against the active plans, check-in review rate and time, the average rating, weekly growth and sessions, and each trainee's adherence. Time is counted in rolling 7-day weeks so the numbers mean the same in any calendar. There is no revenue figure: trainees pay coaches outside the app.
+- **Calendar** (`/dashboard/calendar`) shows the coach's own appointments (`calendar_events`: call, video, in person or other, optionally with a current trainee) and what their current trainees did each day: sessions logged, check-ins sent, coachings started and plans activated, plus the day the subscription ends. Persian shows the Jalali month with weeks starting on Saturday, worked out with the browser's own calendar support, so no date library is needed.
+
 ### Language
 
-`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments and reports) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
+The site is Persian-first. `APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates and Persian digits, and `APP_NAME` is the Persian brand name. Set `APP_LOCALE=en` for English.
+
+- **Front end:** text goes through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts` (the account, sign-in and settings pages use the same helper). Use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so layouts mirror. `t()` also records any English text with no Persian entry in `window.__missingTranslations`, so opening every page and reading that set lists what is left.
+- **Server:** messages use `__('English text')` with a Persian entry in `lang/fa.json`; validation messages and field names are in `lang/fa/validation.php`. Emails and the framework's error pages are published under `resources/views/vendor/mail` and `resources/views/errors` so they are right-to-left in Persian.
+- **Telegram:** the bot always speaks Persian (`TELEGRAM_LOCALE`), whatever the site's language.
+- **A guard:** `tests/Feature/LocalizationCoverageTest.php` fails, naming the text, when a `__()` or `t()` string is added without a Persian entry. Sample screens (nutrition, payments, progress, content, resources and part of Settings) show demo content, in Persian.
 
 ## Checks
 

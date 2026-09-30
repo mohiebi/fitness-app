@@ -47,7 +47,7 @@ class CoachAssistant
     {
         $used = AiDraft::query()->where('coach_id', $coach->id)->where('created_at', '>=', now()->startOfDay())->count();
 
-        return max(0, (int) config('services.anthropic.daily_drafts_per_coach') - $used);
+        return max(0, (int) config('services.ai.daily_drafts_per_coach') - $used);
     }
 
     /**

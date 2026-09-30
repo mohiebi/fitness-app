@@ -5,6 +5,8 @@ import { Button } from '@fitnessos/components/ui/button';
 import { Badge } from '@fitnessos/components/ui/badge';
 import { Progress } from '@fitnessos/components/ui/progress';
 import { meals } from '@fitnessos/lib/mock-data';
+import { formatNumber, localizeNumbers } from '@fitnessos/lib/format';
+import { sep, t } from '@fitnessos/lib/i18n';
 import { Plus, ShoppingCart, Repeat, Utensils } from 'lucide-react';
 
 export const Route = createFileRoute('/dashboard/nutrition')({
@@ -24,15 +26,15 @@ function Nutrition() {
     return (
         <div>
             <PageHeader
-                title="Nutrition builder"
-                description="Sarah Chen — Fat loss · 2,700 kcal target"
+                title={t('Nutrition builder')}
+                description={`${t('Sarah Chen')} — ${t('Fat loss')}${sep()}${t(':kcal kcal target', { kcal: formatNumber(2700) })}`}
                 actions={
                     <>
                         <Button variant="outline">
-                            <ShoppingCart className="mr-2 h-4 w-4" />
-                            Shopping list
+                            <ShoppingCart className="me-2 h-4 w-4" />
+                            {t('Shopping list')}
                         </Button>
-                        <Button>Save plan</Button>
+                        <Button>{t('Save plan')}</Button>
                     </>
                 }
             />
@@ -40,30 +42,30 @@ function Nutrition() {
             <div className="grid gap-4 md:grid-cols-4">
                 {[
                     {
-                        l: 'Calories',
-                        v: `${total.kcal}`,
-                        sub: '/ 2,700 kcal',
+                        l: t('Calories'),
+                        v: formatNumber(total.kcal),
+                        sub: `/ ${formatNumber(2700)} ${t('kcal')}`,
                         pct: (total.kcal / 2700) * 100,
                         color: 'var(--color-chart-1)',
                     },
                     {
-                        l: 'Protein',
-                        v: `${total.p}g`,
-                        sub: '/ 220g',
+                        l: t('Protein'),
+                        v: t(':value g', { value: formatNumber(total.p) }),
+                        sub: `/ ${t(':value g', { value: formatNumber(220) })}`,
                         pct: (total.p / 220) * 100,
                         color: 'var(--color-chart-2)',
                     },
                     {
-                        l: 'Carbs',
-                        v: `${total.c}g`,
-                        sub: '/ 260g',
+                        l: t('Carbs'),
+                        v: t(':value g', { value: formatNumber(total.c) }),
+                        sub: `/ ${t(':value g', { value: formatNumber(260) })}`,
                         pct: (total.c / 260) * 100,
                         color: 'var(--color-chart-3)',
                     },
                     {
-                        l: 'Fat',
-                        v: `${total.f}g`,
-                        sub: '/ 80g',
+                        l: t('Fat'),
+                        v: t(':value g', { value: formatNumber(total.f) }),
+                        sub: `/ ${t(':value g', { value: formatNumber(80) })}`,
                         pct: (total.f / 80) * 100,
                         color: 'var(--color-chart-4)',
                     },
@@ -99,18 +101,28 @@ function Nutrition() {
                                 <div className="bg-primary/10 text-primary grid h-8 w-8 place-items-center rounded-lg">
                                     <Utensils className="h-4 w-4" />
                                 </div>
-                                <span className="font-semibold">{m.name}</span>
+                                <span className="font-semibold">
+                                    {t(m.name)}
+                                </span>
                             </div>
-                            <Badge variant="secondary">{m.time}</Badge>
+                            <Badge variant="secondary">
+                                {localizeNumbers(m.time)}
+                            </Badge>
                         </div>
                         <div className="text-muted-foreground mt-3 text-xs">
-                            {m.kcal} kcal · {m.p}P {m.c}C {m.f}F
+                            {t(':kcal kcal', { kcal: formatNumber(m.kcal) })}
+                            {sep()}
+                            {t(':p g protein', { p: formatNumber(m.p) })}
+                            {sep()}
+                            {t(':c g carbs', { c: formatNumber(m.c) })}
+                            {sep()}
+                            {t(':f g fat', { f: formatNumber(m.f) })}
                         </div>
                         <ul className="mt-3 space-y-1 text-sm">
                             {m.items.map((i) => (
                                 <li key={i} className="flex items-center gap-2">
                                     <span className="bg-primary h-1 w-1 rounded-full" />
-                                    {i}
+                                    {localizeNumbers(t(i))}
                                 </li>
                             ))}
                         </ul>
@@ -120,16 +132,16 @@ function Nutrition() {
                                 variant="ghost"
                                 className="flex-1"
                             >
-                                <Repeat className="mr-1 h-3 w-3" />
-                                Swap
+                                <Repeat className="me-1 h-3 w-3" />
+                                {t('Swap')}
                             </Button>
                             <Button
                                 size="sm"
                                 variant="ghost"
                                 className="flex-1"
                             >
-                                <Plus className="mr-1 h-3 w-3" />
-                                Add food
+                                <Plus className="me-1 h-3 w-3" />
+                                {t('Add food')}
                             </Button>
                         </div>
                     </Card>

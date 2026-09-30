@@ -40,6 +40,7 @@ import { getJson } from '@fitnessos/lib/api';
 import { t } from '@fitnessos/lib/i18n';
 import { initials } from '@fitnessos/lib/marketplace';
 
+import { Wordmark } from '@fitnessos/components/wordmark';
 type NavItem = {
     to: string;
     label: string;
@@ -52,10 +53,8 @@ type NavGroup = { label?: string; items: NavItem[] };
 const previewPaths = new Set([
     '/dashboard/nutrition',
     '/dashboard/progress',
-    '/dashboard/calendar',
     '/dashboard/payments',
     '/dashboard/content',
-    '/dashboard/reports',
     '/dashboard/settings',
     '/app/nutrition',
     '/app/resources',
@@ -325,7 +324,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                                 collapsed && 'lg:hidden',
                             )}
                         >
-                            Fitness<span className="text-volt">OS</span>
+                            <Wordmark />
                         </span>
                     </Link>
                     {/* One bell only: two Radix popovers mis-anchor each other. */}
@@ -469,7 +468,7 @@ export function AppShell({ variant }: { variant: 'coach' | 'client' }) {
                         dir="ltr"
                         className="font-display text-lg font-extrabold uppercase"
                     >
-                        Fitness<span className="text-volt">OS</span>
+                        <Wordmark />
                     </span>
                     {!isDesktop && <NotificationBell className="ms-auto" />}
                 </header>

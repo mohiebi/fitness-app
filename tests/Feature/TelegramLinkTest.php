@@ -26,7 +26,7 @@ test('a coach connects Telegram with a one-time link', function () {
     $payload = startTelegramLink($this->coach);
     expect(TelegramAccount::query()->value('link_token_hash'))->not->toContain(substr($payload, 5));
 
-    telegramUpdate(['message' => ['chat' => ['id' => 4242, 'type' => 'private'], 'from' => ['username' => 'sara_fit'], 'text' => '/start '.$payload]])->assertOk();
+    telegramUpdate(['message' => ['chat' => ['id' => 4242, 'type' => 'private'], 'from' => ['username' => 'sara_fit'], 'text' => '/start '.$payload]])->assertNoContent();
 
     $account = $this->coach->telegramAccount()->first();
     expect($account->chat_id)->toBe('4242');
@@ -86,14 +86,14 @@ test('only coaches can connect, and only when the bot is set up', function () {
 });
 
 test('a stranger in the bot is told how to connect', function () {
-    chatText('31337', 'hello')->assertOk();
-    chatText('31337', '/start')->assertOk();
+    chatText('31337', 'hello')->assertNoContent();
+    chatText('31337', '/start')->assertNoContent();
 
     expect(telegramTexts('31337'))->toHaveCount(2)->each->toContain('Connect Telegram');
 });
 
 test('the bot ignores group chats', function () {
-    telegramUpdate(['message' => ['chat' => ['id' => -555, 'type' => 'group'], 'text' => '/start']])->assertOk();
+    telegramUpdate(['message' => ['chat' => ['id' => -555, 'type' => 'group'], 'text' => '/start']])->assertNoContent();
 
     Http::assertNothingSent();
 });
@@ -101,7 +101,7 @@ test('the bot ignores group chats', function () {
 test('a coach disconnects from the bot or from the dashboard', function () {
     $coach = linkedCoach('900');
 
-    chatText('900', '/unlink')->assertOk();
+    chatText('900', '/unlink')->assertNoContent();
     expect($coach->telegramAccount()->value('chat_id'))->toBeNull();
     expect(telegramTexts('900')[0])->toContain('disconnected');
 

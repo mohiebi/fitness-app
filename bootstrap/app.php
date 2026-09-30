@@ -18,8 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['fitness.role' => EnsureFitnessRole::class]);
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-        // Telegram authenticates with its secret token header instead.
-        $middleware->validateCsrfTokens(except: ['telegram/webhook']);
 
         $middleware->web(append: [
             HandleAppearance::class,

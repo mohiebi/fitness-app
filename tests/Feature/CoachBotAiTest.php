@@ -19,7 +19,7 @@ beforeEach(function () {
 test('the assistant drafts a reply and nothing is sent until the coach taps Send', function () {
     $fake = fakeDraftModel(['message' => 'Rest today, Nima. Send me a photo of the knee.']);
 
-    chatTap('4242', 'ai:reply:'.$this->trainee->id)->assertOk();
+    chatTap('4242', 'ai:reply:'.$this->trainee->id)->assertNoContent();
 
     $draft = AiDraft::query()->firstOrFail();
     expect($draft->status)->toBe(AiDraft::PENDING);
@@ -148,7 +148,7 @@ test('assistant problems are explained instead of failing silently', function ()
     expect(collect(telegramTexts('4242'))->last())->toContain('The AI assistant is busy.');
 
     fakeDraftModel();
-    config(['services.anthropic.daily_drafts_per_coach' => 0]);
+    config(['services.ai.daily_drafts_per_coach' => 0]);
     chatTap('4242', 'ai:reply:'.$this->trainee->id);
     expect(collect(telegramTexts('4242'))->last())->toContain("used today's AI drafts");
     expect(AiDraft::where('status', AiDraft::PENDING)->count())->toBe(0);
