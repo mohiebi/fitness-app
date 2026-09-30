@@ -8,7 +8,7 @@
         <meta name="fitnessos-user-name" content="{{ auth()->user()?->name ?? '' }}">
         <meta name="fitnessos-user-email" content="{{ auth()->user()?->email ?? '' }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>FitnessOS</title>
+        <title>{{ config('app.name') }}</title>
         <link rel="icon" href="/fitnessos-favicon.ico" type="image/x-icon">
         @viteReactRefresh
         @vite(['resources/css/fitnessos.css', 'resources/js/fitnessos/main.tsx'])

@@ -132,9 +132,19 @@ Trainees can rate a coach from 1 to 5 stars and leave a comment after training t
 
 People get in-app notifications, via the bell in the dashboard and app, for coaching requests and decisions, ended coachings, new messages, check-ins, new plans, payments, reviews and subscription reminders. Requests, acceptances, new plans, payment results and subscription reminders are also emailed, and coaches who connected Telegram get them there too. The reminder runs from the scheduler (`php artisan schedule:work` locally, or a cron entry for `php artisan schedule:run` in production).
 
+### Reports and calendar
+
+- **Reports** (`/dashboard/reports`) are computed from the coach's own data by `CoachReports`: active and new trainees, retention (coachings that lasted 30 days), request acceptance, workout completion against the active plans, check-in review rate and time, the average rating, weekly growth and sessions, and each trainee's adherence. Time is counted in rolling 7-day weeks so the numbers mean the same in any calendar. There is no revenue figure: trainees pay coaches outside the app.
+- **Calendar** (`/dashboard/calendar`) shows the coach's own appointments (`calendar_events`: call, video, in person or other, optionally with a current trainee) and what their current trainees did each day: sessions logged, check-ins sent, coachings started and plans activated, plus the day the subscription ends. Persian shows the Jalali month with weeks starting on Saturday, worked out with the browser's own calendar support, so no date library is needed.
+
 ### Language
 
-`APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates, and Persian digits. Set `APP_LOCALE=en` for English. New interface text should go through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts`, and should use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so it mirrors correctly. Some older screens (nutrition, payments and reports) still show English sample content and need backend integration before launch. See `resources/js/fitnessos/routes/README.md` for routing notes.
+The site is Persian-first. `APP_LOCALE=fa` renders pages right-to-left with the self-hosted Vazirmatn font, Jalali dates and Persian digits, and `APP_NAME` is the Persian brand name. Set `APP_LOCALE=en` for English.
+
+- **Front end:** text goes through `t('English text')` with a Persian entry in `resources/js/fitnessos/locales/fa.ts` (the account, sign-in and settings pages use the same helper). Use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`) so layouts mirror. `t()` also records any English text with no Persian entry in `window.__missingTranslations`, so opening every page and reading that set lists what is left.
+- **Server:** messages use `__('English text')` with a Persian entry in `lang/fa.json`; validation messages and field names are in `lang/fa/validation.php`. Emails and the framework's error pages are published under `resources/views/vendor/mail` and `resources/views/errors` so they are right-to-left in Persian.
+- **Telegram:** the bot always speaks Persian (`TELEGRAM_LOCALE`), whatever the site's language.
+- **A guard:** `tests/Feature/LocalizationCoverageTest.php` fails, naming the text, when a `__()` or `t()` string is added without a Persian entry. Sample screens (nutrition, payments, progress, content, resources and part of Settings) show demo content, in Persian.
 
 ## Checks
 
