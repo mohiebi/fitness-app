@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AiDraftController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CoachDirectoryController;
 use App\Http\Controllers\CoachingController;
 use App\Http\Controllers\CoachProfileController;
+use App\Http\Controllers\CoachReportController;
 use App\Http\Controllers\CoachReviewController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FitnessOsActivityController;
@@ -61,6 +63,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
+        Route::get('fitnessos/reports', CoachReportController::class);
+        Route::get('fitnessos/calendar', [CalendarController::class, 'index']);
+        Route::post('fitnessos/calendar/events', [CalendarController::class, 'store'])->middleware('throttle:60,1');
+        Route::delete('fitnessos/calendar/events/{event}', [CalendarController::class, 'destroy']);
         Route::get('fitnessos/coach-reviews', [CoachReviewController::class, 'coachIndex']);
         Route::post('fitnessos/coach-reviews/{review}/reply', [CoachReviewController::class, 'reply']);
         Route::get('fitnessos/billing', [BillingController::class, 'show']);
