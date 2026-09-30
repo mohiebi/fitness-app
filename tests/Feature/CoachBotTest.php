@@ -29,7 +29,7 @@ function lastToast(): ?string
 }
 
 test('a linked coach gets the menu keyboard when they open the bot', function () {
-    chatText('4242', '/start')->assertOk();
+    chatText('4242', '/start')->assertNoContent();
 
     [$method, $payload] = telegramCalls()[0];
     expect($method)->toBe('sendMessage');
@@ -39,8 +39,8 @@ test('a linked coach gets the menu keyboard when they open the bot', function ()
 });
 
 test('the bot only answers a coach in a private linked chat and points strangers to the dashboard', function () {
-    chatText('999', '📥 Requests')->assertOk();
-    chatTap('999', 'req:list')->assertOk();
+    chatText('999', '📥 Requests')->assertNoContent();
+    chatTap('999', 'req:list')->assertNoContent();
 
     expect(telegramTexts('999')[0])->toContain('Connect Telegram');
     expect(lastToast())->toContain('Connect your coach account');
@@ -88,7 +88,7 @@ test('requests show the trainee intake and can be accepted from the message', fu
     expect($texts[1])->toContain('Nima Rezaei')->toContain('Lose fat')->toContain('Beginner')->toContain('Right knee pain')->toContain('I want to lose fat');
     expect(lastButtons('4242'))->toBe(['req:acc:'.$coaching->id, 'req:dec:'.$coaching->id]);
 
-    chatTap('4242', 'req:acc:'.$coaching->id, 77)->assertOk();
+    chatTap('4242', 'req:acc:'.$coaching->id, 77)->assertNoContent();
 
     expect($coaching->fresh()->status)->toBe(Coaching::ACTIVE);
     expect($this->trainee->fresh()->coach_id)->toBe($this->coach->id);
@@ -180,6 +180,7 @@ test('Persian menu labels open the same screens', function () {
         $this->markTestSkipped('intl extension not installed');
     }
     app()->setLocale('fa');
+    config(['fitnessos.telegram.locale' => 'fa']);
     requestCoaching($this->trainee, $this->coach);
 
     chatText('4242', '📥 درخواست‌ها');

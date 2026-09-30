@@ -19,7 +19,7 @@ beforeEach(function () {
 test('the assistant drafts a reply and nothing is sent until the coach taps Send', function () {
     $fake = fakeDraftModel(['message' => 'Rest today, Nima. Send me a photo of the knee.']);
 
-    chatTap('4242', 'ai:reply:'.$this->trainee->id)->assertOk();
+    chatTap('4242', 'ai:reply:'.$this->trainee->id)->assertNoContent();
 
     $draft = AiDraft::query()->firstOrFail();
     expect($draft->status)->toBe(AiDraft::PENDING);

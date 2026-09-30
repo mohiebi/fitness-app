@@ -6,17 +6,8 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    app()->setLocale('en');
-    config([
-        'fitnessos.telegram.bot_token' => 'test-token',
-        'fitnessos.telegram.bot_username' => 'FitnessOSPayBot',
-        'fitnessos.telegram.webhook_secret' => 'hook-secret',
-        'fitnessos.telegram.admin_chat_id' => '-1001',
-        'fitnessos.payment_card.number' => '6037-9911-1111-2222',
-        'fitnessos.payment_card.holder' => 'FitnessOS',
-        'fitnessos.plans.starter.price' => 490000,
-    ]);
-    Http::fake(['api.telegram.org/*' => Http::response(['ok' => true, 'result' => true])]);
+    fakeTelegram();
+    config(['fitnessos.telegram.bot_username' => 'FitnessOSPayBot', 'fitnessos.plans.starter.price' => 490000]);
 
     $this->coach = User::factory()->publishedCoach()->create(['name' => 'Sara', 'email' => 'sara@example.com']);
 });
@@ -41,14 +32,14 @@ test('a coach starts a Telegram payment and gets a deep link; the open payment i
 });
 
 test('the webhook rejects requests without the secret token', function () {
-    $this->postJson('/telegram/webhook', ['update_id' => 1])->assertForbidden();
-    $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'wrong')->postJson('/telegram/webhook', ['update_id' => 1])->assertForbidden();
+    $this->postJson('/telegraph/test-token/webhook', ['update_id' => 1])->assertForbidden();
+    $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'wrong')->postJson('/telegraph/test-token/webhook', ['update_id' => 1])->assertForbidden();
 });
 
 test('full flow: start, receipt, admin approval extends the subscription once', function () {
     $payment = startPayment($this->coach);
 
-    telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 555], 'text' => '/start pay_'.$payment['reference']]])->assertOk();
+    telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 555], 'text' => '/start pay_'.$payment['reference']]])->assertNoContent();
     Http::assertSent(fn (Request $request) => str_ends_with($request->url(), '/sendMessage')
         && $request['chat_id'] === '555'
         && str_contains($request['text'], '490,000')
@@ -56,7 +47,7 @@ test('full flow: start, receipt, admin approval extends the subscription once', 
 
     telegramUpdate(['update_id' => 2, 'message' => ['chat' => ['id' => 555], 'photo' => [
         ['file_id' => 'small', 'width' => 90], ['file_id' => 'big', 'width' => 1280],
-    ]]])->assertOk();
+    ]]])->assertNoContent();
 
     $stored = SubscriptionPayment::query()->firstOrFail();
     expect($stored->status)->toBe(SubscriptionPayment::SUBMITTED);
@@ -97,8 +88,8 @@ test('rejected receipts do not extend the subscription', function () {
 });
 
 test('receipts without an open payment and unknown references get guidance', function () {
-    telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 999], 'text' => '/start pay_NOPE']])->assertOk();
-    telegramUpdate(['update_id' => 2, 'message' => ['chat' => ['id' => 999], 'photo' => [['file_id' => 'x']]]])->assertOk();
+    telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 999], 'text' => '/start pay_NOPE']])->assertNoContent();
+    telegramUpdate(['update_id' => 2, 'message' => ['chat' => ['id' => 999], 'photo' => [['file_id' => 'x']]]])->assertNoContent();
 
     expect(SubscriptionPayment::count())->toBe(0);
     Http::assertNotSent(fn (Request $request) => str_ends_with($request->url(), '/sendPhoto'));
@@ -133,6 +124,7 @@ test('Persian bot messages use Persian digits and the Jalali calendar', function
         $this->markTestSkipped('intl extension not installed');
     }
     app()->setLocale('fa');
+    config(['fitnessos.telegram.locale' => 'fa']);
     $payment = startPayment($this->coach);
 
     telegramUpdate(['update_id' => 1, 'message' => ['chat' => ['id' => 42], 'text' => '/start pay_'.$payment['reference']]]);
@@ -146,8 +138,8 @@ test('an update Telegram delivers twice is only handled once', function () {
     $payment = startPayment($this->coach);
     $update = ['update_id' => 77, 'message' => ['chat' => ['id' => 555], 'text' => '/start pay_'.$payment['reference']]];
 
-    telegramUpdate($update)->assertOk();
-    telegramUpdate($update)->assertOk();
+    telegramUpdate($update)->assertNoContent();
+    telegramUpdate($update)->assertNoContent();
 
     Http::assertSentCount(1);
 });

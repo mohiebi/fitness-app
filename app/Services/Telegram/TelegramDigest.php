@@ -5,6 +5,7 @@ namespace App\Services\Telegram;
 use App\Models\TelegramAccount;
 use App\Services\Telegram\Screens\TodayScreen;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 
 /**
  * The morning summary: once a day, at the hour each coach chose, one
@@ -24,6 +25,19 @@ class TelegramDigest
      * @return int how many coaches were messaged
      */
     public function sendDue(?Carbon $now = null, bool $force = false): int
+    {
+        // The summary is written in the bot's language, not the website's.
+        $previous = App::getLocale();
+        App::setLocale((string) config('fitnessos.telegram.locale'));
+
+        try {
+            return $this->send($now, $force);
+        } finally {
+            App::setLocale($previous);
+        }
+    }
+
+    private function send(?Carbon $now, bool $force): int
     {
         $local = ($now ?? now())->copy()->setTimezone((string) config('fitnessos.telegram.timezone'));
         $sent = 0;

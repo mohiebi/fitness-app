@@ -251,5 +251,19 @@
     "Disconnect Telegram from your FitnessOS account? You will stop getting messages here until you connect again from the dashboard.": "اتصال تلگرام از حساب فیتنس‌اواس قطع شود؟ تا وقتی دوباره از داشبورد وصل نکنی پیامی اینجا نمی‌گیری.",
     "🔌 Yes, disconnect": "🔌 بله، قطع کن",
     "◀ Keep it": "◀ نگه‌دار",
-    "👀 Read it": "👀 خواندن"
+    "👀 Read it": "👀 خواندن",
+    "Plan: :plan for :days days": "پلن :plan برای :days روز",
+    "✅ Approve": "✅ تأیید",
+    "❌ Reject": "❌ رد",
+    "You are not allowed to do this.": "اجازه‌ی این کار را نداری.",
+    "Unknown action.": "اقدام ناشناخته.",
+    "This payment is already :status.": "این پرداخت قبلاً «:status» شده است.",
+    "Payment approved.": "پرداخت تأیید شد.",
+    "Payment rejected.": "پرداخت رد شد.",
+    "✅ Approved by :who": "✅ تأییدشده توسط :who",
+    "❌ Rejected by :who": "❌ ردشده توسط :who",
+    ":name / :plan / :amount toman": ":name / :plan / :amount تومان",
+    "paid": "پرداخت",
+    "rejected": "رد",
+    "canceled": "لغو"
 }
