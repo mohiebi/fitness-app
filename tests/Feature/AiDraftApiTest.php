@@ -85,7 +85,7 @@ test('assistant failures return 503 with a readable message, and bad input is re
 
 test('the status endpoint reports a disabled assistant without an API key', function () {
     app()->forgetInstance(DraftModel::class);
-    config(['services.anthropic.api_key' => '']);
+    config(['services.openai.api_key' => '', 'services.anthropic.api_key' => '']);
 
     $this->actingAs($this->coach)->getJson('/fitnessos/ai/status')->assertJsonPath('enabled', false);
 });

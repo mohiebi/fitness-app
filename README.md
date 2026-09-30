@@ -86,13 +86,13 @@ Public pages include `/`, `/coaches`, `/coaches/{slug}`, `/about`, `/resources`,
 
 The assistant drafts chat replies, check-in feedback and training plans for a coach's current trainees. Trainees never interact with it, and nothing it writes reaches a trainee until the coach approves it.
 
-- Set `ANTHROPIC_API_KEY` to turn it on. It uses `AI_MODEL` (default `claude-opus-5`) through the official Anthropic PHP SDK, with adaptive thinking, structured JSON output and server-side refusal fallbacks. Without a key the assistant is hidden and the rest of the app works as usual.
-- `AI_BASE_URL` routes requests through a gateway or proxy, for example when the server can't reach the Anthropic API directly. It takes precedence over `ANTHROPIC_BASE_URL`.
+- It talks to any **OpenAI-compatible endpoint** (the default, `AI_PROVIDER=openai`). Set `OPENAI_API_KEY` to turn it on, `OPENAI_MODEL` (default `gpt-4o`), and `OPENAI_BASE_URL` (default `https://api.openai.com/v1`) or `AI_BASE_URL` to point at a gateway, for example when the server can't reach OpenAI directly. Replies are constrained with a JSON schema (structured outputs). For a gateway that only supports plain JSON mode set `OPENAI_RESPONSE_FORMAT=json_object`. Without a key the assistant is hidden and the rest of the app works as usual.
+- `AI_PROVIDER=anthropic` with `ANTHROPIC_API_KEY` uses Claude through the official Anthropic PHP SDK instead (`AI_MODEL`, default `claude-opus-5`).
 - `AI_DAILY_DRAFTS_PER_COACH` (default 60) caps how many drafts each coach can request per day.
 - Coaches review drafts at `/dashboard/ai`, or use **Draft with AI** in chat, on the check-in review page and on a trainee's Training tab. An inline draft is sent only when the coach presses send, with their edits.
 - An approved plan draft becomes a draft plan the coach still edits and activates. Plan drafts only use exercises from the coach's library.
 - The model sees a briefing with the trainee's first name, intake, active plan, and recent check-ins, workouts and chat, and nothing else (no email or account details). Every draft, including failures, is stored in `ai_drafts` with the model and token counts.
-- The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `ClaudeDraftModel` makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
+- The code lives in `app/Services/Ai`: `CoachAssistant` handles drafting, approval and limits, `TraineeBriefing` builds the context, and `OpenAiDraftModel` (or `ClaudeDraftModel`) makes the API call. Tests replace the `DraftModel` binding with a fake, so they never call the API.
 
 ### Coach subscriptions and Telegram payments
 

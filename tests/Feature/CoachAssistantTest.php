@@ -9,6 +9,7 @@ use App\Services\Ai\AssistantUnavailable;
 use App\Services\Ai\ClaudeDraftModel;
 use App\Services\Ai\CoachAssistant;
 use App\Services\Ai\DraftModel;
+use App\Services\Ai\OpenAiDraftModel;
 use App\Services\CoachingLifecycle;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -130,7 +131,7 @@ test('failures are recorded and the daily limit is enforced', function () {
     expect(fn () => $assistant->draft($this->coach, AiDraft::REPLY, $this->trainee->id))->toThrow(AssistantUnavailable::class);
     expect(AiDraft::query()->value('status'))->toBe(AiDraft::FAILED);
 
-    config(['services.anthropic.daily_drafts_per_coach' => 1]);
+    config(['services.ai.daily_drafts_per_coach' => 1]);
     expect(fn () => $assistant->draft($this->coach, AiDraft::REPLY, $this->trainee->id))->toThrow(ValidationException::class);
 });
 
@@ -149,15 +150,27 @@ test('coaches can only draft for current trainees and approve their own drafts',
 });
 
 test('without an API key the assistant is disabled', function () {
-    config(['services.anthropic.api_key' => null]);
+    config(['services.openai.api_key' => null, 'services.anthropic.api_key' => null]);
 
     expect(app(CoachAssistant::class)->enabled())->toBeFalse();
     expect(fn () => app(CoachAssistant::class)->draft($this->coach, AiDraft::REPLY, $this->trainee->id))->toThrow(AssistantUnavailable::class);
+
+    config(['services.ai.provider' => 'anthropic']);
+    app()->forgetInstance(DraftModel::class);
+    expect(app(CoachAssistant::class)->enabled())->toBeFalse();
 });
 
-test('a configured API key enables the Claude model', function () {
+test('an OpenAI-compatible endpoint is the default provider', function () {
     app()->forgetInstance(DraftModel::class);
-    config(['services.anthropic.api_key' => 'test-key', 'services.anthropic.base_url' => 'https://gateway.example.test']);
+    config(['services.openai.api_key' => 'sk-test', 'services.openai.base_url' => 'https://gateway.example.test/v1']);
+
+    expect(app(DraftModel::class))->toBeInstanceOf(OpenAiDraftModel::class);
+    expect(app(CoachAssistant::class)->enabled())->toBeTrue();
+});
+
+test('the Anthropic provider can still be chosen', function () {
+    app()->forgetInstance(DraftModel::class);
+    config(['services.ai.provider' => 'anthropic', 'services.anthropic.api_key' => 'test-key', 'services.anthropic.base_url' => 'https://gateway.example.test']);
 
     expect(app(DraftModel::class))->toBeInstanceOf(ClaudeDraftModel::class);
     expect(app(CoachAssistant::class)->enabled())->toBeTrue();

@@ -22,7 +22,7 @@ class AiDraftController extends Controller
         return response()->json([
             'enabled' => $this->assistant->enabled(),
             'remaining_today' => $this->assistant->remainingToday($request->user()),
-            'daily_limit' => (int) config('services.anthropic.daily_drafts_per_coach'),
+            'daily_limit' => (int) config('services.ai.daily_drafts_per_coach'),
         ]);
     }
 
