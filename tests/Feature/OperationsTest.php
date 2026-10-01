@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -135,21 +136,22 @@ test('an in-memory database or an unknown one cannot be backed up', function () 
 
 test('MySQL is dumped by the native tool with the password kept off the command line', function () {
     Process::fake(['*' => Process::result(output: "-- MySQL dump\nCREATE TABLE `users` (id int);\n")]);
+    $password = Str::random(24);
     config(['database.connections.mysql_test' => [
-        'driver' => 'mysql', 'host' => 'db.internal', 'port' => 3307, 'database' => 'fitness', 'username' => 'app', 'password' => 's3cret-pw',
+        'driver' => 'mysql', 'host' => 'db.internal', 'port' => 3307, 'database' => 'fitness', 'username' => 'app', 'password' => $password,
     ]]);
 
     $result = app(DatabaseBackups::class)->run('mysql_test');
 
-    Process::assertRan(function ($process) {
+    Process::assertRan(function ($process) use ($password) {
         $command = is_array($process->command) ? implode(' ', $process->command) : $process->command;
 
         return str_starts_with($command, 'mysqldump')
             && str_contains($command, '--single-transaction')
             && str_contains($command, '--host=db.internal') && str_contains($command, '--port=3307') && str_contains($command, '--user=app')
             && str_ends_with($command, 'fitness')
-            && ! str_contains($command, 's3cret-pw')
-            && ($process->environment['MYSQL_PWD'] ?? null) === 's3cret-pw';
+            && ! str_contains($command, $password)
+            && ($process->environment['MYSQL_PWD'] ?? null) === $password;
     });
     expect($result['file'])->toEndWith('.sql.gz');
     expect(gzdecode((string) file_get_contents($result['file'])))->toContain('CREATE TABLE');
