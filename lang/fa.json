@@ -292,5 +292,6 @@
     "Server Error": "خطای سرور",
     "Service Unavailable": "سرویس در دسترس نیست",
     "Too Many Requests": "درخواست‌های بیش‌ازحد",
-    "Unauthorized": "ورود لازم است"
+    "Unauthorized": "ورود لازم است",
+    "Add a headline, a bio and at least one specialty before publishing.": "پیش از انتشار، یک عنوان، یک معرفی و دست‌کم یک تخصص اضافه کن."
 }

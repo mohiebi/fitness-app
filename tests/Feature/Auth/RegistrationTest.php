@@ -26,7 +26,7 @@ test('new users can register', function () {
     $response->assertRedirect(route('portal', absolute: false));
 });
 
-test('Inertia registration opens the fitness dashboard', function () {
+test('Inertia registration opens the coach welcome guide', function () {
     $this->get(route('register'))->assertOk();
 
     $response = $this->followingRedirects()->withHeaders([
@@ -42,5 +42,5 @@ test('Inertia registration opens the fitness dashboard', function () {
 
     $this->assertAuthenticated();
     $response->assertStatus(409)
-        ->assertHeader('X-Inertia-Location', '/dashboard');
+        ->assertHeader('X-Inertia-Location', '/dashboard/welcome');
 });

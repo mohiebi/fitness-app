@@ -40,6 +40,7 @@ import { Route as DashboardProgressRouteImport } from './routes/dashboard.progre
 import { Route as DashboardReportsRouteImport } from './routes/dashboard.reports'
 import { Route as DashboardRequestsRouteImport } from './routes/dashboard.requests'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardWelcomeRouteImport } from './routes/dashboard.welcome'
 import { Route as DashboardClientsIndexRouteImport } from './routes/dashboard.clients.index'
 import { Route as DashboardClientsIdRouteImport } from './routes/dashboard.clients.$id'
 import { Route as DashboardWorkoutsIndexRouteImport } from './routes/dashboard.workouts.index'
@@ -200,6 +201,11 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardWelcomeRoute = DashboardWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardClientsIndexRoute = DashboardClientsIndexRouteImport.update({
   id: '/clients/',
   path: '/clients/',
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/welcome': typeof DashboardWelcomeRoute
   '/app/': typeof AppIndexRoute
   '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -285,6 +292,7 @@ export interface FileRoutesByTo {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/welcome': typeof DashboardWelcomeRoute
   '/app': typeof AppIndexRoute
   '/coaches': typeof CoachesIndexRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -323,6 +331,7 @@ export interface FileRoutesById {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/requests': typeof DashboardRequestsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/welcome': typeof DashboardWelcomeRoute
   '/app/': typeof AppIndexRoute
   '/coaches/': typeof CoachesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
+    | '/dashboard/welcome'
     | '/app/'
     | '/coaches/'
     | '/dashboard/'
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
+    | '/dashboard/welcome'
     | '/app'
     | '/coaches'
     | '/dashboard'
@@ -434,6 +445,7 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/requests'
     | '/dashboard/settings'
+    | '/dashboard/welcome'
     | '/app/'
     | '/coaches/'
     | '/dashboard/'
@@ -673,6 +685,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/welcome': {
+      id: '/dashboard/welcome'
+      path: '/welcome'
+      fullPath: '/dashboard/welcome'
+      preLoaderRoute: typeof DashboardWelcomeRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/clients/': {
       id: '/dashboard/clients/'
       path: '/clients'
@@ -744,6 +763,7 @@ interface DashboardRouteChildren {
   DashboardReportsRoute: typeof DashboardReportsRoute
   DashboardRequestsRoute: typeof DashboardRequestsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardWelcomeRoute: typeof DashboardWelcomeRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardClientsIdRoute: typeof DashboardClientsIdRoute
   DashboardWorkoutsPlanIdRoute: typeof DashboardWorkoutsPlanIdRoute
@@ -765,6 +785,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardReportsRoute: DashboardReportsRoute,
   DashboardRequestsRoute: DashboardRequestsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardWelcomeRoute: DashboardWelcomeRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardClientsIdRoute: DashboardClientsIdRoute,
   DashboardWorkoutsPlanIdRoute: DashboardWorkoutsPlanIdRoute,
