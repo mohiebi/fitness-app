@@ -58,6 +58,39 @@ return [
         'timezone' => env('TELEGRAM_TIMEZONE', 'Asia/Tehran'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Operations: alerts, health and backups
+    |--------------------------------------------------------------------------
+    |
+    | Server errors and failed backups are sent to the admin Telegram chat.
+    | The health check turns red when the scheduler stops or backups stop
+    | succeeding, so an uptime monitor pointed at /health notices even when
+    | the app itself is fine.
+    |
+    */
+
+    'ops' => [
+        'alerts' => (bool) env('ALERTS_ENABLED', true),
+        // At most this many alerts an hour, so a failing page can't flood the chat.
+        'alerts_per_hour' => 20,
+        // The same error is only sent once in this many minutes.
+        'alert_repeat_minutes' => 15,
+
+        // Production must have a running scheduler and recent backups; other
+        // environments only report them.
+        'require_scheduler' => (bool) env('OPS_REQUIRE_SCHEDULER', env('APP_ENV') === 'production'),
+        'require_backups' => (bool) env('OPS_REQUIRE_BACKUPS', env('APP_ENV') === 'production'),
+
+        'backup' => [
+            'path' => env('BACKUP_PATH', storage_path('app/backups')),
+            'keep_days' => (int) env('BACKUP_KEEP_DAYS', 14),
+            // Also copy each backup to this filesystem disk (config/filesystems.php), e.g. S3 or SFTP.
+            'disk' => env('BACKUP_DISK'),
+            'disk_path' => env('BACKUP_DISK_PATH', 'fitnessos-backups'),
+        ],
+    ],
+
     'payment_card' => [
         'number' => env('PAYMENT_CARD_NUMBER'),
         'holder' => env('PAYMENT_CARD_HOLDER'),

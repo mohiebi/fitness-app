@@ -293,5 +293,8 @@
     "Service Unavailable": "سرویس در دسترس نیست",
     "Too Many Requests": "درخواست‌های بیش‌ازحد",
     "Unauthorized": "ورود لازم است",
-    "Add a headline, a bio and at least one specialty before publishing.": "پیش از انتشار، یک عنوان، یک معرفی و دست‌کم یک تخصص اضافه کن."
+    "Add a headline, a bio and at least one specialty before publishing.": "پیش از انتشار، یک عنوان، یک معرفی و دست‌کم یک تخصص اضافه کن.",
+    "⚠️ Too many alerts this hour; the rest are only in the log.": "⚠️ در این ساعت هشدارهای زیادی ارسال شد؛ بقیه فقط در گزارش ثبت می‌شوند.",
+    "🔴 Database backup failed.": "🔴 پشتیبان‌گیری از پایگاه داده ناموفق بود.",
+    "🔴 Scheduled task failed: :task": "🔴 اجرای کار زمان‌بندی‌شده ناموفق بود: :task"
 }

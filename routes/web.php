@@ -3,6 +3,7 @@
 use App\Http\Controllers\AiDraftController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ClientErrorController;
 use App\Http\Controllers\CoachDirectoryController;
 use App\Http\Controllers\CoachingController;
 use App\Http\Controllers\CoachProfileController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\FitnessOsActivityController;
 use App\Http\Controllers\FitnessOsClientController;
 use App\Http\Controllers\FitnessOsInquiryController;
 use App\Http\Controllers\FitnessOsPortalController;
+use App\Http\Controllers\HealthController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\TelegramController;
@@ -22,6 +24,8 @@ use App\Http\Controllers\WorkoutPlanController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'fitnessos')->name('home');
+Route::post('client-errors', ClientErrorController::class)->middleware('throttle:20,1,client-errors');
+Route::get('health', HealthController::class)->middleware('throttle:60,1,health')->name('health');
 
 foreach (['about', 'resources', 'contact', 'coaches'] as $page) {
     Route::view($page, 'fitnessos');

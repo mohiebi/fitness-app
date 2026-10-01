@@ -5,6 +5,10 @@ use App\Models\CoachSubscription;
 use App\Models\SubscriptionPayment;
 use App\Models\User;
 use App\Services\Notifier;
+use App\Services\Operations\AdminAlerts;
+use App\Services\Operations\DatabaseBackups;
+use App\Services\Operations\HealthChecks;
+use App\Services\Operations\Preflight;
 use App\Services\Payments\SubscriptionPayments;
 use App\Services\Telegram\Menu;
 use App\Services\Telegram\TelegramClient;
@@ -142,5 +146,66 @@ Artisan::command('fitnessos:subscriptions:remind {--days=3}', function (Notifier
     return 0;
 })->purpose('Remind coaches whose subscription ends soon');
 
-Schedule::command('fitnessos:subscriptions:remind')->dailyAt('09:00');
-Schedule::command('fitnessos:telegram:digest')->hourly();
+Artisan::command('fitnessos:backup {--keep= : Days to keep backups (default from BACKUP_KEEP_DAYS)}', function (DatabaseBackups $backups, AdminAlerts $alerts) {
+    try {
+        $result = $backups->run();
+        $deleted = $backups->prune((int) ($this->option('keep') ?: config('fitnessos.ops.backup.keep_days')));
+    } catch (Throwable $e) {
+        $this->error('Backup failed: '.$e->getMessage());
+        $alerts->send(__('🔴 Database backup failed.')."\n".e($e->getMessage()), 'backup-failed');
+
+        return 1;
+    }
+
+    $this->info(sprintf('Backup saved: %s (%s KB), checked by reading it back. Removed %d old backup(s).', basename($result['file']), number_format($result['bytes'] / 1024, 1), $deleted));
+
+    return 0;
+})->purpose('Back up the database, check the backup can be read, and remove old ones');
+
+Artisan::command('fitnessos:backup:verify {file? : A backup file; defaults to the newest}', function (DatabaseBackups $backups) {
+    $file = $this->argument('file') ?: $backups->latest();
+    if (! is_string($file) || $file === '') {
+        $this->error('There are no backups yet.');
+
+        return 1;
+    }
+
+    try {
+        $backups->verify($file);
+    } catch (Throwable $e) {
+        $this->error($e->getMessage());
+
+        return 1;
+    }
+
+    $this->info('OK: '.basename($file).' decompresses and contains a database.');
+
+    return 0;
+})->purpose('Check that a backup can be read back');
+
+Artisan::command('fitnessos:preflight', function (Preflight $preflight) {
+    $results = $preflight->run();
+
+    foreach ($results as $result) {
+        $mark = match ($result['level']) {
+            Preflight::PASS => '<info> PASS </info>',
+            Preflight::WARN => '<comment> WARN </comment>',
+            default => '<error> FAIL </error>',
+        };
+        $this->line($mark.' '.$result['check'].($result['hint'] !== '' ? "\n        ".$result['hint'] : ''));
+    }
+
+    $failed = $preflight->failed($results);
+    $counts = collect($results)->countBy('level');
+    $this->newLine();
+    $this->line(sprintf('%d passed, %d warning(s), %d failed.', $counts[Preflight::PASS] ?? 0, $counts[Preflight::WARN] ?? 0, $counts[Preflight::FAIL] ?? 0));
+
+    return $failed ? 1 : 0;
+})->purpose('Check the settings that must be right before real people use the site');
+
+$problem = fn (string $task) => fn () => app(AdminAlerts::class)->send(__('🔴 Scheduled task failed: :task', ['task' => $task]), 'task-failed:'.$task);
+
+Schedule::call(fn () => HealthChecks::beat())->everyMinute()->name('heartbeat');
+Schedule::command('fitnessos:backup')->dailyAt('03:10')->onFailure($problem('backup'));
+Schedule::command('fitnessos:subscriptions:remind')->dailyAt('09:00')->onFailure($problem('subscriptions:remind'));
+Schedule::command('fitnessos:telegram:digest')->hourly()->onFailure($problem('telegram:digest'));
