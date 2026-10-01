@@ -36,14 +36,16 @@ foreach (['apply', 'coaching', 'transformations'] as $page) {
 Route::get('fitnessos/coaches', [CoachDirectoryController::class, 'index']);
 Route::get('fitnessos/coaches/{slug}', [CoachDirectoryController::class, 'show']);
 Route::get('fitnessos/coaches/{slug}/reviews', [CoachReviewController::class, 'index']);
-Route::post('fitnessos/contact', [FitnessOsInquiryController::class, 'contact'])->middleware('throttle:5,1');
+Route::post('fitnessos/contact', [FitnessOsInquiryController::class, 'contact'])->middleware('throttle:5,1,contact');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+// A per-account ceiling on everything signed-in people can do, as a backstop
+// for the tighter limits on individual actions below.
+Route::middleware(['auth', 'verified', 'throttle:240,1,account'])->group(function () {
     Route::get('portal', FitnessOsPortalController::class)->name('portal');
     Route::get('fitnessos/checkins/{client?}', [FitnessOsActivityController::class, 'checkins']);
-    Route::post('fitnessos/checkins', [FitnessOsActivityController::class, 'storeCheckin']);
+    Route::post('fitnessos/checkins', [FitnessOsActivityController::class, 'storeCheckin'])->middleware('throttle:10,1,checkins');
     Route::get('fitnessos/messages/{client?}', [FitnessOsActivityController::class, 'messages']);
-    Route::post('fitnessos/messages', [FitnessOsActivityController::class, 'sendMessage']);
+    Route::post('fitnessos/messages', [FitnessOsActivityController::class, 'sendMessage'])->middleware('throttle:30,1,messages');
     Route::post('fitnessos/coachings/{coaching}/end', [CoachingController::class, 'end']);
     Route::get('fitnessos/notifications', [NotificationController::class, 'index']);
     Route::post('fitnessos/notifications/read', [NotificationController::class, 'read']);
@@ -57,8 +59,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/conversations', [FitnessOsActivityController::class, 'conversations']);
         Route::patch('fitnessos/checkins/{checkin}', [FitnessOsActivityController::class, 'reviewCheckin']);
         Route::get('fitnessos/coach-profile', [CoachProfileController::class, 'show']);
-        Route::put('fitnessos/coach-profile', [CoachProfileController::class, 'update']);
-        Route::post('fitnessos/coach-profile/avatar', [CoachProfileController::class, 'avatar']);
+        Route::put('fitnessos/coach-profile', [CoachProfileController::class, 'update'])->middleware('throttle:30,1,coach-profile');
+        Route::post('fitnessos/coach-profile/avatar', [CoachProfileController::class, 'avatar'])->middleware('throttle:10,1,coach-profile-avatar');
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
@@ -68,24 +70,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('fitnessos/onboarding/restore', [OnboardingController::class, 'restore']);
         Route::get('fitnessos/reports', CoachReportController::class);
         Route::get('fitnessos/calendar', [CalendarController::class, 'index']);
-        Route::post('fitnessos/calendar/events', [CalendarController::class, 'store'])->middleware('throttle:60,1');
+        Route::post('fitnessos/calendar/events', [CalendarController::class, 'store'])->middleware('throttle:60,1,calendar-events');
         Route::delete('fitnessos/calendar/events/{event}', [CalendarController::class, 'destroy']);
         Route::get('fitnessos/coach-reviews', [CoachReviewController::class, 'coachIndex']);
         Route::post('fitnessos/coach-reviews/{review}/reply', [CoachReviewController::class, 'reply']);
         Route::get('fitnessos/billing', [BillingController::class, 'show']);
-        Route::post('fitnessos/billing/payments', [BillingController::class, 'store'])->middleware('throttle:10,1');
+        Route::post('fitnessos/billing/payments', [BillingController::class, 'store'])->middleware('throttle:10,1,billing-payments');
         Route::post('fitnessos/billing/payments/{payment}/cancel', [BillingController::class, 'cancel']);
         Route::get('fitnessos/telegram', [TelegramController::class, 'show']);
-        Route::post('fitnessos/telegram/link', [TelegramController::class, 'link'])->middleware('throttle:10,1');
+        Route::post('fitnessos/telegram/link', [TelegramController::class, 'link'])->middleware('throttle:10,1,telegram-link');
         Route::put('fitnessos/telegram', [TelegramController::class, 'update']);
         Route::delete('fitnessos/telegram', [TelegramController::class, 'destroy']);
         Route::get('fitnessos/ai/status', [AiDraftController::class, 'status']);
         Route::get('fitnessos/ai/drafts', [AiDraftController::class, 'index']);
-        Route::post('fitnessos/ai/drafts', [AiDraftController::class, 'store'])->middleware('throttle:20,1');
+        Route::post('fitnessos/ai/drafts', [AiDraftController::class, 'store'])->middleware('throttle:20,1,ai-drafts');
         Route::post('fitnessos/ai/drafts/{draft}/approve', [AiDraftController::class, 'approve']);
         Route::post('fitnessos/ai/drafts/{draft}/discard', [AiDraftController::class, 'discard']);
         Route::get('fitnessos/exercises', [ExerciseController::class, 'index']);
-        Route::post('fitnessos/exercises', [ExerciseController::class, 'store']);
+        Route::post('fitnessos/exercises', [ExerciseController::class, 'store'])->middleware('throttle:30,1,exercises');
         Route::get('fitnessos/plans', [WorkoutPlanController::class, 'index']);
         Route::post('fitnessos/plans', [WorkoutPlanController::class, 'store']);
         Route::get('fitnessos/plans/{plan}', [WorkoutPlanController::class, 'show']);
@@ -102,13 +104,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/trainee-profile', [TraineeProfileController::class, 'show']);
         Route::put('fitnessos/trainee-profile', [TraineeProfileController::class, 'update']);
         Route::get('fitnessos/my-coaching', [CoachingController::class, 'mine']);
-        Route::post('fitnessos/coachings', [CoachingController::class, 'store'])->middleware('throttle:10,1');
+        Route::post('fitnessos/coachings', [CoachingController::class, 'store'])->middleware('throttle:10,1,coachings');
         Route::post('fitnessos/coachings/{coaching}/withdraw', [CoachingController::class, 'withdraw']);
         Route::get('fitnessos/my-reviews', [CoachReviewController::class, 'mine']);
-        Route::post('fitnessos/coachings/{coaching}/review', [CoachReviewController::class, 'store'])->middleware('throttle:10,1');
+        Route::post('fitnessos/coachings/{coaching}/review', [CoachReviewController::class, 'store'])->middleware('throttle:10,1,coachings-coaching-review');
         Route::get('fitnessos/my-plan', [WorkoutLogController::class, 'myPlan']);
         Route::get('fitnessos/workout-logs', [WorkoutLogController::class, 'index']);
-        Route::post('fitnessos/workout-logs', [WorkoutLogController::class, 'store'])->middleware('throttle:30,1');
+        Route::post('fitnessos/workout-logs', [WorkoutLogController::class, 'store'])->middleware('throttle:30,1,workout-logs');
         Route::delete('fitnessos/workout-logs/{log}', [WorkoutLogController::class, 'destroy']);
         Route::view('app', 'fitnessos')->name('client.app');
         Route::view('app/{path}', 'fitnessos')->where('path', '.*');

@@ -8,6 +8,7 @@ use App\Services\Ai\DisabledDraftModel;
 use App\Services\Ai\DraftModel;
 use App\Services\Ai\OpenAiDraftModel;
 use Carbon\CarbonImmutable;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -56,6 +57,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->trustProxies();
+    }
+
+    /**
+     * Trust the load balancer in front of the app, when one is configured.
+     */
+    protected function trustProxies(): void
+    {
+        $proxies = config('security.trusted_proxies');
+
+        if (is_string($proxies) && $proxies !== '') {
+            TrustProxies::at($proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
+        }
     }
 
     /**

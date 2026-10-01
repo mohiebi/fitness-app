@@ -46,7 +46,7 @@ return [
         /*
          * Middleware to be applied to the webhook route
          */
-        'middleware' => ['throttle:600,1', VerifyTelegramSecret::class],
+        'middleware' => ['throttle:600,1,telegram-webhook', VerifyTelegramSecret::class],
 
         /*
          * Sets a custom domain when registering a webhook. This will allow a local telegram bot api server

@@ -50,11 +50,19 @@ class AppNotice extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        // Names and messages written by other people end up in this text, and
+        // the mail template reads it as markdown: escape it so nobody can
+        // slip a link or formatting into an email.
         return (new MailMessage)
             ->subject($this->title)
-            ->greeting($this->title)
-            ->line($this->body)
+            ->greeting($this->plain($this->title))
+            ->line($this->plain($this->body))
             ->action(__('Open FitnessOS'), url($this->url));
+    }
+
+    private function plain(string $text): string
+    {
+        return (string) preg_replace('/([\\\\`*_{}\[\]()#+\-.!|<>~])/', '\\\\$1', $text);
     }
 
     /** @return array<string, mixed> */
