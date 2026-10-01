@@ -14,6 +14,7 @@ use App\Http\Controllers\FitnessOsClientController;
 use App\Http\Controllers\FitnessOsInquiryController;
 use App\Http\Controllers\FitnessOsPortalController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\TraineeProfileController;
 use App\Http\Controllers\WorkoutLogController;
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('fitnessos/coachings', [CoachingController::class, 'index']);
         Route::post('fitnessos/coachings/{coaching}/accept', [CoachingController::class, 'accept']);
         Route::post('fitnessos/coachings/{coaching}/decline', [CoachingController::class, 'decline']);
+        Route::get('fitnessos/onboarding', [OnboardingController::class, 'show']);
+        Route::post('fitnessos/onboarding/publish', [OnboardingController::class, 'publish']);
+        Route::post('fitnessos/onboarding/dismiss', [OnboardingController::class, 'dismiss']);
+        Route::post('fitnessos/onboarding/restore', [OnboardingController::class, 'restore']);
         Route::get('fitnessos/reports', CoachReportController::class);
         Route::get('fitnessos/calendar', [CalendarController::class, 'index']);
         Route::post('fitnessos/calendar/events', [CalendarController::class, 'store'])->middleware('throttle:60,1');
