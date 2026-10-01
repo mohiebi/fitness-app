@@ -101,7 +101,9 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    // Sign-up, password reset and the other account routes also get a ceiling
+    // per visitor; login and two-factor have their own, tighter limiters below.
+    'middleware' => ['web', 'throttle:30,1,auth-pages'],
 
     /*
     |--------------------------------------------------------------------------

@@ -6,6 +6,10 @@ import type { ReactNode } from 'react';
 import { PageHeader } from '@fitnessos/components/app-shell';
 import { ActionTile } from '@fitnessos/components/stat-card';
 import { Card } from '@fitnessos/components/ui/card';
+import {
+    OnboardingCard,
+    useOnboarding,
+} from '@fitnessos/components/onboarding-card';
 import { TelegramPrompt } from '@fitnessos/components/telegram-connect';
 import { Button } from '@fitnessos/components/ui/button';
 import { getJson } from '@fitnessos/lib/api';
@@ -103,6 +107,10 @@ function DashboardIndex() {
         queryKey: ['fitnessos', 'coach-profile'],
         queryFn: () => getJson<CoachOwnProfile>('/fitnessos/coach-profile'),
     });
+    const { data: guide } = useOnboarding();
+    // The first-run guide covers the profile and Telegram prompts while it is open.
+    const guideOpen =
+        guide !== undefined && !guide.complete && !guide.dismissed;
     const { data: billing } = useQuery({
         queryKey: ['fitnessos', 'billing'],
         queryFn: () => getJson<Billing>('/fitnessos/billing'),
@@ -189,7 +197,8 @@ function DashboardIndex() {
                 }
             />
 
-            <TelegramPrompt />
+            <OnboardingCard />
+            {!guideOpen && <TelegramPrompt />}
 
             {billing &&
                 (!billing.subscription.active || subscriptionDaysLeft <= 5) && (
@@ -238,7 +247,7 @@ function DashboardIndex() {
                     </Card>
                 )}
 
-            {profile && !profile.is_published && (
+            {!guideOpen && profile && !profile.is_published && (
                 <Card className="border-primary/40 bg-hero-gradient mb-6 flex flex-wrap items-center gap-4 p-5">
                     <Contact className="text-volt h-6 w-6" />
                     <div className="min-w-0 flex-1">

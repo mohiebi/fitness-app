@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import {
     Outlet,
@@ -8,6 +9,7 @@ import {
     HeadContent,
 } from '@tanstack/react-router';
 import { DirectionProvider } from '@radix-ui/react-direction';
+import { reportError } from '@fitnessos/lib/error-report';
 import { isRtl, locale, t } from '@fitnessos/lib/i18n';
 
 function NotFoundComponent() {
@@ -46,6 +48,11 @@ function ErrorComponent({
     reset: () => void;
 }) {
     console.error(error);
+    useEffect(() => {
+        reportError(error instanceof Error ? error.message : String(error), {
+            stack: error instanceof Error ? error.stack : undefined,
+        });
+    }, [error]);
     const router = useRouter();
     return (
         <div className="bg-background flex min-h-screen items-center justify-center px-4">

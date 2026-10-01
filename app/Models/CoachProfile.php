@@ -31,6 +31,8 @@ use Illuminate\Support\Str;
  * @property string|null $avatar_path
  * @property bool $is_published
  * @property CarbonInterface|null $verified_at
+ * @property bool $onboarding_pending
+ * @property CarbonInterface|null $onboarding_dismissed_at
  * @property-read User $user
  */
 #[Fillable([
@@ -57,6 +59,8 @@ class CoachProfile extends Model
             'accepting_clients' => 'boolean',
             'is_published' => 'boolean',
             'verified_at' => 'datetime',
+            'onboarding_pending' => 'boolean',
+            'onboarding_dismissed_at' => 'datetime',
         ];
     }
 

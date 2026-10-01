@@ -1279,4 +1279,45 @@ export const fa: Record<string, string> = {
     'Navy method calculator.': 'ماشین‌حساب روش نیروی دریایی.',
 
     'Send a request': 'ارسال درخواست',
+
+    // First-run guide
+    ':done of :total steps': ':done از :total مرحله',
+    'Almost there.': 'کم‌کم تمام می‌شود.',
+    'Finish setting up your coach account': 'راه‌اندازی حساب مربی‌ات را کامل کن',
+    Hide: 'پنهان کردن',
+    'Next: :step': 'مرحله‌ی بعد: :step',
+    'A few quick steps and trainees can find you. You can do them in any order and come back any time.':
+        'با چند قدم کوتاه، شاگردها می‌توانند تو را پیدا کنند. به هر ترتیبی که خواستی انجام بده و هر وقت خواستی برگرد.',
+    'Checklist hidden': 'فهرست پنهان شد',
+    Copied: 'کپی شد',
+    'Copy link': 'کپی لینک',
+    Edit: 'ویرایش',
+    'Finish your profile first: add a headline, a bio and a specialty.':
+        'اول پروفایلت را کامل کن: یک عنوان، یک معرفی و یک تخصص اضافه کن.',
+    'Go to my dashboard': 'رفتن به داشبورد',
+    'Open plans': 'باز کردن برنامه‌ها',
+    'Open profile': 'باز کردن پروفایل',
+    Optional: 'اختیاری',
+    'Publish now': 'همین حالا منتشر کن',
+    'Skip for now': 'فعلاً رد شو',
+    'Welcome, :name': 'خوش آمدی، :name',
+    'You are all set. 🎉': 'همه‌چیز آماده است. 🎉',
+    'Your progress': 'پیشرفت تو',
+    'Set up your profile': 'پروفایلت را بساز',
+    'Add a headline, a short bio and your specialties so trainees know who you are.':
+        'یک عنوان، معرفی کوتاه و تخصص‌هایت را اضافه کن تا شاگردها بدانند تو کیستی.',
+    'Add a photo': 'یک عکس اضافه کن',
+    'Profiles with a real photo get more requests.':
+        'پروفایل‌هایی که عکس واقعی دارند درخواست بیشتری می‌گیرند.',
+    'Publish your profile': 'پروفایلت را منتشر کن',
+    'Make your page visible in the coach directory so trainees can find and request you.':
+        'صفحه‌ات را در فهرست مربیان نمایان کن تا شاگردها پیدایت کنند و درخواست بدهند.',
+    'Get requests, messages and check-ins on your phone and answer them there.':
+        'درخواست‌ها، پیام‌ها و گزارش‌ها را روی گوشی‌ات بگیر و همان‌جا جواب بده.',
+    'Build your first plan': 'اولین برنامه‌ات را بساز',
+    'Create a training plan or a template you can reuse for new trainees.':
+        'یک برنامه‌ی تمرینی یا الگویی بساز که برای شاگردهای تازه دوباره استفاده کنی.',
+    'Get your first trainee': 'اولین شاگردت را بگیر',
+    'Share your profile link, or add a trainee you already coach.':
+        'لینک پروفایلت را به اشتراک بگذار یا شاگردی را که از قبل داری اضافه کن.',
 };

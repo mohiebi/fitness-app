@@ -146,6 +146,20 @@ The site is Persian-first. `APP_LOCALE=fa` renders pages right-to-left with the 
 - **Telegram:** the bot always speaks Persian (`TELEGRAM_LOCALE`), whatever the site's language.
 - **A guard:** `tests/Feature/LocalizationCoverageTest.php` fails, naming the text, when a `__()` or `t()` string is added without a Persian entry. Sample screens (nutrition, payments, progress, content, resources and part of Settings) show demo content, in Persian.
 
+## Going live and operations
+
+Run the go-live checklist on the server; it lists every setting that must be right and fails (exit code 1) in production while anything is wrong:
+
+```bash
+php artisan fitnessos:preflight
+```
+
+- **Scheduler:** add a cron entry `* * * * * php /path/to/artisan schedule:run`. It sends renewal reminders and Telegram summaries, runs the nightly backup and records a heartbeat that `/health` checks.
+- **Security:** responses carry a Content Security Policy (with a per-request nonce), HSTS, `X-Frame-Options`, `nosniff` and a referrer policy. They are enforced in production (`SECURITY_CSP`, `SECURITY_HSTS`). Behind a proxy or CDN set `TRUSTED_PROXIES`. Every write action is rate limited per account, with a separate counter for each. Run `composer audit` and `npm audit` before releases.
+- **Error monitoring:** server errors, failed scheduled tasks and failed backups are sent to the admin Telegram chat (repeats held back, at most 20 an hour). Browser errors are posted to `/client-errors` and written to the log (`LOG_STACK=daily` keeps a file per day). Point an uptime monitor at `GET /health`: it answers `200` or `503` with one yes/no per check (database, cache, scheduler, backup, disk) and never says why, so it is safe to expose.
+- **Backups:** `php artisan fitnessos:backup` runs nightly at 03:10. SQLite is copied with `VACUUM INTO`; MySQL/MariaDB and PostgreSQL use `mysqldump` / `pg_dump` (they must be installed on the server). The result is compressed to `storage/app/backups`, checked for integrity right away, copied to `BACKUP_DISK` if set, and old files are pruned after `BACKUP_KEEP_DAYS`. Keep a copy off the server: a backup on the same machine is lost with it.
+- **Restoring:** run `php artisan fitnessos:backup:verify [file]` to check a backup, then stop the site and restore: for SQLite, `gunzip -c file.sqlite.gz > database/database.sqlite`; for MySQL, `gunzip -c file.sql.gz | mysql dbname`; for PostgreSQL, `gunzip -c file.sql.gz | psql dbname`. Try a restore on a spare machine now and then; an untested backup is only a hope.
+
 ## Checks
 
 ```bash

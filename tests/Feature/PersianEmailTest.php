@@ -42,3 +42,14 @@ test('emails stay left to right in English', function () {
 
     expect($html)->toContain('dir="ltr"')->toContain('Regards');
 });
+
+test('text written by other people cannot add links or formatting to an email', function () {
+    $notice = new AppNotice('coaching_requested', 'New request', '[Click here](https://evil.example) from **Nima** <b>now</b>', '/dashboard', mail: true);
+
+    $html = (string) $notice->toMail($this->user)->render();
+
+    expect($html)->not->toContain('href="https://evil.example"')
+        ->not->toContain('<strong>Nima</strong>')
+        ->not->toContain('<b>now</b>')
+        ->toContain('Click here');
+});
